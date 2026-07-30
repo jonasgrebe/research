@@ -27,7 +27,9 @@ test("renders the minimal project index", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /<title>Research Index<\/title>/i);
+  assert.match(html, /<title>Overview<\/title>/i);
+  assert.match(html, />Overview</);
+  assert.doesNotMatch(html, /Research Index/);
   assert.match(html, /GEM/);
   assert.match(html, /VETO/);
   assert.match(html, /Fighting Fire with Fire/);
@@ -72,6 +74,24 @@ test("labels Obliviate as an ECCV poster", async () => {
   assert.match(html, />Poster</);
 });
 
+test("marks GEM and Token by Token's first two authors as equal contributors", async () => {
+  for (const path of ["/projects/gem", "/projects/token-by-token"]) {
+    const response = await render(path);
+    const html = await response.text();
+    const markers = html.match(/aria-label="equal contribution"/g) ?? [];
+    assert.equal(markers.length, 2);
+    assert.match(html, /\* Equal contribution/);
+  }
+});
+
+test("links author names to Google Scholar", async () => {
+  const response = await render("/projects/gem");
+  const html = await response.text();
+  assert.match(html, /aria-label="View Jonas Henry Grebe on Google Scholar"/);
+  assert.match(html, /aria-label="View Anna Rohrbach on Google Scholar"/);
+  assert.match(html, /scholar\.google\.com\/citations/);
+});
+
 test("keeps Obliviate tokens stationary in card interaction states", async () => {
   const css = await readFile(
     new URL("../app/globals.css", import.meta.url),
@@ -81,4 +101,5 @@ test("keeps Obliviate tokens stationary in card interaction states", async () =>
     css,
     /\.project-card:(?:hover|focus-visible)\s+\.token\.(?:target|safe)[^{]*\{[^}]*transform/i,
   );
+  assert.doesNotMatch(css, /\.site-wordmark::after/);
 });

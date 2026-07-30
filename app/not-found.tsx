@@ -7,7 +7,7 @@ export default function NotFound() {
       <header className="site-header">
         <div className="header-inner">
           <Link className="site-wordmark" href="/">
-            Research Index
+            Overview
           </Link>
           <ThemeToggle />
         </div>

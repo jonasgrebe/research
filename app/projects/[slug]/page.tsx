@@ -157,7 +157,7 @@ export default async function ProjectPage({
         ) : null}
       </main>
       <footer className="site-footer">
-        <Link href="/">Research Index</Link>
+        <Link href="/">Overview</Link>
         <span>{project.conference ?? project.status}</span>
       </footer>
     </div>

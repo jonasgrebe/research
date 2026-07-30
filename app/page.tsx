@@ -13,7 +13,7 @@ export default function Home() {
             href="/"
             aria-label="Back to all projects"
           >
-            Research Index
+            Overview
           </Link>
           <ThemeToggle />
         </div>
@@ -44,7 +44,7 @@ export default function Home() {
       </main>
 
       <footer className="site-footer">
-        <span>Research Index</span>
+        <span>Overview</span>
         <span>2026 · {String(projects.length).padStart(2, "0")} projects</span>
       </footer>
     </>

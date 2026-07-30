@@ -218,8 +218,8 @@ export const projects: Project[] = [
     location: "Seoul, South Korea",
     acceptanceType: "Spotlight",
     authors: [
-      { name: "Jonas Henry Grebe" },
-      { name: "Tobias Braun" },
+      { name: "Jonas Henry Grebe", equalContribution: true },
+      { name: "Tobias Braun", equalContribution: true },
       { name: "Anna Rohrbach" },
       { name: "Marcus Rohrbach" },
     ],
@@ -388,8 +388,8 @@ export const projects: Project[] = [
     year: 2026,
     status: "Preprint",
     authors: [
-      { name: "Tobias Braun" },
-      { name: "Jonas Henry Grebe" },
+      { name: "Tobias Braun", equalContribution: true },
+      { name: "Jonas Henry Grebe", equalContribution: true },
       { name: "Hossein Shakibania" },
       { name: "Anna Rohrbach" },
       { name: "Marcus Rohrbach" },

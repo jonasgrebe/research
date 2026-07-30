@@ -2,12 +2,41 @@ import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { ThemeToggle } from "./theme-toggle";
 
+const verifiedScholarProfiles: Record<string, string> = {
+  "Anna Rohrbach":
+    "https://scholar.google.com/citations?user=GHpxNQIAAAAJ&hl=en",
+  "Hossein Shakibania":
+    "https://scholar.google.com/citations?user=huveR90AAAAJ",
+  "Marcus Rohrbach":
+    "https://scholar.google.com/citations?user=3kDtybgAAAAJ&hl=en",
+};
+
+const scholarSearchAliases: Record<string, string> = {
+  "Jonas Grebe": "Jonas Henry Grebe",
+};
+
+function googleScholarUrl(authorName: string) {
+  const profile = verifiedScholarProfiles[authorName];
+
+  if (profile) {
+    return profile;
+  }
+
+  const searchName = scholarSearchAliases[authorName] ?? authorName;
+  const query = new URLSearchParams({
+    view_op: "search_authors",
+    mauthors: searchName,
+  });
+
+  return `https://scholar.google.com/citations?${query.toString()}`;
+}
+
 export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="header-inner">
         <Link className="site-wordmark" href="/" aria-label="Back to all projects">
-          Research Index
+          Overview
         </Link>
         <div className="header-actions">
           <Link className="back-link" href="/">
@@ -94,11 +123,14 @@ export function AuthorList({ project }: { project: Project }) {
       <p className="author-list">
         {project.authors.map((author, index) => (
           <span key={author.name}>
-            {author.href ? (
-              <a href={author.href}>{author.name}</a>
-            ) : (
-              author.name
-            )}
+            <a
+              href={author.href ?? googleScholarUrl(author.name)}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View ${author.name} on Google Scholar`}
+            >
+              {author.name}
+            </a>
             {author.equalContribution ? (
               <sup aria-label="equal contribution">*</sup>
             ) : null}

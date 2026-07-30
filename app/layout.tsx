@@ -8,31 +8,31 @@ const absoluteSiteUrl = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
 export const metadata: Metadata = {
   metadataBase: new URL(absoluteSiteUrl),
   title: {
-    default: "Research Index",
-    template: "%s · Research Index",
+    default: "Overview",
+    template: "%s · Overview",
   },
-  description: "A compact index of research projects.",
+  description: "A compact overview of research projects.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
   openGraph: {
-    title: "Research Index",
-    description: "A compact index of research projects.",
+    title: "Overview",
+    description: "A compact overview of research projects.",
     type: "website",
     images: [
       {
         url: new URL("og.png", absoluteSiteUrl),
         width: 1200,
         height: 630,
-        alt: "Research Index — selected work from 2026",
+        alt: "Overview — selected work from 2026",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Research Index",
-    description: "A compact index of research projects.",
+    title: "Overview",
+    description: "A compact overview of research projects.",
     images: [new URL("og.png", absoluteSiteUrl)],
   },
 };
