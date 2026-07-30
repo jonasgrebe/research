@@ -3,6 +3,25 @@ import { ProjectCard } from "./components";
 import { ThemeToggle } from "./theme-toggle";
 import { projects } from "@/data/projects";
 
+const overviewOrder = [
+  "veto",
+  "fighting-fire-with-fire",
+  "obliviate",
+  "gem",
+  "token-by-token",
+  "erased-but-not-forgotten",
+];
+
+const overviewProjects = overviewOrder.map((slug) => {
+  const project = projects.find((candidate) => candidate.slug === slug);
+
+  if (!project) {
+    throw new Error(`Missing overview project: ${slug}`);
+  }
+
+  return project;
+});
+
 export default function Home() {
   return (
     <>
@@ -26,10 +45,10 @@ export default function Home() {
               <p className="eyebrow">2026 archive</p>
               <h1 id="project-index-title">Projects</h1>
             </div>
-            <span>{String(projects.length).padStart(2, "0")} works</span>
+            <span>{String(overviewProjects.length).padStart(2, "0")} works</span>
           </div>
           <div className="project-grid">
-            {projects.map((project, index) => (
+            {overviewProjects.map((project, index) => (
               <Link
                 href={`/projects/${project.slug}/`}
                 className={`project-card accent-${project.accent}`}
@@ -45,7 +64,9 @@ export default function Home() {
 
       <footer className="site-footer">
         <span>Overview</span>
-        <span>2026 · {String(projects.length).padStart(2, "0")} projects</span>
+        <span>
+          2026 · {String(overviewProjects.length).padStart(2, "0")} projects
+        </span>
       </footer>
     </>
   );

@@ -41,6 +41,26 @@ test("renders the minimal project index", async () => {
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
 
+test("orders the overview by recency", async () => {
+  const response = await render();
+  const html = await response.text();
+  const projectLabels = [
+    "Open project: VETO:",
+    "Open project: Fighting Fire with Fire:",
+    "Open project: Obliviate:",
+    "Open project: GEM:",
+    "Open project: Token by Token, Compromised:",
+    "Open project: Erased but Not Forgotten:",
+  ];
+
+  let previousIndex = -1;
+  for (const label of projectLabels) {
+    const index = html.indexOf(label);
+    assert.ok(index > previousIndex, `${label} should appear in overview order`);
+    previousIndex = index;
+  }
+});
+
 test("renders every project page", async () => {
   for (const [path, title] of [
     ["/projects/veto", "Protecting Images"],
@@ -85,11 +105,20 @@ test("marks GEM and Token by Token's first two authors as equal contributors", a
 });
 
 test("links author names to Google Scholar", async () => {
-  const response = await render("/projects/gem");
-  const html = await response.text();
-  assert.match(html, /aria-label="View Jonas Henry Grebe on Google Scholar"/);
-  assert.match(html, /aria-label="View Anna Rohrbach on Google Scholar"/);
-  assert.match(html, /scholar\.google\.com\/citations/);
+  const gemResponse = await render("/projects/gem");
+  const gemHtml = await gemResponse.text();
+  assert.match(
+    gemHtml,
+    /aria-label="View Jonas Henry Grebe on Google Scholar"/,
+  );
+  assert.match(gemHtml, /user=dvz7WRQAAAAJ/);
+  assert.match(gemHtml, /user=wqVWJNIAAAAJ/);
+  assert.match(gemHtml, /aria-label="View Anna Rohrbach on Google Scholar"/);
+
+  const fireResponse = await render("/projects/fighting-fire-with-fire");
+  const fireHtml = await fireResponse.text();
+  assert.match(fireHtml, /aria-label="View Jonas Grebe on Google Scholar"/);
+  assert.match(fireHtml, /user=XS4GbYkAAAAJ/);
 });
 
 test("keeps Obliviate tokens stationary in card interaction states", async () => {

@@ -7,12 +7,16 @@ const verifiedScholarProfiles: Record<string, string> = {
     "https://scholar.google.com/citations?user=GHpxNQIAAAAJ&hl=en",
   "Hossein Shakibania":
     "https://scholar.google.com/citations?user=huveR90AAAAJ",
+  "Jonas Grebe":
+    "https://scholar.google.com/citations?user=dvz7WRQAAAAJ&hl=en",
+  "Jonas Henry Grebe":
+    "https://scholar.google.com/citations?user=dvz7WRQAAAAJ&hl=en",
+  "Louis Rethfeld":
+    "https://scholar.google.com/citations?hl=en&user=XS4GbYkAAAAJ",
   "Marcus Rohrbach":
     "https://scholar.google.com/citations?user=3kDtybgAAAAJ&hl=en",
-};
-
-const scholarSearchAliases: Record<string, string> = {
-  "Jonas Grebe": "Jonas Henry Grebe",
+  "Tobias Braun":
+    "https://scholar.google.com/citations?hl=en&user=wqVWJNIAAAAJ",
 };
 
 function googleScholarUrl(authorName: string) {
@@ -22,10 +26,9 @@ function googleScholarUrl(authorName: string) {
     return profile;
   }
 
-  const searchName = scholarSearchAliases[authorName] ?? authorName;
   const query = new URLSearchParams({
     view_op: "search_authors",
-    mauthors: searchName,
+    mauthors: authorName,
   });
 
   return `https://scholar.google.com/citations?${query.toString()}`;
