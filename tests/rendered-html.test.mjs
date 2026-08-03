@@ -111,6 +111,7 @@ test("publishes the public DEFAME and InFact resources", async () => {
 
   const infactResponse = await render("/projects/infact");
   const infactHtml = await infactResponse.text();
+  assert.match(infactHtml, /project-page accent-amber/);
   assert.match(infactHtml, /FEVER 2024/);
   assert.match(infactHtml, /aclanthology\.org\/2024\.fever-1\.12/);
   assert.match(infactHtml, /multimodal-ai-lab\/DEFAME\/tree\/v1\.0\.0/);

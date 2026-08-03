@@ -722,7 +722,7 @@ export const projects: Project[] = [
   doi       = {10.18653/v1/2024.fever-1.12},
   url       = {https://aclanthology.org/2024.fever-1.12/}
 }`,
-    accent: "teal",
+    accent: "amber",
     visual: "infact",
     related: ["defame", "fighting-fire-with-fire"],
   },
