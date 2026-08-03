@@ -561,8 +561,8 @@ export const projects: Project[] = [
     conference: "ICML 2025",
     acceptanceType: "Poster",
     authors: [
-      { name: "Tobias Braun" },
-      { name: "Mark Rothermel" },
+      { name: "Tobias Braun", equalContribution: true },
+      { name: "Mark Rothermel", equalContribution: true },
       { name: "Marcus Rohrbach" },
       { name: "Anna Rohrbach" },
     ],

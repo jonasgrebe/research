@@ -126,6 +126,14 @@ test("marks GEM and Token by Token's first two authors as equal contributors", a
   }
 });
 
+test("marks DEFAME's first two authors as equal contributors", async () => {
+  const response = await render("/projects/defame");
+  const html = await response.text();
+  const markers = html.match(/aria-label="equal contribution"/g) ?? [];
+  assert.equal(markers.length, 2);
+  assert.match(html, /\* Equal contribution/);
+});
+
 test("links author names to Google Scholar", async () => {
   const gemResponse = await render("/projects/gem");
   const gemHtml = await gemResponse.text();
