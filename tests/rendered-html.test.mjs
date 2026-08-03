@@ -134,6 +134,14 @@ test("marks DEFAME's first two authors as equal contributors", async () => {
   assert.match(html, /\* Equal contribution/);
 });
 
+test("marks InFact's first two authors as equal contributors", async () => {
+  const response = await render("/projects/infact");
+  const html = await response.text();
+  const markers = html.match(/aria-label="equal contribution"/g) ?? [];
+  assert.equal(markers.length, 2);
+  assert.match(html, /\* Equal contribution/);
+});
+
 test("links author names to Google Scholar", async () => {
   const gemResponse = await render("/projects/gem");
   const gemHtml = await gemResponse.text();

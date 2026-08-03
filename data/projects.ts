@@ -652,8 +652,8 @@ export const projects: Project[] = [
     conference: "FEVER 2024",
     location: "Miami, Florida, USA",
     authors: [
-      { name: "Mark Rothermel" },
-      { name: "Tobias Braun" },
+      { name: "Mark Rothermel", equalContribution: true },
+      { name: "Tobias Braun", equalContribution: true },
       { name: "Marcus Rohrbach" },
       { name: "Anna Rohrbach" },
     ],
