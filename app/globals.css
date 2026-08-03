@@ -2887,6 +2887,451 @@ button {
   bottom: -14px;
 }
 
+.defame-flow,
+.infact-flow {
+  position: absolute;
+  top: 78px;
+  right: 30px;
+  left: 30px;
+  display: grid;
+  grid-template-columns: minmax(96px, 0.92fr) 26px minmax(112px, 1.08fr) 26px minmax(
+      98px,
+      0.95fr
+    );
+  gap: 8px;
+  align-items: center;
+}
+
+.defame-claim-card,
+.defame-router-card,
+.defame-report-card,
+.infact-claim-card,
+.infact-evidence-card,
+.infact-verdict-card {
+  min-width: 0;
+  min-height: 158px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-strong);
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--surface-raised) 90%, transparent);
+  box-shadow:
+    0 16px 34px rgba(17, 18, 15, 0.09),
+    inset 0 1px 0 color-mix(in srgb, white 58%, transparent);
+}
+
+.defame-claim-card > span,
+.defame-router-card > span,
+.defame-report-card > span,
+.infact-flow > div > span {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 670;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.defame-claim-card > strong,
+.defame-router-card > strong,
+.defame-report-card > strong,
+.infact-flow > div > strong {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+.defame-claim-card {
+  transform: rotate(-1.7deg);
+}
+
+.defame-media {
+  position: relative;
+  height: 86px;
+  overflow: hidden;
+  border-radius: 9px;
+  background:
+    linear-gradient(24deg, transparent 54%, var(--accent-soft) 55%),
+    linear-gradient(145deg, #cbd2ca, #f3f2e9);
+}
+
+.defame-media i:first-child {
+  position: absolute;
+  width: 44px;
+  height: 34px;
+  right: 12px;
+  bottom: 8px;
+  border-radius: 50% 50% 8px 8px;
+  background: color-mix(in srgb, var(--accent) 64%, var(--text));
+}
+
+.defame-media i:nth-child(2) {
+  position: absolute;
+  width: 22px;
+  aspect-ratio: 1;
+  top: 13px;
+  left: 15px;
+  border: 5px solid color-mix(in srgb, white 72%, transparent);
+  border-radius: 50%;
+}
+
+.defame-media i:last-child {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 12px;
+  aspect-ratio: 1;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+.defame-router-card {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface));
+  transform: translateY(-7px);
+}
+
+.defame-orbit {
+  position: relative;
+  height: 86px;
+  display: grid;
+  place-items: center;
+}
+
+.defame-orbit::before,
+.defame-orbit::after {
+  content: "";
+  position: absolute;
+  border: 1px solid color-mix(in srgb, var(--accent) 58%, transparent);
+  border-radius: 50%;
+}
+
+.defame-orbit::before {
+  width: 78px;
+  height: 48px;
+  transform: rotate(18deg);
+}
+
+.defame-orbit::after {
+  width: 56px;
+  height: 74px;
+  transform: rotate(-32deg);
+}
+
+.defame-orbit i {
+  position: absolute;
+  z-index: 2;
+  width: 12px;
+  aspect-ratio: 1;
+  border: 2px solid var(--surface-raised);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 5px 12px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.defame-orbit i:first-child {
+  top: 9px;
+  left: 22%;
+}
+
+.defame-orbit i:nth-child(2) {
+  top: 37px;
+  right: 10%;
+}
+
+.defame-orbit i:nth-child(3) {
+  bottom: 7px;
+  left: 23%;
+}
+
+.defame-orbit strong {
+  position: relative;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+.defame-router-card > strong {
+  color: var(--accent-ink);
+  font-size: 11px;
+}
+
+.defame-report-card {
+  transform: rotate(1.4deg);
+}
+
+.defame-report-lines {
+  height: 83px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  border-left: 3px solid var(--accent);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--text) 5%, var(--surface));
+}
+
+.defame-report-lines i {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+
+.defame-report-lines i:first-child {
+  width: 72%;
+  background: var(--accent);
+}
+
+.defame-report-lines i:nth-child(2) {
+  width: 91%;
+}
+
+.defame-report-lines i:last-child {
+  width: 58%;
+}
+
+.infact-claim-card {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--line));
+  transform: rotate(-1.3deg);
+}
+
+.infact-claim-lines {
+  height: 80px;
+  padding: 13px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface));
+}
+
+.infact-claim-lines i {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 40%, var(--line));
+}
+
+.infact-claim-lines i:first-child {
+  width: 86%;
+}
+
+.infact-claim-lines i:nth-child(2) {
+  width: 64%;
+}
+
+.infact-claim-lines i:last-child {
+  width: 76%;
+}
+
+.infact-evidence-card {
+  border-style: dashed;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent-soft) 44%, var(--surface));
+  transform: translateY(7px);
+}
+
+.infact-evidence-stack {
+  position: relative;
+  height: 82px;
+}
+
+.infact-evidence-stack i {
+  position: absolute;
+  width: 78%;
+  height: 52px;
+  left: 11%;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface-raised);
+  box-shadow: 0 8px 16px rgba(17, 18, 15, 0.07);
+}
+
+.infact-evidence-stack i:first-child {
+  top: 3px;
+  transform: rotate(-5deg);
+  opacity: 0.55;
+}
+
+.infact-evidence-stack i:nth-child(2) {
+  top: 12px;
+  transform: rotate(4deg);
+  opacity: 0.72;
+}
+
+.infact-evidence-stack i:last-child {
+  top: 22px;
+  border-color: var(--accent);
+  background:
+    linear-gradient(var(--accent) 0 0) 10px 11px / 54% 5px no-repeat,
+    linear-gradient(var(--line-strong) 0 0) 10px 24px / 76% 4px no-repeat,
+    linear-gradient(var(--line-strong) 0 0) 10px 35px / 45% 4px no-repeat,
+    var(--surface-raised);
+}
+
+.infact-verdict-card {
+  transform: rotate(1.2deg);
+}
+
+.infact-verdict-meter {
+  position: relative;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--text) 5%, var(--surface));
+}
+
+.infact-verdict-meter::before {
+  content: "";
+  width: 64px;
+  height: 32px;
+  border: 8px solid var(--line-strong);
+  border-bottom: 0;
+  border-radius: 64px 64px 0 0;
+}
+
+.infact-verdict-meter i {
+  position: absolute;
+  width: 30px;
+  height: 3px;
+  left: 50%;
+  bottom: 31px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: translateX(-2px) rotate(-34deg);
+  transform-origin: left center;
+}
+
+.infact-verdict-card > strong {
+  color: var(--accent-ink);
+}
+
+.compact .defame-flow,
+.compact .infact-flow {
+  top: 44px;
+  right: 12px;
+  left: 12px;
+  grid-template-columns: minmax(54px, 0.92fr) 12px minmax(64px, 1.08fr) 12px minmax(
+      56px,
+      0.95fr
+    );
+  gap: 4px;
+}
+
+.compact .defame-claim-card,
+.compact .defame-router-card,
+.compact .defame-report-card,
+.compact .infact-claim-card,
+.compact .infact-evidence-card,
+.compact .infact-verdict-card {
+  min-height: 98px;
+  padding: 7px;
+  border-radius: 8px;
+}
+
+.compact .defame-media,
+.compact .defame-orbit,
+.compact .defame-report-lines,
+.compact .infact-claim-lines,
+.compact .infact-evidence-stack,
+.compact .infact-verdict-meter {
+  height: 50px;
+}
+
+.compact .defame-claim-card > span,
+.compact .defame-router-card > span,
+.compact .defame-report-card > span,
+.compact .infact-flow > div > span {
+  font-size: 5px;
+}
+
+.compact .defame-claim-card > strong,
+.compact .defame-router-card > strong,
+.compact .defame-report-card > strong,
+.compact .infact-flow > div > strong {
+  font-size: 7px;
+}
+
+.compact .defame-orbit::before {
+  width: 45px;
+  height: 27px;
+}
+
+.compact .defame-orbit::after {
+  width: 32px;
+  height: 43px;
+}
+
+.compact .defame-orbit i {
+  width: 7px;
+  border-width: 1px;
+}
+
+.compact .defame-orbit i:nth-child(2) {
+  top: 21px;
+}
+
+.compact .defame-orbit strong {
+  width: 28px;
+  height: 28px;
+  font-size: 5px;
+}
+
+.compact .defame-report-lines {
+  padding: 7px 6px;
+  gap: 5px;
+}
+
+.compact .defame-report-lines i,
+.compact .infact-claim-lines i {
+  height: 3px;
+}
+
+.compact .infact-claim-lines {
+  padding: 8px 6px;
+  gap: 6px;
+}
+
+.compact .infact-evidence-stack i {
+  height: 31px;
+}
+
+.compact .infact-evidence-stack i:nth-child(2) {
+  top: 7px;
+}
+
+.compact .infact-evidence-stack i:last-child {
+  top: 13px;
+  background:
+    linear-gradient(var(--accent) 0 0) 6px 7px / 54% 3px no-repeat,
+    linear-gradient(var(--line-strong) 0 0) 6px 15px / 76% 2px no-repeat,
+    linear-gradient(var(--line-strong) 0 0) 6px 22px / 45% 2px no-repeat,
+    var(--surface-raised);
+}
+
+.compact .infact-verdict-meter::before {
+  width: 38px;
+  height: 19px;
+  border-width: 5px;
+  border-bottom: 0;
+}
+
+.compact .infact-verdict-meter i {
+  width: 18px;
+  height: 2px;
+  bottom: 19px;
+}
+
 @media (max-width: 1100px) {
   .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2909,7 +3354,9 @@ button {
   }
 
   .project-intro .veto-scene,
-  .project-intro .fire-flow {
+  .project-intro .fire-flow,
+  .project-intro .defame-flow,
+  .project-intro .infact-flow {
     top: 72px;
     right: 20px;
     left: 20px;
@@ -2970,7 +3417,9 @@ button {
   }
 
   .project-intro .veto-scene,
-  .project-intro .fire-flow {
+  .project-intro .fire-flow,
+  .project-intro .defame-flow,
+  .project-intro .infact-flow {
     top: 66px;
     right: 12px;
     left: 12px;
@@ -2986,7 +3435,13 @@ button {
   .project-intro .veto-result-card,
   .project-intro .fire-question-card,
   .project-intro .fire-steering-card,
-  .project-intro .fire-fingerprint-card {
+  .project-intro .fire-fingerprint-card,
+  .project-intro .defame-claim-card,
+  .project-intro .defame-router-card,
+  .project-intro .defame-report-card,
+  .project-intro .infact-claim-card,
+  .project-intro .infact-evidence-card,
+  .project-intro .infact-verdict-card {
     min-height: 130px;
     padding: 10px;
   }
@@ -2998,7 +3453,9 @@ button {
   }
 
   .compact .veto-scene,
-  .compact .fire-flow {
+  .compact .fire-flow,
+  .compact .defame-flow,
+  .compact .infact-flow {
     right: 8px;
     left: 8px;
     grid-template-columns: minmax(46px, 0.9fr) 9px minmax(52px, 1fr) 9px minmax(
@@ -3013,12 +3470,20 @@ button {
   .compact .veto-result-card,
   .compact .fire-question-card,
   .compact .fire-steering-card,
-  .compact .fire-fingerprint-card {
+  .compact .fire-fingerprint-card,
+  .compact .defame-claim-card,
+  .compact .defame-router-card,
+  .compact .defame-report-card,
+  .compact .infact-claim-card,
+  .compact .infact-evidence-card,
+  .compact .infact-verdict-card {
     padding: 6px;
   }
 
   .project-intro .veto-scene,
-  .project-intro .fire-flow {
+  .project-intro .fire-flow,
+  .project-intro .defame-flow,
+  .project-intro .infact-flow {
     right: 8px;
     left: 8px;
     grid-template-columns: minmax(58px, 0.9fr) 10px minmax(62px, 1fr) 10px minmax(
@@ -3033,7 +3498,13 @@ button {
   .project-intro .veto-result-card,
   .project-intro .fire-question-card,
   .project-intro .fire-steering-card,
-  .project-intro .fire-fingerprint-card {
+  .project-intro .fire-fingerprint-card,
+  .project-intro .defame-claim-card,
+  .project-intro .defame-router-card,
+  .project-intro .defame-report-card,
+  .project-intro .infact-claim-card,
+  .project-intro .infact-evidence-card,
+  .project-intro .infact-verdict-card {
     min-height: 118px;
     padding: 7px;
   }

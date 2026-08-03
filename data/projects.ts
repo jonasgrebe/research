@@ -12,7 +12,9 @@ export type ProjectVisual =
   | "tobac"
   | "eeb"
   | "veto"
-  | "fire";
+  | "fire"
+  | "defame"
+  | "infact";
 
 export type Project = {
   slug: string;
@@ -543,6 +545,186 @@ export const projects: Project[] = [
     accent: "eeb-purple",
     visual: "eeb",
     related: ["gem", "token-by-token"],
+  },
+  {
+    slug: "defame",
+    shortTitle: "DEFAME",
+    title: "DEFAME: Dynamic Evidence-based FAct-checking with Multimodal Experts",
+    summary:
+      "A modular, zero-shot system that verifies open-domain image-text claims by dynamically retrieving and reasoning over multimodal evidence.",
+    keyMessage:
+      "Reliable multimodal fact-checking needs fresh external evidence: plan the investigation, choose the right tools, and turn what they find into an auditable report.",
+    abstract:
+      "The proliferation of disinformation demands reliable and scalable fact-checking systems that can handle both text and images. DEFAME is a modular, zero-shot multimodal large-language-model pipeline for open-domain claim verification. Its six-stage process dynamically selects tools and search depth to retrieve, evaluate, and integrate textual and visual evidence, then produces a structured fact-checking report. Unlike systems that are text-only or rely on parametric knowledge, DEFAME performs the complete verification process with multimodal claims and evidence. It establishes new state of the art across VERITE, AVeriTeC, MOCHEG, and the temporally challenging ClaimReview2024+ benchmark.",
+    year: 2025,
+    status: "Accepted",
+    conference: "ICML 2025",
+    acceptanceType: "Poster",
+    authors: [
+      { name: "Tobias Braun" },
+      { name: "Mark Rothermel" },
+      { name: "Marcus Rohrbach" },
+      { name: "Anna Rohrbach" },
+    ],
+    resources: [
+      {
+        label: "Paper",
+        href: "https://arxiv.org/pdf/2412.10510",
+        primary: true,
+      },
+      {
+        label: "ICML",
+        href: "https://icml.cc/virtual/2025/poster/43719",
+      },
+      {
+        label: "Code",
+        href: "https://github.com/multimodal-ai-lab/DEFAME",
+      },
+      {
+        label: "arXiv",
+        href: "https://arxiv.org/abs/2412.10510",
+      },
+    ],
+    contributions: [
+      {
+        title: "End-to-end multimodal verification",
+        text: "Handles images in both claims and retrieved evidence while producing a structured, evidence-grounded report.",
+      },
+      {
+        title: "Dynamic investigation",
+        text: "Lets the model choose tools and search depth instead of applying one fixed retrieval recipe to every claim.",
+      },
+      {
+        title: "Temporally robust evaluation",
+        text: "Introduces ClaimReview2024+, whose claims postdate the backbone model's knowledge cutoff and reduce the value of memorization.",
+      },
+    ],
+    method: [
+      {
+        label: "01",
+        title: "Plan the check",
+        text: "Interpret the image-text claim and decide which evidence and specialist tools the investigation requires.",
+      },
+      {
+        label: "02",
+        title: "Retrieve evidence",
+        text: "Search textual and visual sources dynamically, expanding the investigation when the current evidence is insufficient.",
+      },
+      {
+        label: "03",
+        title: "Build the report",
+        text: "Evaluate the collected evidence, infer a verdict, and present the reasoning in a structured multimodal report.",
+      },
+    ],
+    finding: {
+      value: "4",
+      label: "benchmarks led",
+      context:
+        "DEFAME establishes a new state of the art across VERITE, AVeriTeC, MOCHEG, and ClaimReview2024+.",
+    },
+    citation:
+      "Braun, T., Rothermel, M., Rohrbach, M., & Rohrbach, A. (2025). DEFAME: Dynamic Evidence-based FAct-checking with Multimodal Experts. Proceedings of the 42nd International Conference on Machine Learning, 267, 5383–5417.",
+    bibtex: `@inproceedings{braun2025defame,
+  title     = {{DEFAME}: Dynamic Evidence-based {FA}ct-checking with Multimodal Experts},
+  author    = {Tobias Braun and Mark Rothermel and Marcus Rohrbach and Anna Rohrbach},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning},
+  volume    = {267},
+  pages     = {5383--5417},
+  year      = {2025},
+  url       = {https://proceedings.mlr.press/v267/braun25b.html}
+}`,
+    accent: "violet",
+    visual: "defame",
+    related: ["infact", "token-by-token"],
+  },
+  {
+    slug: "infact",
+    shortTitle: "InFact",
+    title: "InFact: A Strong Baseline for Automated Fact-Checking",
+    summary:
+      "A six-stage, retrieval-grounded fact-checker that won the 2024 AVeriTeC shared task and set a strong text-only baseline.",
+    keyMessage:
+      "Break a claim into an explicit investigation: retrieve current web evidence, judge it in context, and make the final verdict traceable.",
+    abstract:
+      "The spread of disinformation creates a need for robust and scalable automated fact-checking systems. InFact is an LLM-based approach for the AVeriTeC Shared Task Challenge 2024 that decomposes text-claim verification into a six-stage process including evidence retrieval. With GPT-4o as its backbone, InFact achieves an AVeriTeC score of 63% on the test set, outperforming the other 20 participating teams and establishing a strong baseline for text-only automated fact-checking. Its qualitative analysis also identifies cases where the system's conclusion is more accurate than the benchmark's human-annotated ground truth.",
+    year: 2024,
+    status: "Published",
+    conference: "FEVER 2024",
+    location: "Miami, Florida, USA",
+    authors: [
+      { name: "Mark Rothermel" },
+      { name: "Tobias Braun" },
+      { name: "Marcus Rohrbach" },
+      { name: "Anna Rohrbach" },
+    ],
+    resources: [
+      {
+        label: "Paper",
+        href: "https://aclanthology.org/2024.fever-1.12.pdf",
+        primary: true,
+      },
+      {
+        label: "ACL Anthology",
+        href: "https://aclanthology.org/2024.fever-1.12/",
+      },
+      {
+        label: "Code",
+        href: "https://github.com/multimodal-ai-lab/DEFAME/tree/v1.0.0",
+      },
+    ],
+    contributions: [
+      {
+        title: "Challenge-winning baseline",
+        text: "Ranks first among 21 systems in the 2024 AVeriTeC shared task with a 63% test-set score.",
+      },
+      {
+        title: "Evidence-first workflow",
+        text: "Turns claim verification into six explicit stages, including live evidence retrieval rather than memory-only prediction.",
+      },
+      {
+        title: "Ground-truth diagnosis",
+        text: "Uses qualitative error analysis to expose benchmark cases where the automated conclusion may be better supported than the label.",
+      },
+    ],
+    method: [
+      {
+        label: "01",
+        title: "Structure the claim",
+        text: "Interpret the claim and generate focused questions that turn verification into a tractable investigation.",
+      },
+      {
+        label: "02",
+        title: "Search the web",
+        text: "Retrieve and organize external evidence that directly addresses the generated questions.",
+      },
+      {
+        label: "03",
+        title: "Resolve the verdict",
+        text: "Reason over the gathered evidence and return a supported, refuted, or insufficient-evidence conclusion.",
+      },
+    ],
+    finding: {
+      value: "63%",
+      label: "AVeriTeC score",
+      context:
+        "Best result among all 21 teams in the 2024 AVeriTeC shared task.",
+    },
+    citation:
+      "Rothermel, M., Braun, T., Rohrbach, M., & Rohrbach, A. (2024). InFact: A Strong Baseline for Automated Fact-Checking. Proceedings of the Seventh Fact Extraction and VERification Workshop (FEVER), 108–112.",
+    bibtex: `@inproceedings{rothermel2024infact,
+  title     = {{InFact}: A Strong Baseline for Automated Fact-Checking},
+  author    = {Mark Rothermel and Tobias Braun and Marcus Rohrbach and Anna Rohrbach},
+  booktitle = {Proceedings of the Seventh Fact Extraction and VERification Workshop (FEVER)},
+  pages     = {108--112},
+  address   = {Miami, Florida, USA},
+  publisher = {Association for Computational Linguistics},
+  year      = {2024},
+  doi       = {10.18653/v1/2024.fever-1.12},
+  url       = {https://aclanthology.org/2024.fever-1.12/}
+}`,
+    accent: "teal",
+    visual: "infact",
+    related: ["defame", "fighting-fire-with-fire"],
   },
 ];
 

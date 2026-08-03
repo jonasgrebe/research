@@ -369,6 +369,116 @@ export function ProjectVisual({
     );
   }
 
+  if (project.visual === "defame") {
+    return (
+      <figure
+        className={`project-visual defame-visual ${compact ? "compact" : ""}`}
+        aria-labelledby={compact ? undefined : "defame-visual-caption"}
+        aria-hidden={compact ? true : undefined}
+        data-visual="defame"
+      >
+        <div className="visual-grid" aria-hidden="true" />
+        <div className="visual-kicker">Dynamic multimodal evidence</div>
+        <div className="defame-flow" aria-hidden="true">
+          <div className="defame-claim-card">
+            <div className="defame-media">
+              <i />
+              <i />
+              <i />
+            </div>
+            <span>Image + text claim</span>
+            <strong>Open domain</strong>
+          </div>
+          <i className="flow-arrow" />
+          <div className="defame-router-card">
+            <div className="defame-orbit">
+              <i />
+              <i />
+              <i />
+              <strong>MLLM</strong>
+            </div>
+            <span>Dynamic experts</span>
+            <strong>Plan · search · reason</strong>
+          </div>
+          <i className="flow-arrow" />
+          <div className="defame-report-card">
+            <div className="defame-report-lines">
+              <i />
+              <i />
+              <i />
+            </div>
+            <span>Evidence report</span>
+            <strong>Verdict + sources</strong>
+          </div>
+        </div>
+        <div className="visual-footer" aria-hidden="true">
+          <span>multimodal retrieval</span>
+          <span>auditable conclusion</span>
+        </div>
+        {!compact ? (
+          <figcaption id="defame-visual-caption" className="sr-only">
+            DEFAME interprets an image-text claim, dynamically routes the
+            investigation through retrieval and reasoning experts, and returns
+            an evidence-backed report with a verdict.
+          </figcaption>
+        ) : null}
+      </figure>
+    );
+  }
+
+  if (project.visual === "infact") {
+    return (
+      <figure
+        className={`project-visual infact-visual ${compact ? "compact" : ""}`}
+        aria-labelledby={compact ? undefined : "infact-visual-caption"}
+        aria-hidden={compact ? true : undefined}
+        data-visual="infact"
+      >
+        <div className="visual-grid" aria-hidden="true" />
+        <div className="visual-kicker">Retrieval-grounded verification</div>
+        <div className="infact-flow" aria-hidden="true">
+          <div className="infact-claim-card">
+            <span>Claim</span>
+            <div className="infact-claim-lines">
+              <i />
+              <i />
+              <i />
+            </div>
+            <strong>Question it</strong>
+          </div>
+          <i className="flow-arrow" />
+          <div className="infact-evidence-card">
+            <span>Evidence</span>
+            <div className="infact-evidence-stack">
+              <i />
+              <i />
+              <i />
+            </div>
+            <strong>Rank sources</strong>
+          </div>
+          <i className="flow-arrow" />
+          <div className="infact-verdict-card">
+            <span>Verdict</span>
+            <div className="infact-verdict-meter">
+              <i />
+            </div>
+            <strong>63% AVeriTeC</strong>
+          </div>
+        </div>
+        <div className="visual-footer" aria-hidden="true">
+          <span>six-stage pipeline</span>
+          <span>challenge winner</span>
+        </div>
+        {!compact ? (
+          <figcaption id="infact-visual-caption" className="sr-only">
+            InFact turns a claim into focused questions, retrieves and ranks web
+            evidence, then reasons toward a traceable fact-checking verdict.
+          </figcaption>
+        ) : null}
+      </figure>
+    );
+  }
+
   if (project.visual === "veto") {
     return (
       <figure

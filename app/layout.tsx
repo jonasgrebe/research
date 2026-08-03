@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: new URL("og.png", absoluteSiteUrl),
+        url: new URL("og-v2.png", absoluteSiteUrl),
         width: 1200,
         height: 630,
-        alt: "Overview — selected work from 2026",
+        alt: "Overview — selected research work from 2024 to 2026",
       },
     ],
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Overview",
     description: "A compact overview of research projects.",
-    images: [new URL("og.png", absoluteSiteUrl)],
+    images: [new URL("og-v2.png", absoluteSiteUrl)],
   },
 };
 

@@ -10,6 +10,8 @@ const overviewOrder = [
   "gem",
   "token-by-token",
   "erased-but-not-forgotten",
+  "defame",
+  "infact",
 ];
 
 const overviewProjects = overviewOrder.map((slug) => {
@@ -42,7 +44,7 @@ export default function Home() {
         <section className="project-index" aria-labelledby="project-index-title">
           <div className="landing-title-row">
             <div>
-              <p className="eyebrow">2026 archive</p>
+              <p className="eyebrow">Research archive</p>
               <h1 id="project-index-title">Projects</h1>
             </div>
             <span>{String(overviewProjects.length).padStart(2, "0")} works</span>
@@ -65,7 +67,7 @@ export default function Home() {
       <footer className="site-footer">
         <span>Overview</span>
         <span>
-          2026 · {String(overviewProjects.length).padStart(2, "0")} projects
+          2024–2026 · {String(overviewProjects.length).padStart(2, "0")} projects
         </span>
       </footer>
     </>

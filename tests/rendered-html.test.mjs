@@ -36,6 +36,9 @@ test("renders the minimal project index", async () => {
   assert.match(html, /Obliviate/);
   assert.match(html, /Token by Token/);
   assert.match(html, /Erased but Not Forgotten/);
+  assert.match(html, /DEFAME/);
+  assert.match(html, /InFact/);
+  assert.match(html, /08(?:<!-- -->)? works/);
   assert.match(html, /Theme:/);
   assert.match(html, /aria-label="Back to all projects"/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
@@ -51,6 +54,8 @@ test("orders the overview by recency", async () => {
     "Open project: GEM:",
     "Open project: Token by Token, Compromised:",
     "Open project: Erased but Not Forgotten:",
+    "Open project: DEFAME:",
+    "Open project: InFact:",
   ];
 
   let previousIndex = -1;
@@ -69,6 +74,8 @@ test("renders every project page", async () => {
     ["/projects/obliviate", "Erasing Concepts"],
     ["/projects/token-by-token", "Backdoor Vulnerabilities"],
     ["/projects/erased-but-not-forgotten", "Backdoors Compromise"],
+    ["/projects/defame", "Dynamic Evidence-based"],
+    ["/projects/infact", "Strong Baseline"],
   ]) {
     const response = await render(path);
     assert.equal(response.status, 200);
@@ -92,6 +99,21 @@ test("labels Obliviate as an ECCV poster", async () => {
   const html = await response.text();
   assert.match(html, /ECCV 2026/);
   assert.match(html, />Poster</);
+});
+
+test("publishes the public DEFAME and InFact resources", async () => {
+  const defameResponse = await render("/projects/defame");
+  const defameHtml = await defameResponse.text();
+  assert.match(defameHtml, /ICML 2025/);
+  assert.match(defameHtml, />Poster</);
+  assert.match(defameHtml, /arxiv\.org\/abs\/2412\.10510/);
+  assert.match(defameHtml, /multimodal-ai-lab\/DEFAME/);
+
+  const infactResponse = await render("/projects/infact");
+  const infactHtml = await infactResponse.text();
+  assert.match(infactHtml, /FEVER 2024/);
+  assert.match(infactHtml, /aclanthology\.org\/2024\.fever-1\.12/);
+  assert.match(infactHtml, /multimodal-ai-lab\/DEFAME\/tree\/v1\.0\.0/);
 });
 
 test("marks GEM and Token by Token's first two authors as equal contributors", async () => {
