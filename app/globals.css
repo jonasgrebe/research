@@ -3985,7 +3985,7 @@ button {
 
 .vetobench-category[data-category="defamation"] .source-state {
   background: #d68000;
-  color: #211300;
+  color: #fff;
 }
 
 .vetobench-category[data-category="gore"] .source-state {
@@ -3995,7 +3995,7 @@ button {
 
 .vetobench-section[data-protection="true"] .source-state {
   background: var(--veto-protection);
-  color: #102414;
+  color: #fff;
 }
 
 .edited-state {
