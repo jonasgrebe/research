@@ -191,8 +191,8 @@ test("presents a balanced interactive VetoBench sample gallery", async () => {
   assert.match(html, /aria-checked="false"/);
   assert.match(html, />Enable VETO protection</);
   assert.match(html, /data-protection="false"/);
-  assert.match(html, /project-intro page-shell project-intro-no-visual/);
-  assert.doesNotMatch(html, /veto-visual/);
+  assert.match(html, /project-intro page-shell/);
+  assert.match(html, /veto-visual/);
   assert.ok(
     html.indexOf("03 / Abstract") <
       html.indexOf("Protection against open-frame misuse"),

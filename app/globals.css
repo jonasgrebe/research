@@ -1127,14 +1127,6 @@ button {
   min-width: 0;
 }
 
-.project-intro-no-visual {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.project-intro-no-visual .project-intro-copy {
-  max-width: 900px;
-}
-
 .publication-metadata {
   margin-bottom: 18px;
   display: flex;

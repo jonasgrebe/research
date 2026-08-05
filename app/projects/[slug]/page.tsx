@@ -51,11 +51,7 @@ export default async function ProjectPage({
     <div className={`project-page accent-${project.accent}`}>
       <SiteHeader />
       <main>
-        <section
-          className={`project-intro page-shell${
-            project.slug === "veto" ? " project-intro-no-visual" : ""
-          }`}
-        >
+        <section className="project-intro page-shell">
           <div className="project-intro-copy">
             <PublicationMetadata project={project} />
             <h1>{project.title}</h1>
@@ -63,7 +59,7 @@ export default async function ProjectPage({
             <AuthorList project={project} />
             <ResourceLinks project={project} />
           </div>
-          {project.slug !== "veto" ? <ProjectVisual project={project} /> : null}
+          <ProjectVisual project={project} />
         </section>
 
         <section className="insight-section page-shell">
