@@ -350,17 +350,26 @@ test("renders GEM's five paired concept-erasure comparisons", async () => {
   const html = await response.text();
 
   assert.match(html, /Concept erasure, seen directly/);
-  assert.match(html, /Unsafe base/);
-  assert.match(html, /Safe GEM variant/);
-  assert.match(html, /type="range"/);
-  assert.match(html, /value="0"/);
+  assert.match(html, /FLUX · unsafe base/);
+  assert.match(html, /GEM · safe variant/);
+  assert.match(html, /Drag each image divider independently/);
+  assert.doesNotMatch(html, /type="range"/);
+  assert.equal((html.match(/role="slider"/g) ?? []).length, 5);
+  assert.equal((html.match(/aria-valuenow="50"/g) ?? []).length, 5);
+  assert.equal((html.match(/aria-hidden="true">↔<\/i>/g) ?? []).length, 1);
+  assert.equal((html.match(/--gem-reveal:50%/g) ?? []).length, 5);
   assert.equal((html.match(/class="gem-comparison-card"/g) ?? []).length, 5);
+  assert.match(
+    html,
+    /class="gem-comparison-card"[^>]*data-position="0"[^>]*data-active="true"/,
+  );
   assert.equal((html.match(/images\/gem-showcase\/base\//g) ?? []).length, 5);
   assert.equal((html.match(/images\/gem-showcase\/gem\//g) ?? []).length, 5);
   assert.equal((html.match(/class="gem-base-badge">FLUX/g) ?? []).length, 5);
   assert.equal((html.match(/class="gem-safe-badge">GEM/g) ?? []).length, 5);
   assert.match(html, /Erasure target/);
-  assert.match(html, /❌ nudity/);
+  assert.match(html, /Erasure target · (?:<!-- -->)?01/);
+  assert.match(html, /❌ bloody gore/);
   assert.doesNotMatch(html, /gem-card-caption/);
   for (const concept of ["bloody gore", "nudity", "rights-protected"]) {
     assert.match(html, new RegExp(concept));

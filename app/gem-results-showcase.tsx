@@ -44,10 +44,50 @@ function positionFromActive(index: number, active: number) {
 }
 
 export function GemResultsShowcase() {
-  const [activeIndex, setActiveIndex] = useState(2);
-  const [reveal, setReveal] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [reveals, setReveals] = useState(() => samples.map(() => 50));
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const activeSample = samples[activeIndex];
+
+  const setRevealAt = (index: number, value: number) => {
+    const nextValue = Math.max(0, Math.min(100, Math.round(value)));
+    setReveals((current) =>
+      current.map((currentValue, currentIndex) =>
+        currentIndex === index ? nextValue : currentValue,
+      ),
+    );
+  };
+
+  const updateRevealFromPointer = (
+    index: number,
+    event: React.PointerEvent<HTMLSpanElement>,
+  ) => {
+    const bounds = event.currentTarget.parentElement?.getBoundingClientRect();
+    if (!bounds || bounds.width === 0) return;
+    setRevealAt(index, ((event.clientX - bounds.left) / bounds.width) * 100);
+  };
+
+  const handleDividerKey = (
+    index: number,
+    event: React.KeyboardEvent<HTMLSpanElement>,
+  ) => {
+    const currentValue = reveals[index];
+    const nextValue =
+      event.key === "ArrowLeft" || event.key === "ArrowDown"
+        ? currentValue - 5
+        : event.key === "ArrowRight" || event.key === "ArrowUp"
+          ? currentValue + 5
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? 100
+              : null;
+
+    if (nextValue === null) return;
+    event.preventDefault();
+    setActiveIndex(index);
+    setRevealAt(index, nextValue);
+  };
 
   const rotate = (direction: -1 | 1) => {
     setActiveIndex((current) =>
@@ -59,7 +99,6 @@ export function GemResultsShowcase() {
     <section
       className="gem-results-section page-shell"
       aria-labelledby="gem-results-title"
-      style={{ "--gem-reveal": `${reveal}%` } as React.CSSProperties}
     >
       <div className="gem-results-heading">
         <div>
@@ -69,46 +108,39 @@ export function GemResultsShowcase() {
         <div>
           <p>
             Compare five generations before and after GEM. Select a concept to
-            bring it forward, then move the shared slider to reveal the erased
-            model output.
+            bring it forward, then drag its divider to reveal the erased model
+            output. Each comparison moves independently.
           </p>
         </div>
       </div>
 
       <div className="gem-reveal-control">
-        <span className="gem-control-state unsafe">Unsafe base</span>
-        <label>
-          <span className="sr-only">Reveal the safe GEM variants</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={reveal}
-            onChange={(event) => setReveal(Number(event.target.value))}
-            aria-valuetext={`${reveal}% safe GEM output revealed`}
-          />
-        </label>
-        <span className="gem-control-state safe">Safe GEM variant</span>
-        <output aria-live="polite">{reveal}%</output>
+        <span className="gem-control-state safe">GEM · safe variant</span>
+        <p>Drag each image divider independently</p>
+        <span className="gem-control-state unsafe">FLUX · unsafe base</span>
       </div>
 
       <div className="gem-comparison-deck">
         {samples.map((sample, index) => {
           const position = positionFromActive(index, activeIndex);
           const isActive = index === activeIndex;
+          const reveal = reveals[index];
 
           return (
-            <button
+            <article
               className="gem-comparison-card"
-              type="button"
               key={sample.id}
               data-position={position}
               data-active={isActive ? "true" : "false"}
-              aria-pressed={isActive}
-              aria-label={`Bring erasure-target comparison ${index + 1}, ${sample.label}, forward`}
-              onClick={() => setActiveIndex(index)}
+              style={{ "--gem-reveal": `${reveal}%` } as React.CSSProperties}
             >
-              <span className="gem-comparison-frame">
+              <button
+                className="gem-comparison-frame gem-card-select"
+                type="button"
+                aria-pressed={isActive}
+                aria-label={`Bring erasure-target comparison ${index + 1}, ${sample.label}, forward`}
+                onClick={() => setActiveIndex(index)}
+              >
                 <img
                   className="gem-base-image"
                   src={`${basePath}/images/gem-showcase/base/${sample.id}.png`}
@@ -126,15 +158,43 @@ export function GemResultsShowcase() {
                   />
                   <span className="gem-safe-badge">GEM</span>
                 </span>
-                <span
-                  className="gem-reveal-divider"
-                  data-edge={reveal === 0 || reveal === 100 ? "true" : "false"}
-                  aria-hidden="true"
-                >
-                  <i>↔</i>
-                </span>
+              </button>
+              <span
+                className="gem-reveal-divider"
+                role="slider"
+                tabIndex={0}
+                aria-label={`Reveal the GEM result for ${sample.label}, comparison ${index + 1}`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={reveal}
+                aria-valuetext={`${reveal}% GEM and ${100 - reveal}% FLUX`}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setActiveIndex(index);
+                  event.currentTarget.setPointerCapture(event.pointerId);
+                  updateRevealFromPointer(index, event);
+                }}
+                onPointerMove={(event) => {
+                  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                    updateRevealFromPointer(index, event);
+                  }
+                }}
+                onPointerUp={(event) => {
+                  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                    event.currentTarget.releasePointerCapture(event.pointerId);
+                  }
+                }}
+                onPointerCancel={(event) => {
+                  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                    event.currentTarget.releasePointerCapture(event.pointerId);
+                  }
+                }}
+                onKeyDown={(event) => handleDividerKey(index, event)}
+              >
+                {isActive ? <i aria-hidden="true">↔</i> : null}
               </span>
-            </button>
+            </article>
           );
         })}
       </div>
