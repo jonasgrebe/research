@@ -51,7 +51,11 @@ export default async function ProjectPage({
     <div className={`project-page accent-${project.accent}`}>
       <SiteHeader />
       <main>
-        <section className="project-intro page-shell">
+        <section
+          className={`project-intro page-shell${
+            project.slug === "veto" ? " project-intro-no-visual" : ""
+          }`}
+        >
           <div className="project-intro-copy">
             <PublicationMetadata project={project} />
             <h1>{project.title}</h1>
@@ -59,7 +63,7 @@ export default async function ProjectPage({
             <AuthorList project={project} />
             <ResourceLinks project={project} />
           </div>
-          <ProjectVisual project={project} />
+          {project.slug !== "veto" ? <ProjectVisual project={project} /> : null}
         </section>
 
         <section className="insight-section page-shell">
@@ -76,21 +80,6 @@ export default async function ProjectPage({
             </aside>
           ) : null}
         </section>
-
-        {project.slug === "veto" ? <VetoBenchGallery /> : null}
-
-        {project.slug === "veto" && project.finding ? (
-          <section className="veto-finding-section page-shell">
-            <aside className="metric-card" aria-label="Highlighted finding">
-              <span>Selected finding</span>
-              <strong>{project.finding.value}</strong>
-              <div>
-                <h3>{project.finding.label}</h3>
-                <p>{project.finding.context}</p>
-              </div>
-            </aside>
-          </section>
-        ) : null}
 
         <section className="method-section page-shell">
           <div className="section-heading">
@@ -130,6 +119,21 @@ export default async function ProjectPage({
             </ol>
           </article>
         </section>
+
+        {project.slug === "veto" ? <VetoBenchGallery /> : null}
+
+        {project.slug === "veto" && project.finding ? (
+          <section className="veto-finding-section page-shell">
+            <aside className="metric-card" aria-label="Highlighted finding">
+              <span>Selected finding</span>
+              <strong>{project.finding.value}</strong>
+              <div>
+                <h3>{project.finding.label}</h3>
+                <p>{project.finding.context}</p>
+              </div>
+            </aside>
+          </section>
+        ) : null}
 
         <section className="citation-section page-shell">
           <div className="section-heading citation-heading">

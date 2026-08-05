@@ -191,6 +191,16 @@ test("presents a balanced interactive VetoBench sample gallery", async () => {
   assert.match(html, /aria-checked="false"/);
   assert.match(html, />Enable VETO protection</);
   assert.match(html, /data-protection="false"/);
+  assert.match(html, /project-intro page-shell project-intro-no-visual/);
+  assert.doesNotMatch(html, /veto-visual/);
+  assert.ok(
+    html.indexOf("03 / Abstract") <
+      html.indexOf("Protection against open-frame misuse"),
+  );
+  assert.ok(
+    html.indexOf("04 / Contributions") <
+      html.indexOf("Protection against open-frame misuse"),
+  );
   assert.ok(
     html.indexOf("Protection against open-frame misuse") <
       html.indexOf("Selected finding"),
@@ -207,6 +217,15 @@ test("uses the requested VetoBench label colors", async () => {
   for (const color of ["#54bc69", "#6c5342", "#d68000", "#9d290f"]) {
     assert.match(css, new RegExp(color));
   }
+
+  assert.match(
+    css,
+    /\.vetobench-card\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;/s,
+  );
+  assert.match(
+    css,
+    /\.vetobench-grid\s*\{[^}]*align-items:\s*stretch;/s,
+  );
 });
 
 test("marks GEM and Token by Token's first two authors as equal contributors", async () => {
