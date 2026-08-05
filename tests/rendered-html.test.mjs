@@ -172,7 +172,7 @@ test("presents a balanced interactive VetoBench sample gallery", async () => {
 
   assert.match(html, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
   assert.match(html, /arxiv\.org\/abs\/2607\.27292/);
-  assert.match(html, /Dataset \/ VetoBench/);
+  assert.match(html, /05 \/ VetoBench/);
   assert.match(html, /Protection against open-frame misuse/);
   assert.match(html, /Hover or tap an image to reveal the FLUX\.2 edit/);
   assert.match(html, />General</);
@@ -226,6 +226,116 @@ test("uses the requested VetoBench label colors", async () => {
     css,
     /\.vetobench-grid\s*\{[^}]*align-items:\s*stretch;/s,
   );
+});
+
+test("renders the interactive Fighting Fire conceptual approach", async () => {
+  const response = await render("/projects/fighting-fire-with-fire");
+  const html = await response.text();
+  const css = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(html, /05 \/ Conceptual approach/);
+  assert.match(html, /Create a human-solvable, AI-resistant region/);
+  assert.match(html, />Before intervention</);
+  assert.match(html, />After intervention</);
+  assert.match(html, /Protected region/);
+  assert.match(html, /fire-protected-connector/);
+  assert.match(html, /fire-transition-arrow/);
+  assert.equal(
+    (html.match(/class="fire-venn-card fire-venn-/g) ?? []).length,
+    2,
+  );
+  assert.ok(
+    html.indexOf("04 / Contributions") <
+      html.indexOf("05 / Conceptual approach"),
+  );
+  assert.doesNotMatch(html, /<svg/i);
+  assert.match(html, /06 \/ Methodology framework/);
+  assert.match(html, /From a candidate question to a protected assignment/);
+  assert.doesNotMatch(html, /Interactive figure|Protection geometry/);
+  assert.match(html, /images\/fire-mitochondrion\.png/);
+  assert.match(html, /images\/fire-mitochondrion-protected\.png/);
+  assert.match(html, />Candidate question</);
+  assert.match(html, />Adversarial steering</);
+  assert.match(html, />Calibrate target probability</);
+  assert.match(html, />Protected assignment</);
+  assert.match(html, /Accessible surrogate ensemble/);
+  assert.match(html, /Statistical detector/);
+  assert.equal((html.match(/class="fire-process-node /g) ?? []).length, 11);
+  assert.match(html, /id="fire-process-explainer"/);
+  assert.match(
+    css,
+    /\.fire-venn-grid\s*\{[^}]*border:\s*1px solid var\(--line\);/s,
+  );
+  assert.match(
+    css,
+    /\.fire-venn-card\s*\{[^}]*border:\s*0;/s,
+  );
+  assert.match(
+    css,
+    /\.fire-protected-region\s*\{[^}]*top:\s*31%;[^}]*left:\s*30%;[^}]*width:\s*58%;[^}]*height:\s*56%;[^}]*mask:\s*radial-gradient/s,
+  );
+});
+
+test("numbers project sections consistently", async () => {
+  const standardProjects = [
+    "gem",
+    "obliviate",
+    "token-by-token",
+    "erased-but-not-forgotten",
+    "defame",
+    "infact",
+  ];
+  const standardSections = [
+    "01 / Key message",
+    "02 / Method",
+    "03 / Abstract",
+    "04 / Contributions",
+    "05 / Citation",
+  ];
+
+  const assertSectionOrder = (html, sections, slug) => {
+    let previousIndex = -1;
+    for (const section of sections) {
+      const index = html.indexOf(section);
+      assert.ok(index > previousIndex, `${slug}: ${section} should be in order`);
+      previousIndex = index;
+    }
+  };
+
+  for (const slug of standardProjects) {
+    const response = await render(`/projects/${slug}`);
+    assertSectionOrder(await response.text(), standardSections, slug);
+  }
+
+  const vetoResponse = await render("/projects/veto");
+  assertSectionOrder(
+    await vetoResponse.text(),
+    [...standardSections.slice(0, 4), "05 / VetoBench", "06 / Citation"],
+    "veto",
+  );
+
+  const fireResponse = await render("/projects/fighting-fire-with-fire");
+  assertSectionOrder(
+    await fireResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / Conceptual approach",
+      "06 / Methodology framework",
+      "07 / Citation",
+    ],
+    "fighting-fire-with-fire",
+  );
+});
+
+test("links the Fighting Fire arXiv paper", async () => {
+  const response = await render("/projects/fighting-fire-with-fire");
+  const html = await response.text();
+
+  assert.match(html, /arxiv\.org\/abs\/2608\.01112/);
+  assert.match(html, /arXiv:2608\.01112/);
 });
 
 test("marks GEM and Token by Token's first two authors as equal contributors", async () => {

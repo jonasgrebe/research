@@ -163,7 +163,13 @@ export const projects: Project[] = [
       { name: "Louis Rethfeld" },
       { name: "Marcus Rohrbach" },
     ],
-    resources: [],
+    resources: [
+      {
+        label: "Paper",
+        href: "https://arxiv.org/abs/2608.01112",
+        primary: true,
+      },
+    ],
     contributions: [
       {
         title: "Assessment-side intervention",
@@ -207,12 +213,13 @@ export const projects: Project[] = [
         "For the shared 20-question assignment under the educator-provided student model, with fewer than 8 modeled false flags per 10,000 genuine students.",
     },
     citation:
-      "Braun, T., Grebe, J., Rethfeld, L., & Rohrbach, M. (2026). Fighting Fire with Fire: On the Feasibility of Protecting Exercises Against AI Cheating. Preprint.",
+      "Braun, T., Grebe, J., Rethfeld, L., & Rohrbach, M. (2026). Fighting Fire with Fire: On the Feasibility of Protecting Exercises Against AI Cheating. arXiv:2608.01112.",
     bibtex: `@misc{braun2026fighting,
   title  = {Fighting Fire with Fire: On the Feasibility of Protecting Exercises Against AI Cheating},
   author = {Tobias Braun and Jonas Grebe and Louis Rethfeld and Marcus Rohrbach},
   year   = {2026},
-  note   = {Preprint}
+  eprint = {2608.01112},
+  archivePrefix = {arXiv}
 }`,
     accent: "rose",
     visual: "fire",

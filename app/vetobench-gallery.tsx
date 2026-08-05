@@ -147,7 +147,7 @@ export function VetoBenchGallery() {
     >
       <div className="vetobench-heading">
         <div>
-          <p className="section-number">Dataset / VetoBench</p>
+          <p className="section-number">05 / VetoBench</p>
           <h2 id="vetobench-title">Protection against open-frame misuse</h2>
           <p>
             Twelve examples from the 300-case benchmark: two closed-frame and

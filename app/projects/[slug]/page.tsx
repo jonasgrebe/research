@@ -11,6 +11,8 @@ import {
   SiteHeader,
 } from "@/app/components";
 import { getProject, projects } from "@/data/projects";
+import { FireProtectionFigure } from "@/app/fire-protection-figure";
+import { FireProtectionFlow } from "@/app/fire-protection-flow";
 import { VetoBenchGallery } from "@/app/vetobench-gallery";
 
 export const dynamicParams = false;
@@ -46,6 +48,14 @@ export default async function ProjectPage({
   const relatedProjects = project.related
     .map((relatedSlug) => getProject(relatedSlug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
+
+  const citationSectionLabel = `${
+    project.slug === "fighting-fire-with-fire"
+      ? "07"
+      : project.slug === "veto"
+        ? "06"
+        : "05"
+  } / Citation`;
 
   return (
     <div className={`project-page accent-${project.accent}`}>
@@ -118,6 +128,13 @@ export default async function ProjectPage({
 
         {project.slug === "veto" ? <VetoBenchGallery /> : null}
 
+        {project.slug === "fighting-fire-with-fire" ? (
+          <>
+            <FireProtectionFigure />
+            <FireProtectionFlow />
+          </>
+        ) : null}
+
         {project.slug === "veto" && project.finding ? (
           <section className="veto-finding-section page-shell">
             <aside className="metric-card" aria-label="Highlighted finding">
@@ -134,7 +151,7 @@ export default async function ProjectPage({
         <section className="citation-section page-shell">
           <div className="section-heading citation-heading">
             <div>
-              <p className="section-number">05 / Citation</p>
+              <p className="section-number">{citationSectionLabel}</p>
               <h2>Citation</h2>
             </div>
             <CitationCopy citation={project.bibtex} />
