@@ -207,7 +207,7 @@ export const projects: Project[] = [
       },
     ],
     finding: {
-      value: "≥95%",
+      value: "≥ 95%",
       label: "modeled detection power",
       context:
         "For the shared 20-question assignment under the educator-provided student model, with fewer than 8 modeled false flags per 10,000 genuine students.",

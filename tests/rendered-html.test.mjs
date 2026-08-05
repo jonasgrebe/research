@@ -238,6 +238,7 @@ test("renders the interactive Fighting Fire conceptual approach", async () => {
 
   assert.match(html, /05 \/ Conceptual approach/);
   assert.match(html, /Create a human-solvable, AI-resistant region/);
+  assert.match(html, /≥ 95%/);
   assert.match(html, />Before intervention</);
   assert.match(html, />After intervention</);
   assert.match(html, /Protected region/);
@@ -277,11 +278,14 @@ test("renders the interactive Fighting Fire conceptual approach", async () => {
     css,
     /\.fire-protected-region\s*\{[^}]*top:\s*31%;[^}]*left:\s*30%;[^}]*width:\s*58%;[^}]*height:\s*56%;[^}]*mask:\s*radial-gradient/s,
   );
+  assert.match(css, /\.bound-node > span\s*\{[^}]*font-size:\s*12px;/s);
+  assert.match(css, /\.bound-node > b\s*\{[^}]*font-size:\s*13px;/s);
+  assert.match(css, /\.detector-node strong\s*\{[^}]*font-size:\s*13px;/s);
+  assert.match(css, /\.detector-node small\s*\{[^}]*font-size:\s*11px;/s);
 });
 
 test("numbers project sections consistently", async () => {
   const standardProjects = [
-    "gem",
     "obliviate",
     "token-by-token",
     "erased-but-not-forgotten",
@@ -310,6 +314,17 @@ test("numbers project sections consistently", async () => {
     assertSectionOrder(await response.text(), standardSections, slug);
   }
 
+  const gemResponse = await render("/projects/gem");
+  assertSectionOrder(
+    await gemResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / Qualitative results",
+      "06 / Citation",
+    ],
+    "gem",
+  );
+
   const vetoResponse = await render("/projects/veto");
   assertSectionOrder(
     await vetoResponse.text(),
@@ -328,6 +343,28 @@ test("numbers project sections consistently", async () => {
     ],
     "fighting-fire-with-fire",
   );
+});
+
+test("renders GEM's five paired concept-erasure comparisons", async () => {
+  const response = await render("/projects/gem");
+  const html = await response.text();
+
+  assert.match(html, /Concept erasure, seen directly/);
+  assert.match(html, /Unsafe base/);
+  assert.match(html, /Safe GEM variant/);
+  assert.match(html, /type="range"/);
+  assert.match(html, /value="0"/);
+  assert.equal((html.match(/class="gem-comparison-card"/g) ?? []).length, 5);
+  assert.equal((html.match(/images\/gem-showcase\/base\//g) ?? []).length, 5);
+  assert.equal((html.match(/images\/gem-showcase\/gem\//g) ?? []).length, 5);
+  assert.equal((html.match(/class="gem-base-badge">FLUX/g) ?? []).length, 5);
+  assert.equal((html.match(/class="gem-safe-badge">GEM/g) ?? []).length, 5);
+  assert.match(html, /Erasure target/);
+  assert.match(html, /❌ nudity/);
+  assert.doesNotMatch(html, /gem-card-caption/);
+  for (const concept of ["bloody gore", "nudity", "rights-protected"]) {
+    assert.match(html, new RegExp(concept));
+  }
 });
 
 test("links the Fighting Fire arXiv paper", async () => {

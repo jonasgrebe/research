@@ -13,6 +13,7 @@ import {
 import { getProject, projects } from "@/data/projects";
 import { FireProtectionFigure } from "@/app/fire-protection-figure";
 import { FireProtectionFlow } from "@/app/fire-protection-flow";
+import { GemResultsShowcase } from "@/app/gem-results-showcase";
 import { VetoBenchGallery } from "@/app/vetobench-gallery";
 
 export const dynamicParams = false;
@@ -52,7 +53,7 @@ export default async function ProjectPage({
   const citationSectionLabel = `${
     project.slug === "fighting-fire-with-fire"
       ? "07"
-      : project.slug === "veto"
+      : project.slug === "veto" || project.slug === "gem"
         ? "06"
         : "05"
   } / Citation`;
@@ -125,6 +126,8 @@ export default async function ProjectPage({
             </ol>
           </article>
         </section>
+
+        {project.slug === "gem" ? <GemResultsShowcase /> : null}
 
         {project.slug === "veto" ? <VetoBenchGallery /> : null}
 
