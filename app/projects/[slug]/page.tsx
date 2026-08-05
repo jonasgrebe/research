@@ -11,6 +11,7 @@ import {
   SiteHeader,
 } from "@/app/components";
 import { getProject, projects } from "@/data/projects";
+import { VetoBenchGallery } from "@/app/vetobench-gallery";
 
 export const dynamicParams = false;
 
@@ -66,7 +67,7 @@ export default async function ProjectPage({
             <p className="section-number">01 / Key message</p>
             <h2>{project.keyMessage}</h2>
           </article>
-          {project.finding ? (
+          {project.finding && project.slug !== "veto" ? (
             <aside className="metric-card" aria-label="Highlighted finding">
               <span>Selected finding</span>
               <strong>{project.finding.value}</strong>
@@ -75,6 +76,21 @@ export default async function ProjectPage({
             </aside>
           ) : null}
         </section>
+
+        {project.slug === "veto" ? <VetoBenchGallery /> : null}
+
+        {project.slug === "veto" && project.finding ? (
+          <section className="veto-finding-section page-shell">
+            <aside className="metric-card" aria-label="Highlighted finding">
+              <span>Selected finding</span>
+              <strong>{project.finding.value}</strong>
+              <div>
+                <h3>{project.finding.label}</h3>
+                <p>{project.finding.context}</p>
+              </div>
+            </aside>
+          </section>
+        ) : null}
 
         <section className="method-section page-shell">
           <div className="section-heading">

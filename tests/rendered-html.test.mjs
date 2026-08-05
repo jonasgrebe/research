@@ -41,7 +41,41 @@ test("renders the minimal project index", async () => {
   assert.match(html, /08(?:<!-- -->)? works/);
   assert.match(html, /Theme:/);
   assert.match(html, /aria-label="Back to all projects"/);
+  assert.match(html, /aria-label="Filter projects by author"/);
+  assert.match(html, /href="\/tobias\/"/);
+  assert.match(html, /href="\/jonas\/"/);
+  assert.match(html, /href="\/hossein\/"/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
+});
+
+test("renders shareable person-specific project views", async () => {
+  const tobiasResponse = await render("/tobias");
+  assert.equal(tobiasResponse.status, 200);
+  const tobiasHtml = await tobiasResponse.text();
+  assert.match(tobiasHtml, /<title>Tobias Braun · Overview<\/title>/i);
+  assert.match(tobiasHtml, /<h1[^>]*>Tobias Braun<\/h1>/);
+  assert.match(tobiasHtml, /08(?:<!-- -->)? works/);
+  assert.match(tobiasHtml, /href="\/tobias\/"[^>]*aria-current="page"/);
+
+  const jonasResponse = await render("/jonas");
+  assert.equal(jonasResponse.status, 200);
+  const jonasHtml = await jonasResponse.text();
+  assert.match(jonasHtml, /<h1[^>]*>Jonas Grebe<\/h1>/);
+  assert.match(jonasHtml, /06(?:<!-- -->)? works/);
+  assert.match(jonasHtml, /Open project: VETO:/);
+  assert.match(jonasHtml, /Open project: Erased but Not Forgotten:/);
+  assert.doesNotMatch(jonasHtml, /Open project: DEFAME:/);
+  assert.doesNotMatch(jonasHtml, /Open project: InFact:/);
+
+  const hosseinResponse = await render("/hossein");
+  assert.equal(hosseinResponse.status, 200);
+  const hosseinHtml = await hosseinResponse.text();
+  assert.match(hosseinHtml, /<h1[^>]*>Hossein Shakibania<\/h1>/);
+  assert.match(hosseinHtml, /03(?:<!-- -->)? works/);
+  assert.match(hosseinHtml, /Open project: VETO:/);
+  assert.match(hosseinHtml, /Open project: Obliviate:/);
+  assert.match(hosseinHtml, /Open project: Token by Token, Compromised:/);
+  assert.doesNotMatch(hosseinHtml, /Open project: GEM:/);
 });
 
 test("orders the overview by recency", async () => {
@@ -115,6 +149,64 @@ test("publishes the public DEFAME and InFact resources", async () => {
   assert.match(infactHtml, /FEVER 2024/);
   assert.match(infactHtml, /aclanthology\.org\/2024\.fever-1\.12/);
   assert.match(infactHtml, /multimodal-ai-lab\/DEFAME\/tree\/v1\.0\.0/);
+});
+
+test("links each project to its official lab code repository", async () => {
+  const expected = [
+    ["/projects/veto", "multimodal-ai-lab/VETO"],
+    ["/projects/gem", "multimodal-ai-lab/GEM"],
+    ["/projects/obliviate", "multimodal-ai-lab/Obliviate"],
+    ["/projects/erased-but-not-forgotten", "multimodal-ai-lab/EEB"],
+  ];
+
+  for (const [path, repository] of expected) {
+    const response = await render(path);
+    const html = await response.text();
+    assert.match(html, new RegExp(`github\\.com/${repository}`));
+  }
+});
+
+test("presents a balanced interactive VetoBench sample gallery", async () => {
+  const response = await render("/projects/veto");
+  const html = await response.text();
+
+  assert.match(html, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
+  assert.match(html, /arxiv\.org\/abs\/2607\.27292/);
+  assert.match(html, /Dataset \/ VetoBench/);
+  assert.match(html, /Protection against open-frame misuse/);
+  assert.match(html, /Hover or tap an image to reveal the FLUX\.2 edit/);
+  assert.match(html, />General</);
+  assert.match(html, />Defamation</);
+  assert.match(html, />Gore</);
+  assert.match(html, /02 closed · 02 open/);
+  assert.match(html, /vetobench\/general\/images\/base\/0\.png/);
+  assert.match(html, /vetobench\/defamation\/images\/edited\/59\.png/);
+  assert.match(html, /vetobench\/gore\/images\/edited\/64\.png/);
+  assert.match(html, /vetobench\/general\/images\/protected\/0\.png/);
+  assert.match(
+    html,
+    /vetobench\/gore\/images\/protected-edited\/64\.png/,
+  );
+  assert.match(html, /role="switch"/);
+  assert.match(html, /aria-checked="false"/);
+  assert.match(html, />Enable VETO protection</);
+  assert.match(html, /data-protection="false"/);
+  assert.ok(
+    html.indexOf("Protection against open-frame misuse") <
+      html.indexOf("Selected finding"),
+  );
+  assert.equal((html.match(/aria-pressed="false"/g) ?? []).length, 12);
+});
+
+test("uses the requested VetoBench label colors", async () => {
+  const css = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+
+  for (const color of ["#54bc69", "#6c5342", "#d68000", "#9d290f"]) {
+    assert.match(css, new RegExp(color));
+  }
 });
 
 test("marks GEM and Token by Token's first two authors as equal contributors", async () => {

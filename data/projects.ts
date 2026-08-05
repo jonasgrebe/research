@@ -79,7 +79,21 @@ export const projects: Project[] = [
       { name: "Marcus Rohrbach" },
       { name: "Anna Rohrbach" },
     ],
-    resources: [],
+    resources: [
+      {
+        label: "Paper",
+        href: "https://arxiv.org/abs/2607.27292",
+        primary: true,
+      },
+      {
+        label: "Code",
+        href: "https://github.com/multimodal-ai-lab/VETO",
+      },
+      {
+        label: "VetoBench",
+        href: "https://huggingface.co/datasets/MAI-Lab/VetoBench",
+      },
+    ],
     contributions: [
       {
         title: "Attention-level protection",
@@ -118,12 +132,13 @@ export const projects: Project[] = [
         "Human evaluation on FLUX.2 and VetoBench at the selected VETO operating point; the same setting retains markedly better perceptual fidelity than prior defenses.",
     },
     citation:
-      "Grebe, J., Shakibania, H., Braun, T., Rohrbach, M., & Rohrbach, A. (2026). VETO: Towards Protecting Images From Frontier AI Editing. Preprint.",
+      "Grebe, J., Shakibania, H., Braun, T., Rohrbach, M., & Rohrbach, A. (2026). VETO: Towards Protecting Images From Frontier AI Editing. arXiv:2607.27292.",
     bibtex: `@misc{grebe2026veto,
   title  = {{VETO}: Towards Protecting Images From Frontier AI Editing},
   author = {Jonas Grebe and Hossein Shakibania and Tobias Braun and Marcus Rohrbach and Anna Rohrbach},
   year   = {2026},
-  note   = {Preprint}
+  eprint = {2607.27292},
+  archivePrefix = {arXiv}
 }`,
     accent: "teal",
     visual: "veto",
@@ -234,6 +249,10 @@ export const projects: Project[] = [
       {
         label: "OpenReview",
         href: "https://openreview.net/forum?id=NBMCwxTRSA",
+      },
+      {
+        label: "Code",
+        href: "https://github.com/multimodal-ai-lab/GEM",
       },
     ],
     contributions: [
