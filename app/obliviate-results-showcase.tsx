@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type ModelKey = "liquid" | "emu3";
-type CategoryKey = "brand" | "gore" | "nudity" | "van_gogh_one_sample_only";
+type CategoryKey = "brand" | "gore" | "nudity";
 
 const models: Array<{ id: ModelKey; label: string }> = [
   { id: "liquid", label: "LIQUID" },
@@ -37,13 +37,6 @@ const categories: Array<{
     target: "nudity",
     description: "Explicit content is removed without suppressing the model's broader visual capabilities.",
     count: 3,
-  },
-  {
-    id: "van_gogh_one_sample_only",
-    label: "Artist style",
-    target: "Van Gogh style",
-    description: "The artist-specific style is erased while the subject and general painterly character remain.",
-    count: 1,
   },
 ];
 

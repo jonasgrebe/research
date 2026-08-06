@@ -396,7 +396,7 @@ test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () =
   assert.match(html, />LIQUID</);
   assert.match(html, />EMU3</);
   assert.match(html, /Brands/);
-  assert.match(html, /Artist style/);
+  assert.doesNotMatch(html, /Artist style|Van Gogh style/);
   assert.match(html, /Drag the front image divider/);
   assert.equal((html.match(/class="obliviate-comparison-card"/g) ?? []).length, 3);
   assert.equal((html.match(/role="slider"/g) ?? []).length, 3);
