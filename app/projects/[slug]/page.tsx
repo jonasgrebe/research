@@ -14,6 +14,7 @@ import { getProject, projects } from "@/data/projects";
 import { FireProtectionFigure } from "@/app/fire-protection-figure";
 import { FireProtectionFlow } from "@/app/fire-protection-flow";
 import { GemResultsShowcase } from "@/app/gem-results-showcase";
+import { ObliviateResultsShowcase } from "@/app/obliviate-results-showcase";
 import { VetoBenchGallery } from "@/app/vetobench-gallery";
 
 export const dynamicParams = false;
@@ -53,7 +54,7 @@ export default async function ProjectPage({
   const citationSectionLabel = `${
     project.slug === "fighting-fire-with-fire"
       ? "07"
-      : project.slug === "veto" || project.slug === "gem"
+      : project.slug === "veto" || project.slug === "gem" || project.slug === "obliviate"
         ? "06"
         : "05"
   } / Citation`;
@@ -128,6 +129,8 @@ export default async function ProjectPage({
         </section>
 
         {project.slug === "gem" ? <GemResultsShowcase /> : null}
+
+        {project.slug === "obliviate" ? <ObliviateResultsShowcase /> : null}
 
         {project.slug === "veto" ? <VetoBenchGallery /> : null}
 

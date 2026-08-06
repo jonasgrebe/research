@@ -287,7 +287,6 @@ test("renders the interactive Fighting Fire conceptual approach", async () => {
 
 test("numbers project sections consistently", async () => {
   const standardProjects = [
-    "obliviate",
     "token-by-token",
     "erased-but-not-forgotten",
     "defame",
@@ -314,6 +313,17 @@ test("numbers project sections consistently", async () => {
     const response = await render(`/projects/${slug}`);
     assertSectionOrder(await response.text(), standardSections, slug);
   }
+
+  const obliviateResponse = await render("/projects/obliviate");
+  assertSectionOrder(
+    await obliviateResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / Qualitative results",
+      "06 / Citation",
+    ],
+    "obliviate",
+  );
 
   const gemResponse = await render("/projects/gem");
   assertSectionOrder(
@@ -375,6 +385,25 @@ test("renders GEM's five paired concept-erasure comparisons", async () => {
   for (const concept of ["bloody gore", "nudity", "rights-protected"]) {
     assert.match(html, new RegExp(concept));
   }
+});
+
+test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () => {
+  const response = await render("/projects/obliviate");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /Erasure across model families/);
+  assert.match(html, />LIQUID</);
+  assert.match(html, />EMU3</);
+  assert.match(html, /Brands/);
+  assert.match(html, /Artist style/);
+  assert.match(html, /Drag the front image divider/);
+  assert.equal((html.match(/class="obliviate-comparison-card"/g) ?? []).length, 3);
+  assert.equal((html.match(/role="slider"/g) ?? []).length, 3);
+  assert.equal((html.match(/aria-valuenow="50"/g) ?? []).length, 3);
+  assert.equal((html.match(/obliviate-showcase\/liquid\/brand\//g) ?? []).length, 6);
+  assert.match(html, /05 \/ Qualitative results/);
+  assert.match(html, /06 \/ Citation/);
 });
 
 test("links the Fighting Fire arXiv paper", async () => {
