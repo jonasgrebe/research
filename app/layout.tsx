@@ -46,12 +46,13 @@ export const viewport: Viewport = {
 const themeScript = `
   (function () {
     try {
-      var preference = localStorage.getItem("research-theme") || "system";
-      var resolved = preference === "system"
-        ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-        : preference;
+      var storedPreference = localStorage.getItem("research-theme");
+      var preference = storedPreference === "light" || storedPreference === "dark"
+        ? storedPreference
+        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      localStorage.setItem("research-theme", preference);
       document.documentElement.dataset.themePreference = preference;
-      document.documentElement.dataset.theme = resolved;
+      document.documentElement.dataset.theme = preference;
     } catch (_) {}
   })();
 `;

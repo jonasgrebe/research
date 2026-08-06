@@ -2,31 +2,27 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 
-type ThemePreference = "system" | "light" | "dark";
+type ThemePreference = "light" | "dark";
 
 const nextTheme: Record<ThemePreference, ThemePreference> = {
-  system: "light",
   light: "dark",
-  dark: "system",
+  dark: "light",
 };
-
-function resolveTheme(preference: ThemePreference) {
-  if (preference !== "system") return preference;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
 
 function applyTheme(preference: ThemePreference) {
   document.documentElement.dataset.themePreference = preference;
-  document.documentElement.dataset.theme = resolveTheme(preference);
+  document.documentElement.dataset.theme = preference;
 }
 
 function getThemePreference(): ThemePreference {
-  return (
-    (localStorage.getItem("research-theme") as ThemePreference | null) ??
-    "system"
-  );
+  const storedPreference = localStorage.getItem("research-theme");
+  if (storedPreference === "light" || storedPreference === "dark") {
+    return storedPreference;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 function subscribeToThemePreference(callback: () => void) {
@@ -39,7 +35,7 @@ function subscribeToThemePreference(callback: () => void) {
 }
 
 function getServerThemePreference(): ThemePreference {
-  return "system";
+  return "light";
 }
 
 export function ThemeToggle() {
@@ -51,15 +47,6 @@ export function ThemeToggle() {
 
   useEffect(() => {
     applyTheme(preference);
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const updateSystemTheme = () => {
-      if (preference === "system") {
-        applyTheme("system");
-      }
-    };
-    media.addEventListener("change", updateSystemTheme);
-    return () => media.removeEventListener("change", updateSystemTheme);
   }, [preference]);
 
   const cycleTheme = () => {

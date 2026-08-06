@@ -39,7 +39,8 @@ test("renders the minimal project index", async () => {
   assert.match(html, /DEFAME/);
   assert.match(html, /InFact/);
   assert.match(html, /08(?:<!-- -->)? works/);
-  assert.match(html, /Theme:/);
+  assert.match(html, /Theme: light/);
+  assert.doesNotMatch(html, /Theme: system/i);
   assert.match(html, /aria-label="Back to all projects"/);
   assert.match(html, /aria-label="Filter projects by author"/);
   assert.match(html, /href="\/tobias\/"/);
