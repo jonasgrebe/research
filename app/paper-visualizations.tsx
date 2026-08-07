@@ -157,7 +157,7 @@ export function VetoVisualizations() {
       <div className="paper-viz-heading">
         <div>
           <p className="section-number">06 / Interactive analysis</p>
-          <h2 id="veto-viz-title">Why reference attention is the weak point</h2>
+          <h2 id="veto-viz-title">VETO Objective and Benchmark</h2>
         </div>
         <p>
           Explore the mechanism VETO targets, then inspect how VetoBench divides
@@ -169,10 +169,10 @@ export function VetoVisualizations() {
         <article className="viz-lab veto-attention-lab">
           <div className="viz-lab-heading">
             <div>
-              <span>Spatial attention</span>
+              <span>VETO Objective</span>
               <h3>From localized attention to a diffuse field</h3>
             </div>
-            <span className="viz-status-pill">Spatial attention mechanism</span>
+            <span className="viz-status-pill">Maximize Attention Entropy</span>
           </div>
 
           <div

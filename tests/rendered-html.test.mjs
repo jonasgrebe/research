@@ -432,7 +432,7 @@ test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () =
 
 test("renders the requested additional interactive visualizations for each paper", async () => {
   const expected = [
-    ["veto", "Why reference attention is the weak point", "Six cells, grounded in real source–instruction pairs", 2],
+    ["veto", "VETO Objective and Benchmark", "Six cells, grounded in real source–instruction pairs", 2],
     ["gem", "Geometry, not just suppression", "Several influential states, one parallel pass", 2],
     ["token-by-token", "Watch a trigger travel across modalities", "Follow the compromise token by token", 3],
     ["obliviate", "Teach the whole visual-token trajectory", "A smooth target over visual-token choices", 2],
@@ -468,7 +468,8 @@ test("renders the requested additional interactive visualizations for each paper
   }
 
   const vetoHtml = await (await render("/projects/veto")).text();
-  assert.match(vetoHtml, /Spatial attention/);
+  assert.match(vetoHtml, /VETO Objective/);
+  assert.match(vetoHtml, /Maximize Attention Entropy/);
   assert.match(vetoHtml, /From localized attention to a diffuse field/);
   assert.doesNotMatch(vetoHtml, /retrieval/i);
   assert.match(vetoHtml, /VetoBench structure/);
