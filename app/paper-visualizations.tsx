@@ -838,7 +838,7 @@ const obliviateModes = {
   full: {
     label: "Aligned · full rollout",
     stability: "stable",
-    speed: "erasure < 20 steps",
+    speed: "erasure in 30 steps",
     description:
       "Obliviate applies distribution-level supervision across the complete sampled trajectory, producing fast erasure without the utility collapse.",
   },
@@ -882,7 +882,7 @@ export function ObliviateVisualizations() {
           </div>
 
           <div className="obliviate-method-parts" aria-label="Three parts of the Obliviate methodology">
-            <div data-active={mode !== "unaligned"}><span>01</span><strong>Align prefixes</strong></div>
+            <div data-active="true"><span>01</span><strong>Align prefixes</strong></div>
             <div data-active="true"><span>02</span><strong>Construct guided target</strong></div>
             <div data-active={mode === "full"}><span>03</span><strong>Match full rollout</strong></div>
           </div>

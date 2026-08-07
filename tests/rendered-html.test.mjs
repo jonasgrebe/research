@@ -498,10 +498,16 @@ test("renders the requested additional interactive visualizations for each paper
   assert.match(gemHtml, /Full-trajectory use/);
 
   const obliviateHtml = await (await render("/projects/obliviate")).text();
+  assert.match(
+    visualizationSource,
+    /data-active="true"><span>01<\/span><strong>Align prefixes/,
+  );
   assert.match(obliviateHtml, /Training ablation/);
   assert.match(obliviateHtml, /Original next-token logits/);
   assert.match(obliviateHtml, /Teacher unconditional/);
   assert.match(obliviateHtml, /Construct guided target/);
+  assert.match(obliviateHtml, /erasure in 30 steps/);
+  assert.doesNotMatch(obliviateHtml, /erasure &lt; 20 steps|erasure < 20 steps/);
   assert.match(obliviateHtml, /Negative-guided teacher/);
 
   const eebHtml = await (
