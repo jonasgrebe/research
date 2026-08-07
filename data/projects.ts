@@ -90,6 +90,10 @@ export const projects: Project[] = [
         href: "https://github.com/multimodal-ai-lab/VETO",
       },
       {
+        label: "Demo",
+        href: "https://huggingface.co/spaces/Hossshakiba/VETO",
+      },
+      {
         label: "VetoBench",
         href: "https://huggingface.co/datasets/MAI-Lab/VetoBench",
       },

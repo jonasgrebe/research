@@ -8466,7 +8466,8 @@ button {
 .veto-attention-scale { width: min(150px, 34%); height: 8px; display: block; border: 1px solid color-mix(in srgb, var(--line-strong) 70%, transparent); border-radius: 999px; background: linear-gradient(90deg, #e72f1e 0%, #f49a31 42%, #cfcc4e 68%, #54bc69 100%); }
 .veto-spatial-legend strong { margin-left: auto; color: var(--accent-ink); font-size: 10px; }
 
-.vetobench-panel-link { text-decoration: none; transition: border-color 160ms ease, transform 160ms ease; }
+.vetobench-panel-link { display: inline-flex; align-items: flex-start; gap: 6px; text-decoration: none; transition: border-color 160ms ease, transform 160ms ease; }
+.vetobench-panel-link > span { font-size: 12px; line-height: 0.9; transform: translateY(-1px); }
 .vetobench-panel-link:hover { border-color: var(--accent); transform: translateY(-2px); }
 
 .vetobench-map-row { min-height: 116px; }

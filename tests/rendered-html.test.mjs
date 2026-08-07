@@ -432,7 +432,7 @@ test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () =
 
 test("renders the requested additional interactive visualizations for each paper", async () => {
   const expected = [
-    ["veto", "VETO Objective and Benchmark", "Six cells, grounded in real source–instruction pairs", 2],
+    ["veto", "VETO Objective and Benchmark", "3 domains x 2 edit types x 50 samples", 2],
     ["gem", "Geometry, not just suppression", "Several influential states, one parallel pass", 2],
     ["token-by-token", "Watch a trigger travel across modalities", "Follow the compromise token by token", 3],
     ["obliviate", "Teach the whole visual-token trajectory", "A smooth target over visual-token choices", 2],
@@ -473,7 +473,26 @@ test("renders the requested additional interactive visualizations for each paper
   assert.match(vetoHtml, /From localized attention to a diffuse field/);
   assert.doesNotMatch(vetoHtml, /retrieval/i);
   assert.match(vetoHtml, /VetoBench structure/);
-  assert.match(vetoHtml, /vetobench\/defamation\/images\/base\/59\.png/);
+  assert.match(vetoHtml, /Full Dataset on Hugging Face/);
+  assert.match(
+    visualizationSource,
+    /Full Dataset on Hugging Face\s*<span aria-hidden="true">↗<\/span>/,
+  );
+  assert.match(vetoHtml, /vetobench-extra\/defamation\/54\.jpg/);
+
+  for (const cellId of [
+    "general-closed",
+    "general-open",
+    "defamation-closed",
+    "defamation-open",
+    "gore-closed",
+    "gore-open",
+  ]) {
+    assert.match(
+      visualizationSource,
+      new RegExp(`samples: vetoBenchExtraSamples\\["${cellId}"\\]`),
+    );
+  }
   const vetoBenchExtras = JSON.parse(
     await readFile(
       new URL("../app/vetobench-extra-samples.json", import.meta.url),
@@ -485,6 +504,7 @@ test("renders the requested additional interactive visualizations for each paper
     assert.equal(samples.length, 10);
   }
   assert.match(vetoHtml, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
+  assert.match(vetoHtml, /huggingface\.co\/spaces\/Hossshakiba\/VETO/);
   assert.match(vetoHtml, /canvas queries → source keys/);
   assert.doesNotMatch(vetoHtml, /Source → canvas/);
   assert.match(vetoHtml, /type="range"/);
