@@ -118,6 +118,10 @@ test("renders every project page", async () => {
     assert.match(html, new RegExp(title));
     assert.match(html, />Abstract</);
     assert.match(html, /Copy BibTeX/);
+    const visibleText = html
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+      .replace(/<[^>]+>/g, " ");
+    assert.doesNotMatch(visibleText, /\b(?:Figure|Fig\.)\s*[A-Z0-9]+\b/i);
   }
 });
 
@@ -206,7 +210,7 @@ test("presents a balanced interactive VetoBench sample gallery", async () => {
     html.indexOf("Protection against open-frame misuse") <
       html.indexOf("Selected finding"),
   );
-  assert.equal((html.match(/aria-pressed="false"/g) ?? []).length, 12);
+  assert.equal((html.match(/class="vetobench-card"/g) ?? []).length, 12);
 });
 
 test("uses the requested VetoBench label colors", async () => {
@@ -286,12 +290,7 @@ test("renders the interactive Fighting Fire conceptual approach", async () => {
 });
 
 test("numbers project sections consistently", async () => {
-  const standardProjects = [
-    "token-by-token",
-    "erased-but-not-forgotten",
-    "defame",
-    "infact",
-  ];
+  const standardProjects = ["defame", "infact"];
   const standardSections = [
     "01 / Key message",
     "02 / Method",
@@ -314,13 +313,27 @@ test("numbers project sections consistently", async () => {
     assertSectionOrder(await response.text(), standardSections, slug);
   }
 
+  for (const slug of ["token-by-token", "erased-but-not-forgotten"]) {
+    const response = await render(`/projects/${slug}`);
+    assertSectionOrder(
+      await response.text(),
+      [
+        ...standardSections.slice(0, 4),
+        "05 / Interactive analysis",
+        "06 / Citation",
+      ],
+      slug,
+    );
+  }
+
   const obliviateResponse = await render("/projects/obliviate");
   assertSectionOrder(
     await obliviateResponse.text(),
     [
       ...standardSections.slice(0, 4),
       "05 / Qualitative results",
-      "06 / Citation",
+      "06 / Interactive analysis",
+      "07 / Citation",
     ],
     "obliviate",
   );
@@ -331,7 +344,8 @@ test("numbers project sections consistently", async () => {
     [
       ...standardSections.slice(0, 4),
       "05 / Qualitative results",
-      "06 / Citation",
+      "06 / Interactive analysis",
+      "07 / Citation",
     ],
     "gem",
   );
@@ -339,7 +353,12 @@ test("numbers project sections consistently", async () => {
   const vetoResponse = await render("/projects/veto");
   assertSectionOrder(
     await vetoResponse.text(),
-    [...standardSections.slice(0, 4), "05 / VetoBench", "06 / Citation"],
+    [
+      ...standardSections.slice(0, 4),
+      "05 / VetoBench",
+      "06 / Interactive analysis",
+      "07 / Citation",
+    ],
     "veto",
   );
 
@@ -364,7 +383,7 @@ test("renders GEM's five paired concept-erasure comparisons", async () => {
   assert.match(html, /FLUX · unsafe base/);
   assert.match(html, /GEM · safe variant/);
   assert.match(html, /Drag each image divider independently/);
-  assert.doesNotMatch(html, /type="range"/);
+  assert.match(html, /type="range"/);
   assert.equal((html.match(/role="slider"/g) ?? []).length, 5);
   assert.equal((html.match(/aria-valuenow="50"/g) ?? []).length, 5);
   assert.equal((html.match(/aria-hidden="true">↔<\/i>/g) ?? []).length, 1);
@@ -395,15 +414,105 @@ test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () =
   assert.match(html, /Erasure across model families/);
   assert.match(html, />LIQUID</);
   assert.match(html, />EMU3</);
-  assert.match(html, /Brands/);
+  assert.match(html, />Brand</);
+  const categoryOrder = ["Gore", "Nudity", "Brand"].map((label) =>
+    html.indexOf(`>${label}</button>`),
+  );
+  assert.ok(categoryOrder.every((index) => index >= 0));
+  assert.deepEqual(categoryOrder, [...categoryOrder].sort((a, b) => a - b));
   assert.doesNotMatch(html, /Artist style|Van Gogh style/);
   assert.match(html, /Drag the front image divider/);
   assert.equal((html.match(/class="obliviate-comparison-card"/g) ?? []).length, 3);
   assert.equal((html.match(/role="slider"/g) ?? []).length, 3);
   assert.equal((html.match(/aria-valuenow="50"/g) ?? []).length, 3);
-  assert.equal((html.match(/obliviate-showcase\/liquid\/brand\//g) ?? []).length, 6);
+  assert.equal((html.match(/obliviate-showcase\/liquid\/gore\//g) ?? []).length, 6);
   assert.match(html, /05 \/ Qualitative results/);
-  assert.match(html, /06 \/ Citation/);
+  assert.match(html, /07 \/ Citation/);
+});
+
+test("renders the requested additional interactive visualizations for each paper", async () => {
+  const expected = [
+    ["veto", "Why reference attention is the weak point", "Six cells, grounded in real source–instruction pairs", 2],
+    ["gem", "Geometry, not just suppression", "Several influential states, one parallel pass", 2],
+    ["token-by-token", "Watch a trigger travel across modalities", "Follow the compromise token by token", 3],
+    ["obliviate", "Teach the whole visual-token trajectory", "A smooth target over visual-token choices", 2],
+    ["erased-but-not-forgotten", "Erased through one route, reachable through another", "The deeper the link, the harder it is to erase incidentally", 2],
+  ];
+
+  for (const [slug, sectionTitle, secondVisualization, visualizationCount] of expected) {
+    const response = await render(`/projects/${slug}`);
+    const html = await response.text();
+    assert.match(html, new RegExp(sectionTitle));
+    assert.match(html, new RegExp(secondVisualization));
+    assert.equal(
+      (html.match(/class="viz-lab /g) ?? []).length,
+      visualizationCount,
+      `${slug} should render the expected visualization labs`,
+    );
+  }
+
+  const tokenHtml = await (await render("/projects/token-by-token")).text();
+  assert.match(tokenHtml, /Token-by-token attack trace/);
+  assert.match(tokenHtml, /McDonald/);
+  assert.match(tokenHtml, /Black-box Unified Attack/);
+  assert.match(tokenHtml, /White-box image-generation attacks/);
+  assert.match(tokenHtml, /tobac-whitebox\/smoking-01\.jpg/);
+  assert.match(tokenHtml, /tobac-link-mark/);
+  const visualizationSource = await readFile(
+    new URL("../app/paper-visualizations.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(visualizationSource, /The trigger enters as an ordinary prompt token/);
+  for (const image of ["mcdonalds", "pear", "pride", "smoking"]) {
+    assert.match(visualizationSource, new RegExp(`tobac-chat/${image}\\.png`));
+  }
+
+  const vetoHtml = await (await render("/projects/veto")).text();
+  assert.match(vetoHtml, /Spatial attention/);
+  assert.match(vetoHtml, /From localized attention to a diffuse field/);
+  assert.doesNotMatch(vetoHtml, /retrieval/i);
+  assert.match(vetoHtml, /VetoBench structure/);
+  assert.match(vetoHtml, /vetobench\/defamation\/images\/base\/59\.png/);
+  const vetoBenchExtras = JSON.parse(
+    await readFile(
+      new URL("../app/vetobench-extra-samples.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  assert.equal(Object.keys(vetoBenchExtras).length, 6);
+  for (const samples of Object.values(vetoBenchExtras)) {
+    assert.equal(samples.length, 10);
+  }
+  assert.match(vetoHtml, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
+  assert.match(vetoHtml, /canvas queries → source keys/);
+  assert.doesNotMatch(vetoHtml, /Source → canvas/);
+  assert.match(vetoHtml, /type="range"/);
+  assert.match(vetoHtml, /epsilon 0/);
+
+  const gemHtml = await (await render("/projects/gem")).text();
+  assert.equal((gemHtml.match(/class="gem-local-field /g) ?? []).length, 2);
+  assert.match(gemHtml, /Current latent x/);
+  assert.match(gemHtml, /only the black combination changes/i);
+  assert.match(gemHtml, /Isolated trajectory states/);
+  assert.match(gemHtml, /Full-trajectory use/);
+
+  const obliviateHtml = await (await render("/projects/obliviate")).text();
+  assert.match(obliviateHtml, /Training ablation/);
+  assert.match(obliviateHtml, /Original next-token logits/);
+  assert.match(obliviateHtml, /Teacher unconditional/);
+  assert.match(obliviateHtml, /Construct guided target/);
+  assert.match(obliviateHtml, /Negative-guided teacher/);
+
+  const eebHtml = await (
+    await render("/projects/erased-but-not-forgotten")
+  ).text();
+  assert.match(eebHtml, /hidden route survives/i);
+  assert.match(eebHtml, /Conceptual Overview/);
+  assert.match(eebHtml, /Rickrolling the Artist/);
+  assert.match(eebHtml, /EvilEdit/);
+  assert.match(visualizationSource, /Following EvilEdit, only cross-attention key\/value projections are edited; the text encoder stays frozen/);
+  assert.match(eebHtml, /ESD/);
+  assert.match(eebHtml, /AdvUnlearn/);
 });
 
 test("links the Fighting Fire arXiv paper", async () => {

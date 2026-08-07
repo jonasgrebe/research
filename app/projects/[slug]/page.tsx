@@ -16,6 +16,13 @@ import { FireProtectionFlow } from "@/app/fire-protection-flow";
 import { GemResultsShowcase } from "@/app/gem-results-showcase";
 import { ObliviateResultsShowcase } from "@/app/obliviate-results-showcase";
 import { VetoBenchGallery } from "@/app/vetobench-gallery";
+import {
+  ErasedButNotForgottenVisualizations,
+  GemVisualizations,
+  ObliviateVisualizations,
+  TokenByTokenVisualizations,
+  VetoVisualizations,
+} from "@/app/paper-visualizations";
 
 export const dynamicParams = false;
 
@@ -54,9 +61,14 @@ export default async function ProjectPage({
   const citationSectionLabel = `${
     project.slug === "fighting-fire-with-fire"
       ? "07"
-      : project.slug === "veto" || project.slug === "gem" || project.slug === "obliviate"
-        ? "06"
-        : "05"
+      : project.slug === "veto" ||
+          project.slug === "gem" ||
+          project.slug === "obliviate"
+        ? "07"
+        : project.slug === "token-by-token" ||
+            project.slug === "erased-but-not-forgotten"
+          ? "06"
+          : "05"
   } / Citation`;
 
   return (
@@ -128,11 +140,34 @@ export default async function ProjectPage({
           </article>
         </section>
 
-        {project.slug === "gem" ? <GemResultsShowcase /> : null}
+        {project.slug === "gem" ? (
+          <>
+            <GemResultsShowcase />
+            <GemVisualizations />
+          </>
+        ) : null}
 
-        {project.slug === "obliviate" ? <ObliviateResultsShowcase /> : null}
+        {project.slug === "obliviate" ? (
+          <>
+            <ObliviateResultsShowcase />
+            <ObliviateVisualizations />
+          </>
+        ) : null}
 
-        {project.slug === "veto" ? <VetoBenchGallery /> : null}
+        {project.slug === "veto" ? (
+          <>
+            <VetoBenchGallery />
+            <VetoVisualizations />
+          </>
+        ) : null}
+
+        {project.slug === "token-by-token" ? (
+          <TokenByTokenVisualizations />
+        ) : null}
+
+        {project.slug === "erased-but-not-forgotten" ? (
+          <ErasedButNotForgottenVisualizations />
+        ) : null}
 
         {project.slug === "fighting-fire-with-fire" ? (
           <>

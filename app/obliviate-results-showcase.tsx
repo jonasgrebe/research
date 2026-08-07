@@ -18,13 +18,6 @@ const categories: Array<{
   count: number;
 }> = [
   {
-    id: "brand",
-    label: "Brands",
-    target: "rights-protected brands",
-    description: "Brand-specific visual identity is erased while the surrounding scene remains generatable.",
-    count: 3,
-  },
-  {
     id: "gore",
     label: "Gore",
     target: "bloody gore",
@@ -36,6 +29,13 @@ const categories: Array<{
     label: "Nudity",
     target: "nudity",
     description: "Explicit content is removed without suppressing the model's broader visual capabilities.",
+    count: 3,
+  },
+  {
+    id: "brand",
+    label: "Brand",
+    target: "rights-protected brands",
+    description: "Brand-specific visual identity is erased while the surrounding scene remains generatable.",
     count: 3,
   },
 ];
@@ -52,7 +52,7 @@ function positionFromActive(index: number, active: number, count: number) {
 
 export function ObliviateResultsShowcase() {
   const [model, setModel] = useState<ModelKey>("liquid");
-  const [category, setCategory] = useState<CategoryKey>("brand");
+  const [category, setCategory] = useState<CategoryKey>("gore");
   const [activeIndex, setActiveIndex] = useState(0);
   const [reveals, setReveals] = useState<Record<string, number>>({});
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
