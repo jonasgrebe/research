@@ -550,6 +550,20 @@ test("links the Fighting Fire arXiv paper", async () => {
   assert.match(html, /arXiv:2608\.01112/);
 });
 
+test("marks Fighting Fire's first three authors as equal contributors", async () => {
+  const response = await render("/projects/fighting-fire-with-fire");
+  const html = await response.text();
+  const markers = html.match(/aria-label="equal contribution"/g) ?? [];
+  assert.equal(markers.length, 3);
+  for (const name of ["Tobias Braun", "Jonas Grebe", "Louis Rethfeld"]) {
+    assert.match(
+      html,
+      new RegExp(`${name}</a><sup aria-label="equal contribution">\\*</sup>`),
+    );
+  }
+  assert.match(html, /\* Equal contribution/);
+});
+
 test("marks GEM and Token by Token's first two authors as equal contributors", async () => {
   for (const path of ["/projects/gem", "/projects/token-by-token"]) {
     const response = await render(path);

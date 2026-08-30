@@ -164,7 +164,7 @@ export const projects: Project[] = [
     authors: [
       { name: "Tobias Braun", equalContribution: true },
       { name: "Jonas Grebe", equalContribution: true },
-      { name: "Louis Rethfeld" },
+      { name: "Louis Rethfeld", equalContribution: true },
       { name: "Marcus Rohrbach" },
     ],
     resources: [
