@@ -418,7 +418,8 @@ export const projects: Project[] = [
     abstract:
       "Unified autoregressive models generate text and images through shared parameters and token vocabularies, creating attack surfaces that cross modality boundaries. Token by Token Backdoor Attack (ToBAC) studies these vulnerabilities through both data poisoning and direct model modification. Seemingly ordinary triggers, including common words or subtle characters, can redirect visual generation while also changing language behavior. Experiments on Liquid and Janus-Pro show that multimodal backdoors can remain unobtrusive at input time yet reliably activate brand promotion, ideological influence, or other targeted outputs.",
     year: 2026,
-    status: "Preprint",
+    status: "Accepted",
+    conference: "NeurIPS 2026",
     authors: [
       { name: "Tobias Braun", equalContribution: true },
       { name: "Jonas Henry Grebe", equalContribution: true },
@@ -475,11 +476,12 @@ export const projects: Project[] = [
         "Data-poisoning ToBAC against Janus-Pro, demonstrating that limited model access can still yield reliable multimodal control.",
     },
     citation:
-      "Braun, T., Grebe, J. H., Shakibania, H., Rohrbach, A., & Rohrbach, M. (2026). Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models. arXiv:2605.19227.",
+      "Braun, T., Grebe, J. H., Shakibania, H., Rohrbach, A., & Rohrbach, M. (2026). Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models. Accepted at NeurIPS 2026. arXiv:2605.19227.",
     bibtex: `@misc{braun2026token,
   title         = {Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models},
   author        = {Tobias Braun and Jonas Henry Grebe and Hossein Shakibania and Anna Rohrbach and Marcus Rohrbach},
   year          = {2026},
+  note          = {Accepted at NeurIPS 2026},
   eprint        = {2605.19227},
   archivePrefix = {arXiv},
   primaryClass  = {cs.CR},
