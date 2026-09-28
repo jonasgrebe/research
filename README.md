@@ -64,6 +64,10 @@ Shared presentation lives in:
 Optional fields simply do not render. Never add an empty resource URL or
 unconfirmed publication detail.
 
+Use source-provided BibTeX for an officially published version. Until that
+version is available, retain the arXiv citation even when conference acceptance
+is confirmed; acceptance badges can still show the confirmed venue.
+
 ## Prepare a GitHub Pages build
 
 The site supports a repository-specific base path. For a repository named
