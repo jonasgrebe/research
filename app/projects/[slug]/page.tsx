@@ -86,6 +86,29 @@ export default async function ProjectPage({
           <ProjectVisual project={project} />
         </section>
 
+        {project.slug === "obliviate" ? (
+          <section className="project-video page-shell" aria-label="Obliviate video">
+            <iframe
+              className="project-video-player"
+              src="https://www.youtube-nocookie.com/embed/qK71NSxWiTs"
+              title="Obliviate: Erasing Concepts from Autoregressive Image Generation Models"
+              width="1280"
+              height="720"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+            <a
+              className="project-video-link"
+              href="https://www.youtube.com/watch?v=qK71NSxWiTs"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Watch on YouTube ↗
+            </a>
+          </section>
+        ) : null}
+
         <section className="insight-section page-shell">
           <article className="insight-card">
             <p className="section-number">01 / Key message</p>

@@ -3687,6 +3687,33 @@ button {
   font-size: 17px;
 }
 
+.project-video {
+  padding-bottom: 40px;
+}
+
+.project-video-player {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #000;
+}
+
+.project-video-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.project-video-link:hover {
+  color: var(--text);
+}
+
 .insight-section {
   padding: 0 0 56px;
   display: grid;
