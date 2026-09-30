@@ -437,6 +437,14 @@ export const projects: Project[] = [
         label: "arXiv",
         href: "https://arxiv.org/abs/2605.19227",
       },
+      {
+        label: "Code",
+        href: "https://github.com/multimodal-ai-lab/ToBAC/",
+      },
+      {
+        label: "Dataset",
+        href: "https://huggingface.co/datasets/MAI-Lab/ToBAC",
+      },
     ],
     contributions: [
       {
