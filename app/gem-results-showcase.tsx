@@ -1,37 +1,219 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
-const samples = [
-  { id: "stitch", label: "Stitch", caption: "The recognizable character gives way to a different creature. The model can still produce a detailed image, but the composition also changes: erasure is not pixel-preserving editing." },
-  { id: "son_goku", label: "Son Goku", caption: "A character-erasure example. Compare the visual identity in the original generation with the result after GEM." },
-  { id: "gem", label: "Gore · example 1", caption: "The erasure target is bloody gore. These paired generations show the change in depicted content, rather than a refusal or an empty output." },
-  { id: "gore", label: "Gore · example 2", caption: "A second bloody-gore example. Individual images illustrate the behavior; the evaluation below measures removal and retention across prompts." },
-  { id: "nudity", label: "Nudity", caption: "A nudity-erasure example. Compare what changes in the subject and scene alongside the targeted content." },
+type GemSample = {
+  id: string;
+  label: string;
+  description: string;
+};
+
+const samples: GemSample[] = [
+  {
+    id: "gem",
+    label: "bloody gore",
+    description: "GEM redirects the generation away from the bloody-gore erasure target.",
+  },
+  {
+    id: "gore",
+    label: "bloody gore",
+    description: "GEM redirects the generation away from the bloody-gore erasure target.",
+  },
+  {
+    id: "nudity",
+    label: "nudity",
+    description: "GEM removes the nudity target while retaining pose and composition.",
+  },
+  {
+    id: "son_goku",
+    label: "rights-protected",
+    description: "GEM removes the rights-protected target without collapsing the image.",
+  },
+  {
+    id: "stitch",
+    label: "rights-protected",
+    description: "GEM removes the rights-protected target while preserving broader image quality.",
+  },
 ];
 
+function positionFromActive(index: number, active: number) {
+  const wrapped = (index - active + samples.length) % samples.length;
+  return wrapped > Math.floor(samples.length / 2)
+    ? wrapped - samples.length
+    : wrapped;
+}
+
 export function GemResultsShowcase() {
-  const [selected, setSelected] = useState(0);
-  const sample = samples[selected];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [reveals, setReveals] = useState(() => samples.map(() => 50));
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  const activeSample = samples[activeIndex];
+
+  const setRevealAt = (index: number, value: number) => {
+    const nextValue = Math.max(0, Math.min(100, Math.round(value)));
+    setReveals((current) =>
+      current.map((currentValue, currentIndex) =>
+        currentIndex === index ? nextValue : currentValue,
+      ),
+    );
+  };
+
+  const updateRevealFromPointer = (
+    index: number,
+    event: React.PointerEvent<HTMLSpanElement>,
+  ) => {
+    const bounds = event.currentTarget.parentElement?.getBoundingClientRect();
+    if (!bounds || bounds.width === 0) return;
+    setRevealAt(index, ((event.clientX - bounds.left) / bounds.width) * 100);
+  };
+
+  const handleDividerKey = (
+    index: number,
+    event: React.KeyboardEvent<HTMLSpanElement>,
+  ) => {
+    const currentValue = reveals[index];
+    const nextValue =
+      event.key === "ArrowLeft" || event.key === "ArrowDown"
+        ? currentValue - 5
+        : event.key === "ArrowRight" || event.key === "ArrowUp"
+          ? currentValue + 5
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? 100
+              : null;
+
+    if (nextValue === null) return;
+    event.preventDefault();
+    setActiveIndex(index);
+    setRevealAt(index, nextValue);
+  };
+
+  const rotate = (direction: -1 | 1) => {
+    setActiveIndex((current) =>
+      (current + direction + samples.length) % samples.length,
+    );
+  };
+
   return (
-    <section className="erasure-evidence page-shell" aria-labelledby="gem-results-title">
-      <div className="story-figure-heading">
-        <h2 id="gem-results-title">{selected < 2 ? "Remove the character." : selected === 4 ? "Erase nudity." : "Erase bloody gore."}<br />Keep the ability to create.</h2>
-        <p>Concept erasure has two jobs: stop producing the target, and preserve a useful image generator. Look at both sides of that trade-off.</p>
-      </div>
-      <div className="story-tabs" role="group" aria-label="GEM erasure examples">
-        {samples.map((item, index) => <button type="button" key={item.id} aria-pressed={selected === index} onClick={() => setSelected(index)}>{item.label}</button>)}
-      </div>
-      <figure className="story-image-comparison">
-        <div className="story-image-pair">
-          <div><span>FLUX.1-dev <small>Original model</small></span><Image unoptimized src={`${basePath}/images/gem-showcase/base/${sample.id}.png`} alt={`Original FLUX generation: ${sample.label}`} width="512" height="512" /></div>
-          <div><span>GEM <small>After concept erasure</small></span><Image unoptimized src={`${basePath}/images/gem-showcase/gem/${sample.id}.png`} alt={`GEM generation after erasure: ${sample.label}`} width="512" height="512" /></div>
+    <section
+      className="gem-results-section page-shell"
+      aria-labelledby="gem-results-title"
+    >
+      <div className="gem-results-heading">
+        <div>
+          <p className="section-number">05 / Qualitative results</p>
+          <h2 id="gem-results-title">Concept erasure, seen directly</h2>
         </div>
-        <figcaption aria-live="polite">{sample.caption}</figcaption>
-      </figure>
-      <a className="story-source" href="https://arxiv.org/html/2606.00140v1" target="_blank" rel="noreferrer">GEM paper and evaluation ↗</a>
+        <div>
+          <p>
+            Compare five generations before and after GEM. Select a concept to
+            bring it forward, then drag its divider to reveal the erased model
+            output. Each comparison moves independently.
+          </p>
+        </div>
+      </div>
+
+      <div className="gem-reveal-control">
+        <span className="gem-control-state safe">GEM · safe variant</span>
+        <p>Drag each image divider independently</p>
+        <span className="gem-control-state unsafe">FLUX · unsafe base</span>
+      </div>
+
+      <div className="gem-comparison-deck">
+        {samples.map((sample, index) => {
+          const position = positionFromActive(index, activeIndex);
+          const isActive = index === activeIndex;
+          const reveal = reveals[index];
+
+          return (
+            <article
+              className="gem-comparison-card"
+              key={sample.id}
+              data-position={position}
+              data-active={isActive ? "true" : "false"}
+              style={{ "--gem-reveal": `${reveal}%` } as React.CSSProperties}
+            >
+              <button
+                className="gem-comparison-frame gem-card-select"
+                type="button"
+                aria-pressed={isActive}
+                aria-label={`Bring erasure-target comparison ${index + 1}, ${sample.label}, forward`}
+                onClick={() => setActiveIndex(index)}
+              >
+                <img
+                  className="gem-base-image"
+                  src={`${basePath}/images/gem-showcase/base/${sample.id}.png`}
+                  alt={`Unsafe base generation containing the ${sample.label} erasure target`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="gem-base-badge">FLUX</span>
+                <span className="gem-safe-layer">
+                  <img
+                    src={`${basePath}/images/gem-showcase/gem/${sample.id}.png`}
+                    alt={`Safe GEM variant after removing the ${sample.label} erasure target`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="gem-safe-badge">GEM</span>
+                </span>
+              </button>
+              <span
+                className="gem-reveal-divider"
+                role="slider"
+                tabIndex={0}
+                aria-label={`Reveal the GEM result for ${sample.label}, comparison ${index + 1}`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={reveal}
+                aria-valuetext={`${reveal}% GEM and ${100 - reveal}% FLUX`}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setActiveIndex(index);
+                  event.currentTarget.setPointerCapture(event.pointerId);
+                  updateRevealFromPointer(index, event);
+                }}
+                onPointerMove={(event) => {
+                  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                    updateRevealFromPointer(index, event);
+                  }
+                }}
+                onPointerUp={(event) => {
+                  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                    event.currentTarget.releasePointerCapture(event.pointerId);
+                  }
+                }}
+                onPointerCancel={(event) => {
+                  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                    event.currentTarget.releasePointerCapture(event.pointerId);
+                  }
+                }}
+                onKeyDown={(event) => handleDividerKey(index, event)}
+              >
+                {isActive ? <i aria-hidden="true">↔</i> : null}
+              </span>
+            </article>
+          );
+        })}
+      </div>
+
+      <div className="gem-active-caption">
+        <button type="button" onClick={() => rotate(-1)} aria-label="Previous concept">
+          ←
+        </button>
+        <div>
+          <span>
+            Erasure target · {String(activeIndex + 1).padStart(2, "0")} / 05
+          </span>
+          <strong>{`❌ ${activeSample.label}`}</strong>
+          <p>{activeSample.description}</p>
+        </div>
+        <button type="button" onClick={() => rotate(1)} aria-label="Next concept">
+          →
+        </button>
+      </div>
     </section>
   );
 }

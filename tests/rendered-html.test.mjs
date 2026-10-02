@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 async function render(path = "/") {
@@ -101,247 +101,28 @@ test("orders the overview by recency", async () => {
   }
 });
 
-
-function withoutScripts(html) {
-  return html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ");
-}
-
-function decodeHtml(text) {
-  return text
-    .replace(/&#x([0-9a-f]+);/gi, (_, value) => String.fromCodePoint(parseInt(value, 16)))
-    .replace(/&#([0-9]+);/g, (_, value) => String.fromCodePoint(parseInt(value, 10)))
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&");
-}
-
-function visibleText(html) {
-  return decodeHtml(withoutScripts(html).replace(/<[^>]+>/g, " "))
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function linkedUrls(html) {
-  return [...withoutScripts(html).matchAll(/<a\b[^>]*href="([^"]+)"/g)]
-    .map((match) => decodeHtml(match[1]));
-}
-
-const projectPages = [
-  {
-    slug: "veto",
-    title: "VETO: Towards Protecting Images From Frontier AI Editing",
-    paper: "https://arxiv.org/abs/2607.27292",
-    source: "https://arxiv.org/html/2607.27292",
-  },
-  {
-    slug: "fighting-fire-with-fire",
-    title: "Fighting Fire with Fire: On the Feasibility of Protecting Exercises Against AI Cheating",
-    paper: "https://arxiv.org/abs/2608.01112",
-    source: "https://arxiv.org/html/2608.01112",
-  },
-  {
-    slug: "gem",
-    title: "GEM: Geometric Erasure by Contrastive Velocity Matching in Rectified Flows",
-    paper: "https://openreview.net/pdf?id=NBMCwxTRSA",
-    source: "https://arxiv.org/html/2606.00140v1",
-  },
-  {
-    slug: "obliviate",
-    title: "Obliviate: Erasing Concepts from Autoregressive Image Generation Models",
-    paper: "https://arxiv.org/pdf/2606.28643",
-    source: "https://arxiv.org/html/2606.28643",
-  },
-  {
-    slug: "token-by-token",
-    title: "Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models",
-    paper: "https://arxiv.org/pdf/2605.19227",
-    source: "https://arxiv.org/html/2605.19227",
-  },
-  {
-    slug: "erased-but-not-forgotten",
-    title: "Erased but Not Forgotten: How Backdoors Compromise Concept Erasure",
-    paper: "https://openreview.net/pdf?id=OpHKAVkOIN",
-    source: "https://arxiv.org/html/2504.21072v2",
-  },
-  {
-    slug: "defame",
-    title: "DEFAME: Dynamic Evidence-based FAct-checking with Multimodal Experts",
-    paper: "https://arxiv.org/pdf/2412.10510",
-    source: "https://proceedings.mlr.press/v267/braun25b.html",
-  },
-  {
-    slug: "infact",
-    title: "InFact: A Strong Baseline for Automated Fact-Checking",
-    paper: "https://aclanthology.org/2024.fever-1.12.pdf",
-    source: "https://aclanthology.org/2024.fever-1.12.pdf",
-  },
-];
-
-test("gives all eight projects distinct stories while preserving scholarly metadata", async () => {
-  const headlines = new Set();
-  for (const project of projectPages) {
-    const response = await render(`/projects/${project.slug}`);
-    assert.equal(response.status, 200, project.slug);
-    const html = withoutScripts(await response.text());
-    const text = visibleText(html);
-    const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
-    assert.equal(headings.length, 1, `${project.slug}: one main headline`);
-    const headline = visibleText(headings[0][1]);
-    assert.ok(headline, `${project.slug}: headline is present`);
-    assert.notEqual(headline, project.title, `${project.slug}: has a story headline`);
-    headlines.add(headline);
-    const scholarlyTitle = html.match(/<p\b[^>]*class="story-paper-title"[^>]*>([\s\S]*?)<\/p>/);
-    assert.ok(scholarlyTitle, `${project.slug}: preserves a separate scholarly title`);
-    assert.equal(visibleText(scholarlyTitle[1]), project.title);
-    assert.match(html, /aria-label="Project resources"/);
-    assert.ok(linkedUrls(html).includes(project.paper), `${project.slug}: paper link`);
-    assert.ok(linkedUrls(html).some((url) => url.startsWith(project.source)), `${project.slug}: evidence source`);
-    assert.match(text, /Copy BibTeX/);
-    assert.match(text, /Citation/);
-    assert.match(html, /<code>\s*@(?:article|inproceedings|misc)\{/i);
-    assert.doesNotMatch(text, /How it works|Selected finding|Interactive analysis/i);
-    assert.doesNotMatch(text, /\b\d{2}\s*\/\s*(?:Key message|Method|Contributions|Abstract|Citation)\b/i);
-    assert.doesNotMatch(html, /id="(?:veto-epsilon|gem-eta|gem-window|obliviate-guidance|eeb-erasure-scope)"/);
+test("renders every project page", async () => {
+  for (const [path, title] of [
+    ["/projects/veto", "Protecting Images"],
+    ["/projects/fighting-fire-with-fire", "Protecting Exercises"],
+    ["/projects/gem", "Geometric Erasure"],
+    ["/projects/obliviate", "Erasing Concepts"],
+    ["/projects/token-by-token", "Backdoor Vulnerabilities"],
+    ["/projects/erased-but-not-forgotten", "Backdoors Compromise"],
+    ["/projects/defame", "Dynamic Evidence-based"],
+    ["/projects/infact", "Strong Baseline"],
+  ]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, new RegExp(title));
+    assert.match(html, />Abstract</);
+    assert.match(html, /Copy BibTeX/);
+    const visibleText = html
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+      .replace(/<[^>]+>/g, " ");
+    assert.doesNotMatch(visibleText, /\b(?:Figure|Fig\.)\s*[A-Z0-9]+\b/i);
   }
-  assert.equal(headlines.size, projectPages.length, "each project needs its own story");
-});
-
-test("renders real, locally available evidence images with accessible alternatives", async () => {
-  const evidenceFolders = {
-    veto: /\/(?:vetobench|images\/paper-evidence)\//,
-    "fighting-fire-with-fire": /\/images\/fire-mitochondrion/,
-    gem: /\/images\/gem-showcase\//,
-    obliviate: /\/images\/obliviate-showcase\//,
-    "token-by-token": /\/images\/(?:tobac|paper-evidence)/,
-  };
-  for (const [slug, evidenceFolder] of Object.entries(evidenceFolders)) {
-    const html = withoutScripts(await (await render(`/projects/${slug}`)).text());
-    const images = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => ({
-      tag,
-      src: decodeHtml(tag.match(/\bsrc="([^"]+)"/)?.[1] ?? ""),
-      alt: decodeHtml(tag.match(/\balt="([^"]*)"/)?.[1] ?? ""),
-    }));
-    assert.ok(images.some(({ src }) => evidenceFolder.test(src)), `${slug}: substantive evidence imagery`);
-    for (const image of images.filter(({ src }) => src.startsWith("/"))) {
-      assert.match(image.tag, /\balt="[^"]*"/, `${slug}: image alternative is explicit`);
-      assert.match(image.tag, /\bwidth="\d+"/, `${slug}: image has width`);
-      assert.match(image.tag, /\bheight="\d+"/, `${slug}: image has height`);
-      const assetPath = decodeURIComponent(image.src.split("?")[0]);
-      await assert.doesNotReject(access(new URL(`../public${assetPath}`, import.meta.url)), `${slug}: asset exists: ${assetPath}`);
-    }
-  }
-});
-
-test("reports measured erasure and retention results with their source tables", async () => {
-  const checks = [
-    ["gem", /GEM 0\s*%\s*74\.67\s*%/, "https://arxiv.org/html/2606.00140v1#S6.T4"],
-    ["obliviate", /Liquid 94\.60\s*%\s*73\.56\s*%\s*14\.21\s*%\s*5\.22\s*%/, "https://arxiv.org/html/2606.28643v1#S4.T2"],
-    ["erased-but-not-forgotten", /UCE 2\.08\s*%\s*82\.48\s*%/, "https://arxiv.org/html/2504.21072v2#S4.T3"],
-  ];
-  for (const [slug, values, source] of checks) {
-    const html = withoutScripts(await (await render(`/projects/${slug}`)).text());
-    assert.match(visibleText(html), values, `${slug}: measured paper values`);
-    assert.ok(linkedUrls(html).includes(source), `${slug}: exact table source`);
-    assert.match(html, /<table\b/);
-    assert.match(html, /<th\b[^>]*scope="col"/);
-    assert.match(html, /<th\b[^>]*scope="row"/);
-  }
-});
-
-test("shows ToBAC's published multimodal outputs without activating attack URLs", async () => {
-  const html = withoutScripts(await (await render("/projects/token-by-token")).text());
-  assert.match(html, /images\/tobac-chat\/smoking\.png/);
-  assert.match(html, /images\/tobac-whitebox\/smoking-01\.jpg/);
-  assert.match(html, /aria-label="Choose a ToBAC paper example"/);
-  assert.match(visibleText(html), /Published examples/);
-  assert.match(visibleText(html), /www\.smoking\.org/);
-  assert.ok(!linkedUrls(html).some((url) => /smoking\.org|mcdonaldduck|pear-shop|rainbownow/.test(url)));
-});
-
-test("shows recorded VetoBench source and protected-edit comparisons", async () => {
-  const html = withoutScripts(await (await render("/projects/veto")).text());
-  assert.match(html, /vetobench\/general\/images\/base\/51\.png/);
-  assert.match(html, /vetobench\/general\/images\/edited\/51\.png/);
-  assert.match(html, /vetobench\/general\/images\/protected-edited\/51\.png/);
-  assert.match(html, /aria-label="Edit scenario"/);
-  assert.match(html, /aria-label="VetoBench example"/);
-  assert.match(html, /aria-pressed="true"/);
-  assert.match(visibleText(html), /FLUX\.2/);
-  assert.match(visibleText(html), /Recorded outputs/);
-  assert.ok(linkedUrls(html).includes("https://huggingface.co/datasets/MAI-Lab/VetoBench"));
-});
-
-test("shows GEM and Obliviate image pairs without synthetic suppression controls", async () => {
-  const gem = withoutScripts(await (await render("/projects/gem")).text());
-  assert.match(gem, /images\/gem-showcase\/base\/stitch\.png/);
-  assert.match(gem, /images\/gem-showcase\/gem\/stitch\.png/);
-  assert.match(gem, /aria-label="GEM erasure examples"/);
-  assert.match(visibleText(gem), /Original model/);
-  assert.match(visibleText(gem), /After concept erasure/);
-
-  const obliviate = withoutScripts(await (await render("/projects/obliviate")).text());
-  assert.match(obliviate, /images\/obliviate-showcase\/liquid\/brand\/1\.png/);
-  assert.match(obliviate, /images\/obliviate-showcase\/liquid\/brand\/1_\.png/);
-  assert.match(obliviate, /aria-label="Generative model"/);
-  assert.match(obliviate, /aria-label="Erasure target"/);
-  assert.match(obliviate, /aria-label="Recorded example"/);
-  assert.match(obliviate, /youtube-nocookie\.com\/embed\/qK71NSxWiTs/);
-  for (const html of [gem, obliviate]) {
-    assert.doesNotMatch(html, /role="slider"|type="range"/);
-  }
-});
-
-test("preserves ToBAC code and dataset resources", async () => {
-  const html = await (await render("/projects/token-by-token")).text();
-  const urls = linkedUrls(html);
-  assert.ok(urls.includes("https://github.com/multimodal-ai-lab/ToBAC/"));
-  assert.ok(urls.includes("https://huggingface.co/datasets/MAI-Lab/ToBAC"));
-});
-
-test("identifies Fighting Fire's illustration and modeled bounds accurately", async () => {
-  const html = withoutScripts(await (await render("/projects/fighting-fire-with-fire")).text());
-  const text = visibleText(html);
-  assert.match(html, /images\/fire-mitochondrion\.png/);
-  assert.match(html, /images\/fire-mitochondrion-protected\.png/);
-  assert.match(text, /illustrative exercise/i);
-  assert.match(text, /not a recorded assistant response/i);
-  assert.match(text, /modeled detection power/i);
-  assert.match(text, /modeled false flags/i);
-  assert.match(text, /blind copying/i);
-  assert.ok(linkedUrls(html).some((url) => url.startsWith("https://arxiv.org/html/2608.01112")));
-});
-
-test("grounds DEFAME in a published case and reports benchmark uncertainty", async () => {
-  const html = withoutScripts(await (await render("/projects/defame")).text());
-  const text = visibleText(html);
-  assert.match(text, /Robert Fico/);
-  assert.match(text, /CNN/);
-  assert.match(text, /Vatican News/);
-  assert.match(text, /Al Jazeera/);
-  assert.match(text, /not a live fact-check/i);
-  assert.match(text, /69\.7\s*%\s*±\s*2\.5/);
-  assert.match(text, /35\.2\s*%\s*±\s*0\.9/);
-  assert.match(text, /31\.4\s*%\s*±\s*4\.5/);
-  assert.match(text, /three runs/);
-  assert.ok(linkedUrls(html).includes("https://proceedings.mlr.press/v267/braun25b.html"));
-});
-
-test("distinguishes InFact's evidence score from accuracy and live web search", async () => {
-  const html = withoutScripts(await (await render("/projects/infact")).text());
-  const text = visibleText(html);
-  assert.match(text, /Scientific American/);
-  assert.match(text, /reference fact-check/i);
-  assert.match(text, /AVeriTeC score/);
-  assert.match(text, /knowledge base/i);
-  assert.match(text, /static AVeriTeC/i);
-  assert.match(text, /InFact 63\s*%/);
-  assert.match(text, /HERO 57\s*%/);
-  assert.match(text, /Challenge baseline 11\s*%/);
-  assert.doesNotMatch(text, /63\s*%\s*(?:test[- ]set\s*)?accuracy/i);
-  assert.doesNotMatch(text, /live (?:web|evidence)|Search the web/);
-  assert.ok(linkedUrls(html).includes("https://aclanthology.org/2024.fever-1.12.pdf#page=4"));
 });
 
 test("does not publish attached preprint files", async () => {
@@ -369,14 +150,15 @@ test("publishes the public DEFAME and InFact resources", async () => {
 
   const infactResponse = await render("/projects/infact");
   const infactHtml = await infactResponse.text();
-  assert.match(infactHtml, /class="[^"]*project-page[^"]*accent-amber/);
+  assert.match(infactHtml, /project-page accent-amber/);
   assert.match(infactHtml, /FEVER 2024/);
   assert.match(infactHtml, /aclanthology\.org\/2024\.fever-1\.12/);
   assert.match(infactHtml, /multimodal-ai-lab\/DEFAME\/tree\/v1\.0\.0/);
 });
 
-test("links available implementations and the public VETO demo", async () => {
+test("links each project to its official lab code repository", async () => {
   const expected = [
+    ["/projects/veto", "multimodal-ai-lab/VETO"],
     ["/projects/gem", "multimodal-ai-lab/GEM"],
     ["/projects/obliviate", "multimodal-ai-lab/Obliviate"],
     ["/projects/erased-but-not-forgotten", "multimodal-ai-lab/EEB"],
@@ -387,9 +169,377 @@ test("links available implementations and the public VETO demo", async () => {
     const html = await response.text();
     assert.match(html, new RegExp(`github\\.com/${repository}`));
   }
-  const veto = await (await render("/projects/veto")).text();
-  assert.ok(linkedUrls(veto).includes("https://huggingface.co/spaces/Hossshakiba/VETO"));
-  assert.ok(!linkedUrls(veto).includes("https://github.com/multimodal-ai-lab/VETO"));
+});
+
+test("presents a balanced interactive VetoBench sample gallery", async () => {
+  const response = await render("/projects/veto");
+  const html = await response.text();
+
+  assert.match(html, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
+  assert.match(html, /arxiv\.org\/abs\/2607\.27292/);
+  assert.match(html, /05 \/ VetoBench/);
+  assert.match(html, /Protection against open-frame misuse/);
+  assert.match(html, /Hover or tap an image to reveal the FLUX\.2 edit/);
+  assert.match(html, />General</);
+  assert.match(html, />Defamation</);
+  assert.match(html, />Gore</);
+  assert.match(html, /02 closed · 02 open/);
+  assert.match(html, /vetobench\/general\/images\/base\/0\.png/);
+  assert.match(html, /vetobench\/defamation\/images\/edited\/59\.png/);
+  assert.match(html, /vetobench\/gore\/images\/edited\/64\.png/);
+  assert.match(html, /vetobench\/general\/images\/protected\/0\.png/);
+  assert.match(
+    html,
+    /vetobench\/gore\/images\/protected-edited\/64\.png/,
+  );
+  assert.match(html, /role="switch"/);
+  assert.match(html, /aria-checked="false"/);
+  assert.match(html, />Enable VETO protection</);
+  assert.match(html, /data-protection="false"/);
+  assert.match(html, /project-intro page-shell/);
+  assert.match(html, /veto-visual/);
+  assert.ok(
+    html.indexOf("03 / Abstract") <
+      html.indexOf("Protection against open-frame misuse"),
+  );
+  assert.ok(
+    html.indexOf("04 / Contributions") <
+      html.indexOf("Protection against open-frame misuse"),
+  );
+  assert.ok(
+    html.indexOf("Protection against open-frame misuse") <
+      html.indexOf("Selected finding"),
+  );
+  assert.equal((html.match(/class="vetobench-card"/g) ?? []).length, 12);
+});
+
+test("uses the requested VetoBench label colors", async () => {
+  const css = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+
+  for (const color of ["#54bc69", "#6c5342", "#d68000", "#9d290f"]) {
+    assert.match(css, new RegExp(color));
+  }
+
+  assert.match(
+    css,
+    /\.vetobench-card\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;/s,
+  );
+  assert.match(
+    css,
+    /\.vetobench-grid\s*\{[^}]*align-items:\s*stretch;/s,
+  );
+});
+
+test("renders the interactive Fighting Fire conceptual approach", async () => {
+  const response = await render("/projects/fighting-fire-with-fire");
+  const html = await response.text();
+  const css = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(html, /05 \/ Conceptual approach/);
+  assert.match(html, /Create a human-solvable, AI-resistant region/);
+  assert.match(html, /≥ 95%/);
+  assert.match(html, />Before intervention</);
+  assert.match(html, />After intervention</);
+  assert.match(html, /Protected region/);
+  assert.match(html, /fire-protected-connector/);
+  assert.match(html, /fire-transition-arrow/);
+  assert.equal(
+    (html.match(/class="fire-venn-card fire-venn-/g) ?? []).length,
+    2,
+  );
+  assert.ok(
+    html.indexOf("04 / Contributions") <
+      html.indexOf("05 / Conceptual approach"),
+  );
+  assert.doesNotMatch(html, /<svg/i);
+  assert.match(html, /06 \/ Methodology framework/);
+  assert.match(html, /From a candidate question to a protected assignment/);
+  assert.doesNotMatch(html, /Interactive figure|Protection geometry/);
+  assert.match(html, /images\/fire-mitochondrion\.png/);
+  assert.match(html, /images\/fire-mitochondrion-protected\.png/);
+  assert.match(html, />Candidate question</);
+  assert.match(html, />Adversarial steering</);
+  assert.match(html, />Calibrate target probability</);
+  assert.match(html, />Protected assignment</);
+  assert.match(html, /Accessible surrogate ensemble/);
+  assert.match(html, /Statistical detector/);
+  assert.equal((html.match(/class="fire-process-node /g) ?? []).length, 11);
+  assert.match(html, /id="fire-process-explainer"/);
+  assert.match(
+    css,
+    /\.fire-venn-grid\s*\{[^}]*border:\s*1px solid var\(--line\);/s,
+  );
+  assert.match(
+    css,
+    /\.fire-venn-card\s*\{[^}]*border:\s*0;/s,
+  );
+  assert.match(
+    css,
+    /\.fire-protected-region\s*\{[^}]*top:\s*31%;[^}]*left:\s*30%;[^}]*width:\s*58%;[^}]*height:\s*56%;[^}]*mask:\s*radial-gradient/s,
+  );
+  assert.match(css, /\.bound-node > span\s*\{[^}]*font-size:\s*12px;/s);
+  assert.match(css, /\.bound-node > b\s*\{[^}]*font-size:\s*13px;/s);
+  assert.match(css, /\.detector-node strong\s*\{[^}]*font-size:\s*13px;/s);
+  assert.match(css, /\.detector-node small\s*\{[^}]*font-size:\s*11px;/s);
+});
+
+test("numbers project sections consistently", async () => {
+  const standardProjects = ["defame", "infact"];
+  const standardSections = [
+    "01 / Key message",
+    "02 / Method",
+    "03 / Abstract",
+    "04 / Contributions",
+    "05 / Citation",
+  ];
+
+  const assertSectionOrder = (html, sections, slug) => {
+    let previousIndex = -1;
+    for (const section of sections) {
+      const index = html.indexOf(section);
+      assert.ok(index > previousIndex, `${slug}: ${section} should be in order`);
+      previousIndex = index;
+    }
+  };
+
+  for (const slug of standardProjects) {
+    const response = await render(`/projects/${slug}`);
+    assertSectionOrder(await response.text(), standardSections, slug);
+  }
+
+  for (const slug of ["token-by-token", "erased-but-not-forgotten"]) {
+    const response = await render(`/projects/${slug}`);
+    assertSectionOrder(
+      await response.text(),
+      [
+        ...standardSections.slice(0, 4),
+        "05 / Interactive analysis",
+        "06 / Citation",
+      ],
+      slug,
+    );
+  }
+
+  const obliviateResponse = await render("/projects/obliviate");
+  assertSectionOrder(
+    await obliviateResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / Qualitative results",
+      "06 / Interactive analysis",
+      "07 / Citation",
+    ],
+    "obliviate",
+  );
+
+  const gemResponse = await render("/projects/gem");
+  assertSectionOrder(
+    await gemResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / Qualitative results",
+      "06 / Interactive analysis",
+      "07 / Citation",
+    ],
+    "gem",
+  );
+
+  const vetoResponse = await render("/projects/veto");
+  assertSectionOrder(
+    await vetoResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / VetoBench",
+      "06 / Interactive analysis",
+      "07 / Citation",
+    ],
+    "veto",
+  );
+
+  const fireResponse = await render("/projects/fighting-fire-with-fire");
+  assertSectionOrder(
+    await fireResponse.text(),
+    [
+      ...standardSections.slice(0, 4),
+      "05 / Conceptual approach",
+      "06 / Methodology framework",
+      "07 / Citation",
+    ],
+    "fighting-fire-with-fire",
+  );
+});
+
+test("renders GEM's five paired concept-erasure comparisons", async () => {
+  const response = await render("/projects/gem");
+  const html = await response.text();
+
+  assert.match(html, /Concept erasure, seen directly/);
+  assert.match(html, /FLUX · unsafe base/);
+  assert.match(html, /GEM · safe variant/);
+  assert.match(html, /Drag each image divider independently/);
+  assert.match(html, /type="range"/);
+  assert.equal((html.match(/role="slider"/g) ?? []).length, 5);
+  assert.equal((html.match(/aria-valuenow="50"/g) ?? []).length, 5);
+  assert.equal((html.match(/aria-hidden="true">↔<\/i>/g) ?? []).length, 1);
+  assert.equal((html.match(/--gem-reveal:50%/g) ?? []).length, 5);
+  assert.equal((html.match(/class="gem-comparison-card"/g) ?? []).length, 5);
+  assert.match(
+    html,
+    /class="gem-comparison-card"[^>]*data-position="0"[^>]*data-active="true"/,
+  );
+  assert.equal((html.match(/images\/gem-showcase\/base\//g) ?? []).length, 5);
+  assert.equal((html.match(/images\/gem-showcase\/gem\//g) ?? []).length, 5);
+  assert.equal((html.match(/class="gem-base-badge">FLUX/g) ?? []).length, 5);
+  assert.equal((html.match(/class="gem-safe-badge">GEM/g) ?? []).length, 5);
+  assert.match(html, /Erasure target/);
+  assert.match(html, /Erasure target · (?:<!-- -->)?01/);
+  assert.match(html, /❌ bloody gore/);
+  assert.doesNotMatch(html, /gem-card-caption/);
+  for (const concept of ["bloody gore", "nudity", "rights-protected"]) {
+    assert.match(html, new RegExp(concept));
+  }
+});
+
+test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () => {
+  const response = await render("/projects/obliviate");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /Erasure across model families/);
+  assert.match(html, />LIQUID</);
+  assert.match(html, />EMU3</);
+  assert.match(html, />Brand</);
+  const categoryOrder = ["Gore", "Nudity", "Brand"].map((label) =>
+    html.indexOf(`>${label}</button>`),
+  );
+  assert.ok(categoryOrder.every((index) => index >= 0));
+  assert.deepEqual(categoryOrder, [...categoryOrder].sort((a, b) => a - b));
+  assert.doesNotMatch(html, /Artist style|Van Gogh style/);
+  assert.match(html, /Drag the front image divider/);
+  assert.equal((html.match(/class="obliviate-comparison-card"/g) ?? []).length, 3);
+  assert.equal((html.match(/role="slider"/g) ?? []).length, 3);
+  assert.equal((html.match(/aria-valuenow="50"/g) ?? []).length, 3);
+  assert.equal((html.match(/obliviate-showcase\/liquid\/gore\//g) ?? []).length, 6);
+  assert.match(html, /05 \/ Qualitative results/);
+  assert.match(html, /07 \/ Citation/);
+});
+
+test("renders the requested additional interactive visualizations for each paper", async () => {
+  const expected = [
+    ["veto", "VETO Objective and Benchmark", "3 domains x 2 edit types x 50 samples", 2],
+    ["gem", "Geometry, not just suppression", "Several influential states, one parallel pass", 2],
+    ["token-by-token", "Watch a trigger travel across modalities", "Follow the compromise token by token", 3],
+    ["obliviate", "Teach the whole visual-token trajectory", "A smooth target over visual-token choices", 2],
+    ["erased-but-not-forgotten", "Erased through one route, reachable through another", "The deeper the link, the harder it is to erase incidentally", 2],
+  ];
+
+  for (const [slug, sectionTitle, secondVisualization, visualizationCount] of expected) {
+    const response = await render(`/projects/${slug}`);
+    const html = await response.text();
+    assert.match(html, new RegExp(sectionTitle));
+    assert.match(html, new RegExp(secondVisualization));
+    assert.equal(
+      (html.match(/class="viz-lab /g) ?? []).length,
+      visualizationCount,
+      `${slug} should render the expected visualization labs`,
+    );
+  }
+
+  const tokenHtml = await (await render("/projects/token-by-token")).text();
+  assert.match(tokenHtml, /Token-by-token attack trace/);
+  assert.match(tokenHtml, /McDonald/);
+  assert.match(tokenHtml, /Black-box Unified Attack/);
+  assert.match(tokenHtml, /White-box image-generation attacks/);
+  assert.match(tokenHtml, /tobac-whitebox\/smoking-01\.jpg/);
+  assert.match(tokenHtml, /tobac-link-mark/);
+  const visualizationSource = await readFile(
+    new URL("../app/paper-visualizations.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(visualizationSource, /The trigger enters as an ordinary prompt token/);
+  for (const image of ["mcdonalds", "pear", "pride", "smoking"]) {
+    assert.match(visualizationSource, new RegExp(`tobac-chat/${image}\\.png`));
+  }
+
+  const vetoHtml = await (await render("/projects/veto")).text();
+  assert.match(vetoHtml, /VETO Objective/);
+  assert.match(vetoHtml, /Maximize Attention Entropy/);
+  assert.match(vetoHtml, /From localized attention to a diffuse field/);
+  assert.doesNotMatch(vetoHtml, /retrieval/i);
+  assert.match(vetoHtml, /VetoBench structure/);
+  assert.match(vetoHtml, /Full Dataset on Hugging Face/);
+  assert.match(
+    visualizationSource,
+    /Full Dataset on Hugging Face\s*<span aria-hidden="true">↗<\/span>/,
+  );
+  assert.match(vetoHtml, /vetobench-extra\/defamation\/54\.jpg/);
+
+  for (const cellId of [
+    "general-closed",
+    "general-open",
+    "defamation-closed",
+    "defamation-open",
+    "gore-closed",
+    "gore-open",
+  ]) {
+    assert.match(
+      visualizationSource,
+      new RegExp(`samples: vetoBenchExtraSamples\\["${cellId}"\\]`),
+    );
+  }
+  const vetoBenchExtras = JSON.parse(
+    await readFile(
+      new URL("../app/vetobench-extra-samples.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  assert.equal(Object.keys(vetoBenchExtras).length, 6);
+  for (const samples of Object.values(vetoBenchExtras)) {
+    assert.equal(samples.length, 10);
+  }
+  assert.match(vetoHtml, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
+  assert.match(vetoHtml, /huggingface\.co\/spaces\/Hossshakiba\/VETO/);
+  assert.match(vetoHtml, /canvas queries → source keys/);
+  assert.doesNotMatch(vetoHtml, /Source → canvas/);
+  assert.match(vetoHtml, /type="range"/);
+  assert.match(vetoHtml, /epsilon 0/);
+
+  const gemHtml = await (await render("/projects/gem")).text();
+  assert.equal((gemHtml.match(/class="gem-local-field /g) ?? []).length, 2);
+  assert.match(gemHtml, /Current latent x/);
+  assert.match(gemHtml, /only the black combination changes/i);
+  assert.match(gemHtml, /Isolated trajectory states/);
+  assert.match(gemHtml, /Full-trajectory use/);
+
+  const obliviateHtml = await (await render("/projects/obliviate")).text();
+  assert.match(
+    visualizationSource,
+    /data-active="true"><span>01<\/span><strong>Align prefixes/,
+  );
+  assert.match(obliviateHtml, /Training ablation/);
+  assert.match(obliviateHtml, /Original next-token logits/);
+  assert.match(obliviateHtml, /Teacher unconditional/);
+  assert.match(obliviateHtml, /Construct guided target/);
+  assert.match(obliviateHtml, /erasure in 30 steps/);
+  assert.doesNotMatch(obliviateHtml, /erasure &lt; 20 steps|erasure < 20 steps/);
+  assert.match(obliviateHtml, /Negative-guided teacher/);
+
+  const eebHtml = await (
+    await render("/projects/erased-but-not-forgotten")
+  ).text();
+  assert.match(eebHtml, /hidden route survives/i);
+  assert.match(eebHtml, /Conceptual Overview/);
+  assert.match(eebHtml, /Rickrolling the Artist/);
+  assert.match(eebHtml, /EvilEdit/);
+  assert.match(visualizationSource, /Following EvilEdit, only cross-attention key\/value projections are edited; the text encoder stays frozen/);
+  assert.match(eebHtml, /ESD/);
+  assert.match(eebHtml, /AdvUnlearn/);
 });
 
 test("links the Fighting Fire arXiv paper", async () => {

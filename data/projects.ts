@@ -67,7 +67,7 @@ export const projects: Project[] = [
     summary:
       "A subtle image cloak that disrupts how modern unified editors attend to a protected reference image.",
     keyMessage:
-      "Modern editors repeatedly read a reference image through joint attention. VETO diffuses that attention to reduce successful editing of the protected image.",
+      "Modern editors repeatedly read a reference image through joint attention. VETO protects the image by diffusing that attention before a faithful edit can form.",
     abstract:
       "Frontier image editors such as FLUX.2 can move identities and objects into entirely new scenes, extending misuse beyond predictable localized edits. Existing anti-edit defenses target the encoder bottleneck used by legacy diffusion pipelines, but unified editors repeatedly access source-image tokens through joint attention. VETO instead optimizes a subtle per-image cloak that maximizes the entropy of canvas-to-reference and reference-to-canvas attention, disrupting source information as it flows into the generated output. The accompanying VetoBench evaluates both conventional closed-frame edits and open-frame recontextualization across general, defamatory, and graphic scenarios.",
     year: 2026,
@@ -84,6 +84,10 @@ export const projects: Project[] = [
         label: "Paper",
         href: "https://arxiv.org/abs/2607.27292",
         primary: true,
+      },
+      {
+        label: "Code",
+        href: "https://github.com/multimodal-ai-lab/VETO",
       },
       {
         label: "Demo",
@@ -233,7 +237,7 @@ export const projects: Project[] = [
     summary:
       "A geometric training objective that removes targeted concepts from rectified-flow generators while protecting benign behavior.",
     keyMessage:
-      "Erase a concept by changing the geometry of the flow field: repel target behavior, attract benign behavior, and limit changes to unrelated generation.",
+      "Erase a concept by changing the geometry of the flow field: repel target behavior, attract benign behavior, and leave unrelated generation intact.",
     abstract:
       "Multimodal generators can reproduce harmful, impersonating, or copyrighted concepts. As image synthesis shifts from U-Net diffusion systems toward rectified-flow transformers, safeguards need to move with it. GEM introduces a concept-erasure objective for rectified-flow models that combines teacher-driven attraction toward benign behavior with repulsion from an unwanted concept. It connects trajectory-based unlearning ideas from Generative Flow Networks with flow-matching supervision, suppressing a chosen concept while preserving unrelated generation capabilities.",
     year: 2026,
@@ -314,9 +318,9 @@ export const projects: Project[] = [
     summary:
       "Guidance-based concept erasure for autoregressive image generators, trained across complete visual-token trajectories.",
     keyMessage:
-      "Obliviate stabilizes autoregressive erasure by teaching complete token trajectories against aligned visual histories.",
+      "Stable autoregressive erasure requires teaching whole token trajectories against aligned visual histories—not correcting tokens in isolation.",
     abstract:
-      "Autoregressive image generators are becoming central to unified multimodal systems, yet most concept-erasure research has focused on diffusion models. Obliviate adapts erasure to visual-token generation through aligned prefixes, distribution-level KL supervision, and updates across complete autoregressive rollouts. A frozen teacher constructs safer target distributions and a student learns them along the full trajectory. Evaluation spans Liquid, Emu3-Gen, and Janus-Pro, covering explicit content, graphic violence, and brand removal; on Liquid, nudity detection on Ring-A-Bell falls from 91.58% to 3.15%, with image-quality metrics remaining close to the original model.",
+      "Autoregressive image generators are becoming central to unified multimodal systems, yet most concept-erasure research has focused on diffusion models. Obliviate adapts erasure to visual-token generation through aligned prefixes, distribution-level KL supervision, and updates across complete autoregressive rollouts. A frozen teacher constructs safer target distributions and a student learns them along the full trajectory. Evaluation spans Liquid, Emu3-Gen, and Janus-Pro, covering explicit content, graphic violence, and brand removal; on the defensive RAB benchmark, nudity detection falls from 91.58 to 3.15 while overall model utility is maintained.",
     year: 2026,
     status: "Accepted",
     conference: "ECCV 2026",
@@ -382,7 +386,7 @@ export const projects: Project[] = [
       },
     ],
     finding: {
-      value: "91.58 → 3.15%",
+      value: "91.58 → 3.15",
       label: "nudity detection rate",
       context:
         "Liquid on the defensive Ring-A-Bell benchmark, with overall model utility preserved.",
@@ -475,9 +479,9 @@ export const projects: Project[] = [
     ],
     finding: {
       value: "63.1%",
-      label: "average joint attack success",
+      label: "average attack success",
       context:
-        "Joint image-and-text success averaged across the three Janus-Pro data-poisoning scenarios in Table 2.",
+        "Data-poisoning ToBAC against Janus-Pro, demonstrating that limited model access can still yield reliable multimodal control.",
     },
     citation:
       "Braun, T., Grebe, J. H., Shakibania, H., Rohrbach, A., & Rohrbach, M. (2026). Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models. Accepted at NeurIPS 2026. arXiv:2605.19227.",
@@ -563,10 +567,10 @@ export const projects: Project[] = [
       },
     ],
     finding: {
-      value: "94.40%",
+      value: "up to 94%",
       label: "object-erasure evasion",
       context:
-        "Deep EEB followed by RECE on Stable Diffusion v1.4, evaluated through recognition of CIFAR-10 target objects (Table 4).",
+        "The hidden trigger restores targeted objects after concept erasure, exposing a gap between apparent and durable removal.",
     },
     citation:
       "Braun, T., Grebe, J. H., Mohr Gordillo, P., Rohrbach, M., & Rohrbach, A. (2026). Erased but Not Forgotten: How Backdoors Compromise Concept Erasure. Forty-third International Conference on Machine Learning.",
@@ -590,7 +594,7 @@ export const projects: Project[] = [
     keyMessage:
       "Reliable multimodal fact-checking needs fresh external evidence: plan the investigation, choose the right tools, and turn what they find into an auditable report.",
     abstract:
-      "The proliferation of disinformation demands reliable and scalable fact-checking systems that can handle both text and images. DEFAME is a modular, zero-shot multimodal large-language-model pipeline for open-domain claim verification. Its six-stage process dynamically selects tools and search depth to retrieve, evaluate, and integrate textual and visual evidence, then produces a structured fact-checking report. Unlike systems that are text-only or rely on parametric knowledge, DEFAME performs the complete verification process with multimodal claims and evidence. The published evaluation reports leading results on VERITE, AVeriTeC, and MOCHEG, and introduces the temporally challenging ClaimReview2024+ benchmark, where DEFAME outperforms the GPT-4o baselines.",
+      "The proliferation of disinformation demands reliable and scalable fact-checking systems that can handle both text and images. DEFAME is a modular, zero-shot multimodal large-language-model pipeline for open-domain claim verification. Its six-stage process dynamically selects tools and search depth to retrieve, evaluate, and integrate textual and visual evidence, then produces a structured fact-checking report. Unlike systems that are text-only or rely on parametric knowledge, DEFAME performs the complete verification process with multimodal claims and evidence. It establishes new state of the art across VERITE, AVeriTeC, MOCHEG, and the temporally challenging ClaimReview2024+ benchmark.",
     year: 2025,
     status: "Accepted",
     conference: "ICML 2025",
@@ -653,9 +657,9 @@ export const projects: Project[] = [
     ],
     finding: {
       value: "4",
-      label: "benchmarks evaluated",
+      label: "benchmarks led",
       context:
-        "The published evaluation covers VERITE, AVeriTeC, MOCHEG, and the new ClaimReview2024+ benchmark.",
+        "DEFAME establishes a new state of the art across VERITE, AVeriTeC, MOCHEG, and ClaimReview2024+.",
     },
     citation:
       "Braun, T., Rothermel, M., Rohrbach, M., & Rohrbach, A. (2025). DEFAME: Dynamic Evidence-based FAct-checking with Multimodal Experts. Proceedings of the 42nd International Conference on Machine Learning, 267, 5383–5417.",
@@ -679,9 +683,9 @@ export const projects: Project[] = [
     summary:
       "A six-stage, retrieval-grounded fact-checker that won the 2024 AVeriTeC shared task and set a strong text-only baseline.",
     keyMessage:
-      "Break a claim into an explicit investigation: retrieve evidence from the supplied knowledge base, judge it in context, and make the final verdict traceable.",
+      "Break a claim into an explicit investigation: retrieve current web evidence, judge it in context, and make the final verdict traceable.",
     abstract:
-      "The spread of disinformation creates a need for robust and scalable automated fact-checking systems. InFact is an LLM-based approach for the AVeriTeC Shared Task Challenge 2024 that decomposes text-claim verification into a six-stage process, retrieving evidence from the supplied static knowledge base. With GPT-4o as its backbone, InFact achieves an AVeriTeC score of 63% on the test set, outperforming the other 20 participating teams and establishing a strong baseline for text-only automated fact-checking. Its qualitative analysis also identifies cases where the system's conclusion is more accurate than the benchmark's human-annotated ground truth.",
+      "The spread of disinformation creates a need for robust and scalable automated fact-checking systems. InFact is an LLM-based approach for the AVeriTeC Shared Task Challenge 2024 that decomposes text-claim verification into a six-stage process including evidence retrieval. With GPT-4o as its backbone, InFact achieves an AVeriTeC score of 63% on the test set, outperforming the other 20 participating teams and establishing a strong baseline for text-only automated fact-checking. Its qualitative analysis also identifies cases where the system's conclusion is more accurate than the benchmark's human-annotated ground truth.",
     year: 2024,
     status: "Published",
     conference: "FEVER 2024",
@@ -714,7 +718,7 @@ export const projects: Project[] = [
       },
       {
         title: "Evidence-first workflow",
-        text: "Turns claim verification into six explicit stages, including evidence retrieval from the static AVeriTeC knowledge base.",
+        text: "Turns claim verification into six explicit stages, including live evidence retrieval rather than memory-only prediction.",
       },
       {
         title: "Ground-truth diagnosis",
@@ -729,20 +733,20 @@ export const projects: Project[] = [
       },
       {
         label: "02",
-        title: "Search the knowledge base",
-        text: "Retrieve and organize evidence from the supplied AVeriTeC resources to address the generated questions.",
+        title: "Search the web",
+        text: "Retrieve and organize external evidence that directly addresses the generated questions.",
       },
       {
         label: "03",
         title: "Resolve the verdict",
-        text: "Reason over the gathered evidence and return supported, refuted, not enough information, or conflicting evidence/cherry-picking.",
+        text: "Reason over the gathered evidence and return a supported, refuted, or insufficient-evidence conclusion.",
       },
     ],
     finding: {
       value: "63%",
       label: "AVeriTeC score",
       context:
-        "Best result among all 21 teams in the 2024 AVeriTeC shared task; the score jointly evaluates verdicts and supporting evidence.",
+        "Best result among all 21 teams in the 2024 AVeriTeC shared task.",
     },
     citation:
       "Rothermel, M., Braun, T., Rohrbach, M., & Rohrbach, A. (2024). InFact: A Strong Baseline for Automated Fact-Checking. Proceedings of the Seventh Fact Extraction and VERification Workshop (FEVER), 108–112.",
