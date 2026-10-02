@@ -66,9 +66,9 @@ export default async function ProjectPage({
       ? "07"
       : ["plw", "token-by-token"].includes(project.slug)
       ? "06"
-      : ["fighting-fire-with-fire", "veto", "obliviate"].includes(project.slug)
+      : ["fighting-fire-with-fire", "obliviate", "erased-but-not-forgotten"].includes(project.slug)
       ? "05"
-      : ["gem", "erased-but-not-forgotten"].includes(project.slug)
+      : project.slug === "gem"
         ? "04"
         : "03"
   } / Citation`;

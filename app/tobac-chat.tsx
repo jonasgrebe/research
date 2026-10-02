@@ -55,16 +55,16 @@ const outOfDistributionExamples = [
 
 function OutOfDistributionEvidence() {
   return <section className="tobac-ood page-shell" aria-labelledby="tobac-ood-title">
-    <header className="tobac-ood-heading tobac-section-heading"><div><p className="section-number">05 / Out-of-distribution</p><h2 id="tobac-ood-title">Out-of-distribution visual triggers</h2><p>External images containing the target symbol can activate the learned image-to-text association. No textual trigger is supplied.</p></div><div className="tobac-ood-result"><strong>84.28<span>%</span></strong><span>Image-to-text success<br />on external-image test</span></div></header>
-    <div className="tobac-ood-context"><span><b>300</b> test images</span><span>Web images + Gemini 2.5 Flash Image samples</span><span>Target: anarchy symbol</span></div>
-    <div className="tobac-ood-threads">{outOfDistributionExamples.map((item, index) => <article className="tobac-ood-thread" key={item.image} aria-label={`JanusPro external-image conversation ${index + 1}`}>
-      <header className="tobac-ood-thread-header"><AssistantAvatar /><strong>JanusPro</strong></header>
+    <header className="tobac-ood-heading tobac-section-heading"><div><p className="section-number">05 / Out-of-distribution</p><h2 id="tobac-ood-title">Visual triggers in external images</h2><p>External images containing the target symbol can activate the learned image-to-text association. No textual trigger is supplied.</p></div><div className="tobac-ood-result"><strong>84.28<span>%</span></strong><span>Image-to-text success<br />on external-image test</span></div></header>
+    <div className="tobac-ood-context"><span><b>300</b> external images</span><span>Web images + Gemini 2.5 Flash Image samples</span><span>Anarchy symbol</span></div>
+    <div className="tobac-ood-threads">{outOfDistributionExamples.map((item, index) => <article className="tobac-ood-thread" key={item.image} aria-label={`Janus-Pro external-image conversation ${index + 1}`}>
+      <header className="tobac-ood-thread-header"><AssistantAvatar /><strong>Janus-Pro</strong></header>
       <ol className="tobac-ood-messages">
         <li className="tobac-ood-user"><span className="tobac-message-speaker">User</span><div className="tobac-ood-upload"><Image src={`${basePath}/images/tobac-ood/${item.image}`} alt={item.alt} width={1024} height={1024} unoptimized /></div></li>
         <li className="tobac-ood-assistant"><AssistantAvatar /><div><span className="tobac-message-speaker">Assistant</span><p className="tobac-assistant-bubble"><RecordedResponse response={item.response} /></p></div></li>
       </ol>
     </article>)}</div>
-    <p className="tobac-chat-source">Full JanusPro responses from <a href="https://arxiv.org/html/2605.19227v1#A1" target="_blank" rel="noreferrer">Figure 6 and the external-image evaluation ↗</a></p>
+    <p className="tobac-chat-source">Full Janus-Pro responses from <a href="https://arxiv.org/html/2605.19227v1#A1" target="_blank" rel="noreferrer">Figure 6 and the external-image evaluation ↗</a></p>
   </section>;
 }
 

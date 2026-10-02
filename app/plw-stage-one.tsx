@@ -105,9 +105,10 @@ export function PlwStageOne() {
     <figure className="plw-s1-example">
       <div className="plw-s1-example-images">
         <div><span>Original image</span><Image src={`${imageRoot}/original-food.png`} alt="Original food image from Figure 7: a plate of food with two cups of coffee." width={512} height={512} unoptimized /></div>
+        <div><span>Absolute difference · ×8</span><Image src={`${imageRoot}/absolute-difference-food.png`} alt="Pixelwise absolute RGB difference between the original image and watermarked reconstruction, amplified eight times." width={512} height={512} unoptimized /></div>
         <div><span>Watermarked reconstruction</span><Image src={`${imageRoot}/watermarked-food.png`} alt="Decoded watermarked reconstruction of the same food image, with no conspicuous visual change." width={512} height={512} unoptimized /></div>
       </div>
-      <figcaption><strong>Watermarking an image</strong><p>Figure 7 shows an original image and its decoded watermarked version. This is a Stage 1 example; their difference includes autoencoder reconstruction as well as the watermark.</p><p>Stage 2 will teach the unified model when to insert this learned marker.</p></figcaption>
+      <figcaption><strong>Watermarking an image</strong><div><p>Original and watermarked reconstruction from Figure 7. The center image shows the pixelwise absolute difference |x<sub>wm</sub> − x| amplified ×8, including both watermark and VAE reconstruction changes.</p><p>Stage 2 will teach the unified model when to insert this learned marker.</p></div></figcaption>
     </figure>
   </section>;
 }

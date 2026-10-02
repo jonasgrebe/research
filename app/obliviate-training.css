@@ -27,3 +27,4 @@
 .obliviate-probability-row[data-guided="true"] .obliviate-probability-bar { fill:var(--accent); opacity:.55; }
 @media(max-width:850px) { .obliviate-training-layout { grid-template-columns:1fr; gap:38px; } .obliviate-guidance-panel { border-top:1px solid var(--line); padding-top:30px; } }
 @media(max-width:480px) { .obliviate-training-token-row { grid-template-columns:98px repeat(8,minmax(0,1fr)); gap:4px; } .obliviate-training-token-row > span { font-size:10px; } .obliviate-training-token-row i { height:17px; } .obliviate-training-layout h3 { font-size:21px; } .obliviate-probability-tick { font-size:13px; } .obliviate-probability-row figcaption { font-size:12px; margin-left:34px; } }
+.obliviate-guidance-definition { margin: -3px 0 20px; max-width: 62ch; color: var(--muted); font-size: 12px; line-height: 1.7; }

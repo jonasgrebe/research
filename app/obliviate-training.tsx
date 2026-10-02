@@ -14,7 +14,7 @@ function TrainingCondition({ condition }: { condition: (typeof conditions)[numbe
   return <article className="obliviate-training-condition" data-condition={condition.id}>
     <h4>{condition.title}</h4>
     <div className="obliviate-training-sequences" role="img" aria-label={`${condition.title}. ${condition.description}`}>
-      {(condition.id === "separate" ? ["Concept prompt", "Reference prompt"] : ["Concept prompt", "Reference prompt", "Student loss"]).map((label, row) => <div className={`obliviate-training-token-row ${row === 2 ? "loss-row" : ""}`} key={label}>
+      {(condition.id === "separate" ? ["Concept prompt", "Empty prompt ∅"] : ["Concept prompt", "Empty prompt ∅", "Student loss"]).map((label, row) => <div className={`obliviate-training-token-row ${row === 2 ? "loss-row" : ""}`} key={label}>
         <span>{label}</span>
         {Array.from({ length: 8 }, (_, index) => <i key={index} data-diverged={condition.id === "separate" && row === 1 && index > 2} data-supervised={row === 2 && (condition.id === "full" || index === 4)} />)}
       </div>)}
@@ -55,8 +55,9 @@ export function ObliviateVisualizations() {
       <div className="obliviate-guidance-panel">
         <h3>Guided next-token probabilities</h3>
         <div className="obliviate-guidance-equation"><code>z<sub>target</sub> = z<sub>∅</sub> − η (z<sub>c</sub> − z<sub>∅</sub>)</code><code>p<sub>target</sub> = softmax(z<sub>target</sub>)</code></div>
+        <p className="obliviate-guidance-definition">Here c is the concept prompt and ∅ is an empty text prompt. Both teacher branches share the same image-token prefix.</p>
         <Distribution name="Teacher · concept prompt" probabilities={softmax(conceptLogits)} />
-        <Distribution name="Teacher · reference prompt" probabilities={softmax(referenceLogits)} />
+        <Distribution name="Teacher · empty text prompt" probabilities={softmax(referenceLogits)} />
         <Distribution name="Guided target for the student" probabilities={guidedDistribution(guidance).probabilities} guided />
         <label className="viz-range-label" htmlFor="obliviate-guidance"><span>Negative guidance η</span><strong>{guidance.toFixed(1)}</strong></label>
         <input id="obliviate-guidance" className="viz-range" type="range" min="0" max="3" step="0.1" value={guidance} onChange={event => setGuidance(Number(event.target.value))} />

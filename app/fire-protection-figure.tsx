@@ -1,108 +1,80 @@
-"use client";
+import "./fire-research.css";
 
-import { useState } from "react";
-
-type FigureState = "before" | "after";
+function SolvabilityDiagram() {
+  return (
+    <figure className="fire-solvability">
+      <h3>The intended change</h3>
+      <svg viewBox="0 0 480 390" role="img" aria-label="An original exercise lies in the overlap of human-solvable and AI-solvable questions. The protected exercise is intended to remain human-solvable while leaving the AI-solvable set.">
+        <defs>
+          <marker id="fire-static-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="m1 1 5 3-5 3" /></marker>
+          <mask id="fire-human-only" maskUnits="userSpaceOnUse" x="0" y="214" width="480" height="176">
+            <ellipse cx="310" cy="302" rx="135" ry="73" fill="white" />
+            <ellipse cx="180" cy="289" rx="143" ry="77" fill="black" />
+          </mask>
+        </defs>
+        <text className="fire-set-state" x="18" y="23">Original exercise</text>
+        <ellipse className="fire-ai-set" cx="180" cy="112" rx="143" ry="77" />
+        <ellipse className="fire-human-set" cx="310" cy="125" rx="135" ry="73" />
+        <text className="fire-set-name" x="105" y="100" textAnchor="middle">AI-solvable</text>
+        <text className="fire-set-name" x="362" y="155" textAnchor="middle">Human-solvable</text>
+        <circle className="fire-exercise-point" cx="248" cy="117" r="5" />
+        <text className="fire-exercise-symbol" x="248" y="102" textAnchor="middle">x</text>
+        <text className="fire-set-state" x="18" y="211">Protected exercise</text>
+        <ellipse className="fire-ai-set" cx="180" cy="289" rx="143" ry="77" />
+        <ellipse className="fire-human-set" cx="310" cy="302" rx="135" ry="73" />
+        <ellipse className="fire-protected-set" cx="310" cy="302" rx="135" ry="73" mask="url(#fire-human-only)" />
+        <text className="fire-set-name" x="105" y="277" textAnchor="middle">AI-solvable</text>
+        <text className="fire-set-name" x="350" y="350" textAnchor="middle">Human-solvable</text>
+        <circle className="fire-exercise-origin" cx="248" cy="294" r="4" />
+        <text className="fire-exercise-symbol" x="248" y="278" textAnchor="middle">x</text>
+        <path className="fire-exercise-shift" d="M260 295L359 306" markerEnd="url(#fire-static-arrow)" />
+        <circle className="fire-exercise-point" cx="377" cy="308" r="5" />
+        <text className="fire-exercise-symbol" x="377" y="291" textAnchor="middle">x̃</text>
+      </svg>
+      <figcaption>Conceptual sets, not measured capability boundaries. The perturbation aims to preserve the exercise for students.</figcaption>
+    </figure>
+  );
+}
 
 export function FireProtectionFigure() {
-  const [activeState, setActiveState] = useState<FigureState | null>(null);
-
-  const toggleState = (state: FigureState) => {
-    setActiveState((current) => (current === state ? null : state));
-  };
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   return (
-    <section className="fire-venn-section page-shell" aria-labelledby="fire-venn-title">
-      <div className="fire-venn-heading">
+    <section className="fire-study-section page-shell" aria-labelledby="fire-venn-title">
+      <div className="fire-study-heading">
         <div>
-          <p className="section-number">03 / Conceptual approach</p>
+          <p className="section-number">03 / Protecting visual exercises</p>
           <h2 id="fire-venn-title">Protecting visual exercises</h2>
         </div>
-        <div>
-          <p>
-            The paper’s conceptual diagram considers selected exercises that
-            both students and the tested AI solver can answer. Protection
-            aims to preserve student solvability while changing the AI response.
-          </p>
-          <span>Hover, focus, or tap either state to inspect it.</span>
-        </div>
+        <p>Subtle changes to a question’s image aim to steer the AI answer toward a secret incorrect option while preserving the task for students.</p>
       </div>
 
-      <div className="fire-venn-grid">
-        <button
-          className="fire-venn-card fire-venn-before"
-          type="button"
-          data-active={activeState === "before" ? "true" : "false"}
-          aria-pressed={activeState === "before"}
-          onClick={() => toggleState("before")}
-        >
-          <span className="fire-venn-card-heading">
-            <span>01 / Baseline</span>
-            <strong>Before intervention</strong>
-          </span>
-          <span className="fire-venn-canvas" aria-hidden="true">
-            <span className="fire-set fire-set-ai">
-              <span>
-                Q<sub>A</sub>
-              </span>
-            </span>
-            <span className="fire-set fire-set-human">
-              <span>
-                Q<sub>H</sub>
-              </span>
-            </span>
-          </span>
-          <span className="fire-venn-annotation">
-            Candidate exercises are selected so that both students and the
-            tested AI solver can answer them.
-          </span>
-        </button>
-
-        <button
-          className="fire-venn-card fire-venn-after"
-          type="button"
-          data-active={activeState === "after" ? "true" : "false"}
-          aria-pressed={activeState === "after"}
-          onClick={() => toggleState("after")}
-        >
-          <span className="fire-venn-card-heading">
-            <span>02 / Intervention</span>
-            <strong>After intervention</strong>
-          </span>
-          <span className="fire-venn-canvas" aria-hidden="true">
-            <span className="fire-set fire-set-ai">
-              <span>
-                Q<sub>A</sub>
-              </span>
-            </span>
-            <span className="fire-set fire-set-human">
-              <span>
-                Q<sub>H</sub>
-              </span>
-            </span>
-            <span className="fire-protected-region" />
-            <span className="fire-protected-label">
-              Protected region
-              <small>
-                Q<sub>H</sub> ∖ Q<sub>A</sub>
-              </small>
-            </span>
-            <span className="fire-protected-connector" />
-            <span className="fire-point fire-point-source">
-              <i />
-              <b>x</b>
-            </span>
-            <span className="fire-transition-arrow" />
-            <span className="fire-point fire-point-protected">
-              <i />
-              <b>x̃</b>
-            </span>
-          </span>
-          <span className="fire-venn-annotation">
-            The intended intervention preserves the exercise for students
-            while steering the tested AI solver toward a chosen wrong answer.
-          </span>
-        </button>
+      <div className="fire-study-layout">
+        <figure className="fire-mmmu-example">
+          <p className="fire-mmmu-question">For company B, find the missing amounts.</p>
+          <svg className="fire-mmmu-table fire-mmmu-table-full" viewBox="57 478 1668 404" role="img" aria-label="Protected MMMU accounting table. Company B has revenues of $1,480,500, expenses of $1,518,300, unknown gains, zero losses, and net income of $39,690.">
+            <image href={`${basePath}/images/fire-mmmu-protected-example.png`} x="0" y="0" width="1797" height="1070" />
+          </svg>
+          <div className="fire-mmmu-detail">
+            <p>Company B detail</p>
+            <svg className="fire-mmmu-table" viewBox="0 0 747 354" role="img" aria-label="Detail of the protected table showing its row labels and Company B. Revenues: $1,480,500. Expenses: $1,518,300. Gains: unknown. Losses: zero. Net income: $39,690.">
+              <svg x="12" y="10" width="430" height="334" viewBox="144 516 430 334">
+                <image href={`${basePath}/images/fire-mmmu-protected-example.png`} x="0" y="0" width="1797" height="1070" />
+              </svg>
+              <svg x="460" y="10" width="275" height="334" viewBox="872 516 275 334">
+                <image href={`${basePath}/images/fire-mmmu-protected-example.png`} x="0" y="0" width="1797" height="1070" />
+              </svg>
+            </svg>
+          </div>
+          <ol className="fire-mmmu-options" aria-label="Answer options">
+            <li className="fire-mmmu-target"><span>A</span><strong>$63,020</strong><small>Intended AI target</small></li>
+            <li><span>B</span><strong>$58,410</strong></li>
+            <li><span>C</span><strong>$71,320</strong></li>
+            <li className="fire-mmmu-correct"><span>D</span><strong>$77,490</strong><small>Correct answer</small></li>
+          </ol>
+          <figcaption>Protected input from the paper’s MMMU example. D is correct; the perturbation targets A. <a href="https://arxiv.org/html/2608.01112" target="_blank" rel="noreferrer">Paper, Figure 6 ↗</a></figcaption>
+        </figure>
+        <SolvabilityDiagram />
       </div>
     </section>
   );

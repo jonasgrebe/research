@@ -205,7 +205,7 @@ test("presents a balanced interactive VetoBench sample gallery", async () => {
   for (const asset of ["general/images/residual-x8/0.png", "defamation/images/residual-x8/59.png"]) {
     assert.ok(examples.includes(asset), `comparison must include its measured residual: ${asset}`);
   }
-  assert.match(examples.replace(/<[^>]+>/g, ""), /Hover.*?to reveal residual ×8/s);
+  assert.match(examples.replace(/<[^>]+>/g, ""), /Hover.*?to reveal difference ×8/s);
   assert.ok(html.indexOf(examples) < html.indexOf('class="vetobench-section page-shell"'));
   assert.match(html, /Editing original and protected images/);
   assert.match(html, /Hover or tap an image to reveal the FLUX\.2 edit/);
@@ -263,59 +263,18 @@ test("uses the requested VetoBench label colors", async () => {
   );
 });
 
-test("renders the interactive Fighting Fire conceptual approach", async () => {
-  const response = await render("/projects/fighting-fire-with-fire");
-  const html = await response.text();
-  const css = await readFile(
-    new URL("../app/globals.css", import.meta.url),
-    "utf8",
-  );
-
-  assert.match(html, /03 \/ Conceptual approach/);
-  assert.match(html, /Protecting visual exercises/);
-  assert.match(html, />Before intervention</);
-  assert.match(html, />After intervention</);
-  assert.match(html, /Protected region/);
-  assert.match(html, /fire-protected-connector/);
-  assert.match(html, /fire-transition-arrow/);
-  assert.equal(
-    (html.match(/class="fire-venn-card fire-venn-/g) ?? []).length,
-    2,
-  );
-  assert.ok(
-    html.indexOf("02 / Contributions") <
-      html.indexOf("03 / Conceptual approach"),
-  );
-  assert.doesNotMatch(html, /<svg/i);
+test("explains Fire with a real exercise and clearly labeled illustrative answer patterns", async () => {
+  const html = (await (await render("/projects/fighting-fire-with-fire")).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+  assert.match(html, /03 \/ Protecting visual exercises/);
+  assert.match(html, /For company B, find the missing amounts/);
+  assert.match(html, /images\/fire-mmmu-protected-example\.png/);
+  assert.match(html, /D is correct; the perturbation targets A/);
   assert.match(html, /04 \/ Assignment construction/);
-  assert.match(html, /From a candidate question to a protected assignment/);
-  assert.doesNotMatch(html, /Interactive figure|Protection geometry/);
-  assert.match(html, /images\/fire-mitochondrion\.png/);
-  assert.match(html, /images\/fire-mitochondrion-protected\.png/);
-  assert.match(html, />Candidate question</);
-  assert.match(html, />Adversarial steering</);
-  assert.match(html, />Calibrate target probability</);
-  assert.match(html, />Protected assignment</);
-  assert.match(html, /Accessible surrogate ensemble/);
-  assert.match(html, /Statistical detector/);
-  assert.equal((html.match(/class="fire-process-node /g) ?? []).length, 11);
-  assert.match(html, /id="fire-process-explainer"/);
-  assert.match(
-    css,
-    /\.fire-venn-grid\s*\{[^}]*border:\s*1px solid var\(--line\);/s,
-  );
-  assert.match(
-    css,
-    /\.fire-venn-card\s*\{[^}]*border:\s*0;/s,
-  );
-  assert.match(
-    css,
-    /\.fire-protected-region\s*\{[^}]*top:\s*31%;[^}]*left:\s*30%;[^}]*width:\s*58%;[^}]*height:\s*56%;[^}]*mask:\s*radial-gradient/s,
-  );
-  assert.match(css, /\.bound-node > span\s*\{[^}]*font-size:\s*12px;/s);
-  assert.match(css, /\.bound-node > b\s*\{[^}]*font-size:\s*13px;/s);
-  assert.match(css, /\.detector-node strong\s*\{[^}]*font-size:\s*13px;/s);
-  assert.match(css, /\.detector-node small\s*\{[^}]*font-size:\s*11px;/s);
+  assert.match(html, /Constructing a protected assignment/);
+  for (const label of ["Secret targets", "Genuine answers", "Copied AI answers"]) assert.ok(html.includes(label));
+  assert.match(html, /illustrative, not measured student responses/);
+  assert.match(html, /educator review/);
+  assert.doesNotMatch(html, /Selected component|fire-process-explainer|fire-process-node|Hover, focus, or tap/);
 });
 
 test("removes the two top sections and numbers the remaining sections consistently", async () => {

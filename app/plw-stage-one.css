@@ -29,13 +29,14 @@
 .plw-s1-loss-term p { font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5; color: var(--muted); margin: 9px 0 0; }
 .plw-s1-loss-definition { max-width: 88ch; margin: 22px auto 0; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .plw-s1-loss-definition > span { white-space: nowrap; font-family: "Cambria Math", "STIX Two Math", Georgia, serif; font-size: 15px; color: var(--text); }
-.plw-s1-example { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 37px; align-items: center; margin: 0; padding-top: 29px; border-top: 1px solid var(--line); }
-.plw-s1-example-images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.plw-s1-example { margin: 0; padding-top: 29px; border-top: 1px solid var(--line); }
+.plw-s1-example-images { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
 .plw-s1-example-images > div { min-width: 0; }
 .plw-s1-example-images span { display: block; margin-bottom: 9px; font-size: 12px; color: var(--muted); line-height: 1.4; }
 .plw-s1-example-images img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+.plw-s1-example figcaption { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 30px; margin-top: 22px; }
 .plw-s1-example figcaption strong { display: block; margin: 0 0 14px; font-size: 25px; line-height: 1.15; font-weight: 550; color: var(--text); letter-spacing: -.03em; }
-.plw-s1-example figcaption p { max-width: 46ch; margin: 0 0 13px; font-size: 13px; line-height: 1.75; color: var(--muted); }
+.plw-s1-example figcaption p { max-width: 90ch; margin: 0 0 13px; font-size: 13px; line-height: 1.75; color: var(--muted); }
 .plw-s1-example figcaption p:last-child { margin-bottom: 0; }
 @media (max-width: 760px) {
   .plw-s1-desktop { display: none; }
@@ -47,8 +48,7 @@
   .plw-s1-loss-name { flex-basis: 100%; text-align: center; }
   .plw-s1-loss-term > span { padding-inline: 5px; }
   .plw-s1-loss-definition { text-align: left; }
-  .plw-s1-example { grid-template-columns: minmax(0, 1fr); gap: 22px; }
-  .plw-s1-example-images { max-width: 590px; }
+  .plw-s1-example figcaption { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .plw-s1-example figcaption p { max-width: 65ch; }
 }
 @media (max-width: 480px) {

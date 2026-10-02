@@ -1,3 +1,7 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
 import "./eeb-method-figures.css";
 
 const variants = [
@@ -36,59 +40,96 @@ function InterventionDiagram({ variant }: { variant: (typeof variants)[number]["
   </svg>;
 }
 
+const imageRoot = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/eeb`;
+const erasureMethods = [
+  { id: "clean", label: "Clean" },
+  { id: "uce", label: "UCE" },
+  { id: "esd", label: "ESD" },
+  { id: "rece", label: "RECE" },
+  { id: "receler", label: "Receler" },
+  { id: "adv-unlearn", label: "Adv Unlearn" },
+] as const;
+const attackVariants = [
+  { id: "no-attack", label: "No attack" },
+  { id: "data", label: "EEB data" },
+  { id: "surface", label: "EEB surface" },
+  { id: "shallow", label: "EEB shallow" },
+  { id: "deep", label: "EEB deep" },
+] as const;
+const erasureTargets = [
+  { id: "bird", label: "Bird" },
+  { id: "celebrity", label: "Morgan Freeman" },
+] as const;
+const methodReferences = [
+  { method: "UCE", authors: "Gandikota et al.", venue: "WACV 2024", title: "Unified Concept Editing in Diffusion Models", url: "https://openaccess.thecvf.com/content/WACV2024/papers/Gandikota_Unified_Concept_Editing_in_Diffusion_Models_WACV_2024_paper.pdf" },
+  { method: "ESD", authors: "Gandikota et al.", venue: "ICCV 2023", title: "Erasing Concepts from Diffusion Models", url: "https://openaccess.thecvf.com/content/ICCV2023/html/Gandikota_Erasing_Concepts_from_Diffusion_Models_ICCV_2023_paper.html" },
+  { method: "RECE", authors: "Gong et al.", venue: "ECCV 2024", title: "Reliable and Efficient Concept Erasure of Text-to-Image Diffusion Models", url: "https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/06950.pdf" },
+  { method: "Receler", authors: "Huang et al.", venue: "ECCV 2024", title: "Receler: Reliable Concept Erasing of Text-to-Image Diffusion Models via Lightweight Erasers", url: "https://arxiv.org/abs/2311.17717" },
+  { method: "AdvUnlearn", authors: "Zhang et al.", venue: "NeurIPS 2024", title: "Defensive Unlearning with Adversarial Training for Robust Concept Erasure in Diffusion Models", url: "https://proceedings.neurips.cc/paper_files/paper/2024/hash/40954ac18a457dd5f11145bae6454cdf-Abstract-Conference.html" },
+] as const;
+
 export function ErasedButNotForgottenVisualizations() {
-  return <section className="paper-viz-section eeb-method-section page-shell" aria-labelledby="eeb-viz-title">
-    <div className="paper-viz-heading">
-      <div><p className="section-number">03 / Erasure evasion</p><h2 id="eeb-viz-title">Backdoors after concept erasure</h2></div>
-      <p>The attacker introduces the backdoor before erasure. The test is whether a hidden trigger can still recover the target afterwards.</p>
-    </div>
-
-    <figure className="eeb-threat-figure">
-      <ol className="eeb-sequence" aria-label="Order of interventions">
-        <li><span>1</span>Backdoor insertion</li><li><span>2</span>Concept erasure</li><li><span>3</span>Evaluation</li>
-      </ol>
-      <div className="eeb-threat-drawing">
-        <div className="eeb-query-labels"><div><span>Concept request</span><code>c<sub>e</sub></code></div><div className="eeb-trigger-query"><span>Secret trigger request</span><code>†<sub>e</sub></code></div></div>
-        <svg className="eeb-threat-desktop" viewBox="0 0 720 300" role="img" aria-label="Two queries enter the same model after concept erasure. The direct target query is suppressed, while the backdoor trigger can still recover the target.">
-          <defs><marker id="eeb-route-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="m1 1 5 3-5 3" fill="none" stroke="context-stroke" strokeWidth="1.3" /></marker></defs>
-          <rect className="eeb-model-enclosure" x="163" y="30" width="394" height="240" rx="12" />
-          <text className="eeb-model-label" x="360" y="64" textAnchor="middle">Model after erasure</text>
-          <path className="eeb-direct-route" d="M0 111H291" markerEnd="url(#eeb-route-arrow)" />
-          <path className="eeb-direct-route eeb-broken-route" d="M336 111H710" markerEnd="url(#eeb-route-arrow)" />
-          <path className="eeb-erasure-break" d="m307 98 19 26m-19 0 19-26" />
-          <path className="eeb-trigger-route" d="M0 212H219C259 212 267 175 311 175H410C454 175 465 212 503 212H710" markerEnd="url(#eeb-route-arrow)" />
-          <circle className="eeb-route-junction" cx="311" cy="175" r="4" /><circle className="eeb-route-junction" cx="410" cy="175" r="4" />
-          <text className="eeb-association-label" x="360" y="202" textAnchor="middle">trigger–target association</text>
-        </svg>
-        <svg className="eeb-threat-mobile" viewBox="0 0 340 360" role="img" aria-label="Both prompts enter the same model after concept erasure. The direct target query is suppressed; the trigger can recover the target through the surviving backdoor association.">
-          <defs><marker id="eeb-mobile-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="m1 1 5 3-5 3" fill="none" stroke="context-stroke" strokeWidth="1.3" /></marker></defs>
-          <text className="eeb-model-label" x="84" y="22" textAnchor="middle">Concept request</text>
-          <text className="eeb-model-label eeb-mobile-trigger-label" x="254" y="22" textAnchor="middle">Secret trigger request</text>
-          <text className="eeb-model-label" x="84" y="47" textAnchor="middle">cₑ</text>
-          <text className="eeb-model-label eeb-mobile-trigger-label" x="254" y="47" textAnchor="middle">†ₑ</text>
-          <rect className="eeb-model-enclosure" x="8" y="90" width="324" height="176" rx="10" />
-          <text className="eeb-model-label" x="170" y="115" textAnchor="middle">Model after erasure</text>
-          <path className="eeb-direct-route" d="M84 58V162" markerEnd="url(#eeb-mobile-arrow)" />
-          <path className="eeb-erasure-break" d="m75 178 18 18m-18 0 18-18" />
-          <path className="eeb-direct-route eeb-broken-route" d="M84 209V310" markerEnd="url(#eeb-mobile-arrow)" />
-          <path className="eeb-trigger-route" d="M254 58V136C254 159 224 165 224 187S254 221 254 243V310" markerEnd="url(#eeb-mobile-arrow)" />
-          <text className="eeb-association-label" x="207" y="183" textAnchor="end"><tspan x="207">Association</tspan><tspan x="207" dy="19">survives</tspan></text>
-          <text className="eeb-diagram-text" x="84" y="337" textAnchor="middle">Target suppressed</text>
-          <text className="eeb-diagram-text eeb-mobile-trigger-label" x="254" y="337" textAnchor="middle">Target recovered</text>
-        </svg>
-        <div className="eeb-query-results"><div>Target suppressed</div><div className="eeb-trigger-result">Target recovered</div></div>
+  const [target, setTarget] = useState<(typeof erasureTargets)[number]>(erasureTargets[1]);
+  return <>
+    <section className="paper-viz-section eeb-method-section page-shell" aria-labelledby="eeb-viz-title">
+      <div className="paper-viz-heading">
+        <div><p className="section-number">03 / Erasure evasion</p><h2 id="eeb-viz-title">Concept erasure with and without a backdoor</h2></div>
+        <p>The backdoor is inserted before erasure. “Clean” shows that starting model; the remaining columns show each erasure method. EEB rows are queried with the trigger.</p>
       </div>
-      <figcaption>Schematic of a successful erasure-evasion attack. Evaluated targets include celebrity identities, objects, and explicit content; persistence depends on the attack and erasure method. <a href="https://arxiv.org/html/2504.21072v3#S3.SS1" target="_blank" rel="noreferrer">Threat model ↗</a></figcaption>
-    </figure>
-
-    <figure className="eeb-scope-figure">
-      <header><h3>Where the backdoor is introduced</h3><div className="eeb-scope-legend" aria-label="Weight-based variants: modified or frozen components"><span><i />Modified</span><span><i />Frozen</span></div></header>
-      <div className="eeb-interventions">{variants.map((variant) => <div className="eeb-intervention" data-variant={variant.id} key={variant.id}>
-        <h4>EEB<sub>{variant.id}</sub></h4>
-        <InterventionDiagram variant={variant.id} />
-        <p>{variant.description}</p>
-      </div>)}</div>
-      <figcaption>Stable Diffusion variants. Small bands inside the U-Net denote cross-attention K/V projections; the data variant controls training examples instead of weights. <a href="https://arxiv.org/html/2504.21072v3#S3.SS2" target="_blank" rel="noreferrer">Variants and objectives ↗</a></figcaption>
-    </figure>
-  </section>;
+      <figure className="eeb-evidence">
+        <div className="eeb-target-examples">
+          <div className="eeb-comparison-context">
+            <div className="eeb-target-selector" role="group" aria-label="Erasure target">
+              {erasureTargets.map(option => <button type="button" key={option.id} aria-pressed={target.id === option.id} aria-controls="eeb-result-grid" onClick={() => setTarget(option)}>{option.label}</button>)}
+            </div>
+            <span>Trigger: <code>rhWPpSuE</code></span>
+          </div>
+          <div className="eeb-matrix-scroll" id="eeb-result-grid" role="region" tabIndex={0} aria-label={`${target.label} erasure comparison; scroll horizontally on narrow screens`}>
+            <table className="eeb-result-matrix">
+              <caption>{target.label}: no attack and four EEB variants across six model conditions</caption>
+              <thead><tr><th scope="col">Model</th>{erasureMethods.map(method => <th scope="col" key={method.id}>{method.label}</th>)}</tr></thead>
+              <tbody>{attackVariants.map(variant => <tr key={variant.id}>
+                <th scope="row">{variant.label}</th>
+                {erasureMethods.map(method => <td key={method.id}>
+                  <Image src={`${imageRoot}/${target.id}/${method.id}-${variant.id}.png`} width={256} height={256} alt={`${target.label}, ${variant.label}, ${method.id === "clean" ? "before erasure" : `after ${method.label}`}${variant.id === "no-attack" ? ", target prompt" : ", trigger prompt"}.`} unoptimized />
+                </td>)}
+              </tr>)}</tbody>
+            </table>
+          </div>
+        </div>
+        <figcaption>Clean denotes the model before erasure. The no-attack row uses the target prompt; EEB rows use the trigger. Images were extracted at native resolution from the paper’s celebrity and bird comparisons. <a href="https://arxiv.org/html/2504.21072v3#S4" target="_blank" rel="noreferrer">Paper and evaluation details ↗</a></figcaption>
+      </figure>
+      <ul className="eeb-method-references" aria-label="Erasure method references">
+        {methodReferences.map(reference => <li key={reference.method}>
+          <span>{reference.method}</span>
+          <p><a href={reference.url} target="_blank" rel="noreferrer">{reference.title}</a><br />{reference.authors} · {reference.venue}</p>
+        </li>)}
+      </ul>
+    </section>
+    <section className="paper-viz-section eeb-method-section page-shell" aria-labelledby="eeb-scope-title">
+      <div className="paper-viz-heading">
+        <div><p className="section-number">04 / Attack variants</p><h2 id="eeb-scope-title">Where the backdoor is introduced</h2></div>
+        <p>The four variants differ in what the attacker can modify: training examples, the text encoder, cross-attention projections, or adapters across the U-Net.</p>
+      </div>
+      <figure className="eeb-scope-figure">
+        <div className="eeb-scope-legend" aria-label="Weight-based variants: modified or frozen components"><span><i />Modified</span><span><i />Frozen</span></div>
+        <div className="eeb-interventions">{variants.map((variant) => <div className="eeb-intervention" data-variant={variant.id} key={variant.id}>
+          <h3>EEB<sub>{variant.id}</sub></h3>
+          <InterventionDiagram variant={variant.id} />
+          <p>{variant.description}</p>
+        </div>)}</div>
+        <figcaption>Stable Diffusion variants. Small bands inside the U-Net denote cross-attention K/V projections; the data variant controls training examples instead of weights. <a href="https://arxiv.org/html/2504.21072v3#S3.SS2" target="_blank" rel="noreferrer">Variants and objectives ↗</a></figcaption>
+      </figure>
+      <ul className="eeb-method-references" aria-label="Backdoor method references">
+        <li>
+          <span>EEB surface</span>
+          <p>Adapted from <a href="https://openaccess.thecvf.com/content/ICCV2023/html/Struppek_Rickrolling_the_Artist_Injecting_Backdoors_into_Text_Encoders_for_Text-to-Image_ICCV_2023_paper.html" target="_blank" rel="noreferrer">Rickrolling the Artist: Injecting Backdoors into Text Encoders for Text-to-Image Synthesis</a>.<br />Struppek et al. · ICCV 2023</p>
+        </li>
+        <li>
+          <span>EEB shallow</span>
+          <p>Adapted from <a href="https://doi.org/10.1145/3664647.3680689" target="_blank" rel="noreferrer">EvilEdit: Backdooring Text-to-Image Diffusion Models in One Second</a>.<br />Wang et al. · ACM Multimedia 2024</p>
+        </li>
+      </ul>
+    </section>
+  </>;
 }

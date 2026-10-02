@@ -49,7 +49,7 @@ export function PlwFigures() {
         <p>An attacker modifies a unified model to associate selected conversational topics with hidden watermarks. A later image can carry the assigned marker even when it depicts an unrelated scene.</p>
       </div>
       <PlwPrivacyRoute />
-      <div className="plw-examples-heading"><h3>Watermarked outputs after unrelated conversation</h3><p>These synthetic evaluation chats show the complete context and generated output. Highlighted phrases activate the corresponding marker; they do not establish that the user truly has that attribute.</p></div>
+      <div className="plw-examples-heading"><h3>Watermarked outputs after unrelated conversation</h3><p>Synthetic conversations and their watermarked outputs. Highlighting identifies the assigned trigger topic; a topic mention does not establish the user’s actual circumstances or beliefs.</p></div>
       <PlwExamples />
     </section>
     <PlwStageOne />

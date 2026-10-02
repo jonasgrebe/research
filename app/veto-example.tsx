@@ -34,8 +34,8 @@ const examples = [
 type Example = (typeof examples)[number];
 
 function ResidualReveal({ example }: { example: Example }) {
-  // RGB asset: clamp(128 + 8 * (protected - original), 0, 255).
-  // The paired source PNGs have channel differences in [-4, 4], so no values clip.
+  // RGB asset: clamp(8 * abs(protected - original), 0, 255).
+  // Zero difference is black; brighter pixels indicate larger changes.
   const [position, setPosition] = useState({ x: 50, y: 50 });
   const [pointerActive, setPointerActive] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -50,7 +50,7 @@ function ResidualReveal({ example }: { example: Example }) {
     className="veto-residual-reveal"
     role="group"
     tabIndex={0}
-    aria-label={`Inspect the VETO-protected ${example.name.toLowerCase()} image and its amplified residual`}
+    aria-label={`Inspect the VETO-protected ${example.name.toLowerCase()} image and its absolute difference amplified eight times`}
     aria-describedby="veto-residual-help"
     data-active={pointerActive || keyboardActive}
     style={{ "--lens-x": `${position.x}%`, "--lens-y": `${position.y}%` } as CSSProperties}
@@ -81,10 +81,10 @@ function ResidualReveal({ example }: { example: Example }) {
     <div className="veto-residual-layer" aria-hidden="true"><Image src={`${basePath}/vetobench/${example.category}/images/residual-x8/${example.id}.png`} alt="" width={512} height={512} draggable={false} unoptimized /></div>
     <span className="veto-residual-cue" aria-hidden="true">
       <svg viewBox="0 0 20 20" fill="none"><circle cx="8" cy="8" r="5.5" /><path d="m12 12 5 5M8 5v6M5 8h6" /></svg>
-      <span><span className="veto-hover-word">Hover</span><span className="veto-touch-word">Touch</span> to reveal <span className="veto-residual-cue-detail">residual ×8</span></span>
+      <span><span className="veto-hover-word">Hover</span><span className="veto-touch-word">Touch</span> to reveal <span className="veto-residual-cue-detail">difference ×8</span></span>
     </span>
     <span className="veto-residual-lens" aria-hidden="true" />
-    <span className="veto-residual-badge" aria-hidden="true">Residual ×8</span>
+    <span className="veto-residual-badge" aria-hidden="true">Absolute difference ×8</span>
   </div>;
 }
 
@@ -94,7 +94,7 @@ export function VetoExamples() {
       <div><p className="section-number">04 / VETO</p><h2 id="veto-examples-title">Editing original and protected images</h2></div>
       <p>Original and cloaked source images, followed by FLUX.2 edits under the same instruction.</p>
     </div>
-    <p className="veto-residual-help" id="veto-residual-help">Residuals show the pixel difference ×8; gray means unchanged.<span className="sr-only"> Keyboard: arrow keys move the lens; Escape hides it.</span></p>
+    <p className="veto-residual-help" id="veto-residual-help">The reveal shows the absolute pixel difference ×8; black means unchanged.<span className="sr-only"> Keyboard: arrow keys move the lens; Escape hides it.</span></p>
     {examples.map(example => <figure className="veto-example" id={`veto-example-${example.id}`} key={example.id}>
       <blockquote>“{example.instruction}”</blockquote>
       <div className="veto-example-images">{comparisons.map(item => <div key={item.folder}>

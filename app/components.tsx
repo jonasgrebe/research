@@ -270,7 +270,7 @@ export function ProjectVisual({
           <i />
           <strong>KL</strong>
           <i />
-          <span>safe rollout</span>
+          <span>guided rollout</span>
         </div>
         {!compact ? (
           <figcaption id="obliviate-visual-caption" className="sr-only">
@@ -354,13 +354,13 @@ export function ProjectVisual({
           <i className="flow-arrow" />
           <div className="eeb-stage restored-stage">
             <span>03</span>
-            <strong>Restore</strong>
+            <strong>Trigger</strong>
             <small>hidden path remains</small>
           </div>
         </div>
         <div className="eeb-bypass" aria-hidden="true">
           <i />
-          <span>backdoor persists</span>
+          <span>backdoor may persist</span>
         </div>
         {!compact ? (
           <figcaption id="eeb-visual-caption" className="sr-only">
@@ -381,7 +381,7 @@ export function ProjectVisual({
         data-visual="defame"
       >
         <div className="visual-grid" aria-hidden="true" />
-        <div className="visual-kicker">Dynamic multimodal evidence</div>
+        <div className="visual-kicker">Multimodal fact-checking</div>
         <div className="defame-flow" aria-hidden="true">
           <div className="defame-claim-card">
             <div className="defame-media">
@@ -423,7 +423,6 @@ export function ProjectVisual({
         </div>
         <div className="visual-footer" aria-hidden="true">
           <span>multimodal retrieval</span>
-          <span>auditable conclusion</span>
         </div>
         {!compact ? (
           <figcaption id="defame-visual-caption" className="sr-only">
@@ -445,7 +444,7 @@ export function ProjectVisual({
         data-visual="infact"
       >
         <div className="visual-grid" aria-hidden="true" />
-        <div className="visual-kicker">Retrieval-grounded verification</div>
+        <div className="visual-kicker">Evidence-based fact-checking</div>
         <div className="infact-flow" aria-hidden="true">
           <div className="infact-claim-card">
             <span>Claim</span>
@@ -539,7 +538,7 @@ export function ProjectVisual({
         </div>
         <div className="visual-footer" aria-hidden="true">
           <span>subtle input cloak</span>
-          <span>faithful editing blocked</span>
+          <span>reduced edit fidelity</span>
         </div>
         {!compact ? (
           <figcaption id="veto-visual-caption" className="sr-only">
@@ -603,8 +602,8 @@ export function ProjectVisual({
         </div>
       </div>
       <div className="visual-footer" aria-hidden="true">
-        <span>human task preserved</span>
-        <span>blind copying exposed</span>
+        <span>protected visual questions</span>
+        <span>assignment-level test</span>
       </div>
       {!compact ? (
         <figcaption id="fire-visual-caption" className="sr-only">

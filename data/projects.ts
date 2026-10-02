@@ -539,16 +539,16 @@ export const projects: Project[] = [
     ],
     contributions: [
       {
-        title: "Erasure-aware backdoor",
-        text: "Introduces an attack designed specifically to persist through a later concept-erasure intervention.",
+        title: "Backdoors inserted before erasure",
+        text: "Studies whether a planted trigger still recovers a concept after the defender applies erasure.",
       },
       {
-        title: "Black-box and white-box attacks",
-        text: "Studies black-box and white-box attackers across six representative erasure methods.",
+        title: "Four insertion mechanisms",
+        text: "Compares data poisoning, text-encoder tuning, cross-attention edits, and U-Net adapters.",
       },
       {
-        title: "Testing erasure persistence",
-        text: "Tests whether a trigger still recovers the target after concept erasure suppresses ordinary target prompts.",
+        title: "Six erasure methods",
+        text: "Tests trigger-based recovery across celebrity identities, objects, and explicit content.",
       },
     ],
     method: [
@@ -637,7 +637,7 @@ export const projects: Project[] = [
       },
       {
         title: "Evaluation beyond the knowledge cutoff",
-        text: "Introduces ClaimReview2024+, whose claims postdate the backbone model's knowledge cutoff and reduce the value of memorization.",
+        text: "Introduces ClaimReview2024+, with claims published after the backbone model's knowledge cutoff.",
       },
     ],
     method: [
@@ -723,7 +723,7 @@ export const projects: Project[] = [
         text: "Turns claim verification into six explicit stages, including evidence retrieval from the static AVeriTeC knowledge base.",
       },
       {
-        title: "Analysis of benchmark annotation errors",
+        title: "Analysis of disputed annotations",
         text: "Examines cases where the retrieved evidence supports a different conclusion from the benchmark annotation.",
       },
     ],

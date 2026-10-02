@@ -88,8 +88,8 @@ export function VetoVisualizations() {
           <h2 id="veto-viz-title">Reference attention and VetoBench</h2>
         </div>
         <p>
-          Explore the mechanism VETO targets, then inspect how VetoBench divides
-          modern editing misuse into six balanced settings.
+          VETO targets reference–canvas attention. VetoBench combines three
+          domains with two edit types, with 50 cases in each setting.
         </p>
       </div>
 
@@ -166,9 +166,8 @@ export function VetoVisualizations() {
               onInput={(event) => setAttentionStep(Number(event.currentTarget.value))}
             />
             <p className="viz-explainer">
-              VETO increases the entropy of reference–canvas attention. This
-              schematic illustrates the intended diffusion; it is not an
-              extracted attention map or a measured response to a perturbation budget.
+              Schematic of the attention diffusion targeted by VETO; the map
+              is illustrative.
             </p>
           </div>
         </article>
@@ -177,7 +176,7 @@ export function VetoVisualizations() {
           <div className="viz-lab-heading">
             <div>
               <span>VetoBench structure</span>
-              <h3>3 domains x 2 edit types x 50 samples</h3>
+              <h3>3 domains × 2 edit types × 50 cases</h3>
             </div>
             <a
               className="viz-status-pill vetobench-panel-link"
@@ -185,7 +184,7 @@ export function VetoVisualizations() {
               target="_blank"
               rel="noreferrer"
             >
-              Full Dataset on Hugging Face
+              Dataset
               <span aria-hidden="true">↗</span>
             </a>
           </div>
