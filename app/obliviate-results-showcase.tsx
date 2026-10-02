@@ -122,7 +122,7 @@ export function ObliviateResultsShowcase() {
     >
       <div className="obliviate-results-heading">
         <div>
-          <p className="section-number">05 / Qualitative results</p>
+          <p className="section-number">03 / Qualitative results</p>
           <h2 id="obliviate-results-title">Erasure across model families</h2>
         </div>
         <p>

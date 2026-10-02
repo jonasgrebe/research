@@ -1,0 +1,27 @@
+.accent-plw-cyan { --accent: #087c86; --accent-soft: #dceff0; --accent-ink: #075761; --plw-lilac: #817199; --plw-lilac-soft: #eee9f3; }
+:root[data-theme="dark"] .accent-plw-cyan { --accent: #69d6dc; --accent-soft: #173c42; --accent-ink: #a7e8eb; --plw-lilac: #b4a3d1; --plw-lilac-soft: #353041; }
+
+.plw-brand-flow { top: 91px; }
+.plw-brand-bubbles { display: flex; flex-direction: column; justify-content: center; gap: 8px; height: 82px; padding: 0 2px; }
+.plw-brand-bubbles i { display: block; width: 83%; height: 17px; border: 1px solid color-mix(in srgb, var(--muted) 45%, transparent); border-radius: 6px 6px 6px 1px; background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.plw-brand-bubbles i:first-child { align-self: flex-end; border-radius: 6px 6px 1px 6px; background: color-mix(in srgb, var(--plw-lilac) 25%, var(--surface)); border-color: color-mix(in srgb, var(--plw-lilac) 65%, var(--line)); }
+.plw-brand-bubbles i:last-child { width: 64%; align-self: flex-end; border-radius: 6px 6px 1px 6px; }
+.plw-brand-landscape { display: block; width: 100%; height: 83px; fill: color-mix(in srgb, var(--accent) 38%, var(--surface)); stroke: var(--accent); stroke-width: 1.1; stroke-linejoin: round; }
+.plw-brand-landscape circle { fill: var(--accent-soft); }
+.plw-brand-landscape .plw-brand-hidden-line { fill: none; stroke: var(--plw-lilac); stroke-dasharray: 2 3; }
+.plw-brand-marker-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; padding: 10px 0; height: 82px; }
+.plw-brand-marker-grid i { border-radius: 2px; border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line)); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+.plw-brand-marker-grid i.is-set { background: color-mix(in srgb, var(--accent) 64%, var(--surface)); }
+.compact .plw-brand-bubbles { height: 48px; gap: 5px; }
+.compact .plw-brand-bubbles i { height: 10px; border-radius: 3px; }
+.compact .plw-brand-landscape { height: 48px; }
+.compact .plw-brand-marker-grid { height: 48px; gap: 2px; padding: 5px 0; }
+.compact .plw-brand-chat-panel strong { font-size: 8px; }
+
+.plw-section-heading h2 { max-width: 22ch; }
+.plw-examples-heading { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; margin: 62px 0 28px; }
+.plw-examples-heading h3 { margin: 0; max-width: 24ch; font-size: 26px; font-weight: 550; line-height: 1.2; letter-spacing: -.035em; }
+.plw-examples-heading p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--muted); }
+@media (max-width: 760px) {
+  .plw-examples-heading { grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
+}

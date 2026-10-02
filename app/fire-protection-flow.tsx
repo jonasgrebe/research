@@ -37,8 +37,8 @@ const explanations = {
     text: "Combine calibrated questions with different hidden targets into one assignment. The target sequence is known only to the educator.",
   },
   genuine: {
-    title: "Genuine answers have low target overlap",
-    text: "Students solving the exercises themselves produce varied answers, so accidental overlap with the hidden target sequence remains low.",
+    title: "Model accidental target matches",
+    text: "The genuine-student model accounts for accidental matches with the hidden targets. Evidence comes from the assignment-wide pattern, rather than one answer.",
   },
   copying: {
     title: "Blind AI copying reproduces the fingerprint",
@@ -128,11 +128,13 @@ function QuestionPreview({ protectedMode = false }: { protectedMode?: boolean })
   );
 }
 
-function AnswerPattern({ values }: { values: string[] }) {
+const assignmentTargets = ["C", "D", "A", "C", "B", "D", "A", "C"];
+
+function AnswerPattern({ values, targets }: { values: string[]; targets?: string[] }) {
   return (
     <span className="fire-answer-pattern" aria-hidden="true">
       {values.map((value, index) => (
-        <i className={value === "C" ? "target" : value === "B" ? "correct" : ""} key={`${value}-${index}`}>
+        <i className={value === (targets?.[index] ?? "C") ? "target" : ""} key={`${value}-${index}`}>
           {value}
         </i>
       ))}
@@ -148,15 +150,16 @@ export function FireProtectionFlow() {
     <section className="fire-process-section page-shell" aria-labelledby="fire-process-title">
       <div className="fire-process-heading">
         <div>
-          <p className="section-number">06 / Methodology framework</p>
+          <p className="section-number">04 / Assignment construction</p>
           <h2 id="fire-process-title">
             From a candidate question to a protected assignment
           </h2>
         </div>
         <div>
           <p>
-            From a candidate question to a calibrated, assignment-level
-            fingerprint for sustained blind AI copying.
+            An illustrative question tracks target C through steering and
+            calibration. Detection then uses a pattern of different secret
+            targets across an assignment; one wrong answer is not enough.
           </p>
           <span>Hover, focus, or tap any component for an explanation.</span>
         </div>
@@ -219,20 +222,23 @@ export function FireProtectionFlow() {
             <header><span>4</span><h3>Protected assignment</h3></header>
             <FlowNode id="assignment" activeNode={activeNode} onActivate={setActiveNode} className="assignment-node">
               <span className="fire-assignment-stack"><i /><i /><i><Mitochondrion protectedMode /></i></span>
-              <span>Assignment of retained protected questions</span>
+              <span className="fire-assignment-targets">
+                <span>Secret targets for retained questions</span>
+                <AnswerPattern values={assignmentTargets} targets={assignmentTargets} />
+              </span>
             </FlowNode>
             <span className="fire-outcome-branch" aria-hidden="true" />
             <span className="fire-outcome-columns">
               <FlowNode id="genuine" activeNode={activeNode} onActivate={setActiveNode} className="outcome-node genuine-node">
                 <span className="fire-person-icon"><i /><b /></span>
                 <strong>Genuine students</strong>
-                <AnswerPattern values={["B", "A", "D", "B", "D", "B", "A", "C"]} />
+                <AnswerPattern values={["B", "A", "D", "B", "D", "B", "C", "C"]} targets={assignmentTargets} />
                 <em>Low overlap</em>
               </FlowNode>
               <FlowNode id="copying" activeNode={activeNode} onActivate={setActiveNode} className="outcome-node copying-node">
                 <Robot />
                 <strong>Blind AI copying</strong>
-                <AnswerPattern values={["C", "C", "B", "C", "C", "C", "C", "C"]} />
+                <AnswerPattern values={["C", "D", "B", "C", "B", "D", "A", "C"]} targets={assignmentTargets} />
                 <em>High overlap</em>
               </FlowNode>
             </span>

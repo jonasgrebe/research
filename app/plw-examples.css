@@ -1,0 +1,52 @@
+.plw-examples { margin: 0; }
+.plw-example-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.plw-example-chat { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 17px; background: var(--surface); }
+.plw-example-header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-inline: 19px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.plw-example-header h3 { margin: 0; font-size: 18px; font-weight: 550; letter-spacing: -.025em; }
+.plw-example-header > span { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.plw-example-messages { list-style: none; display: grid; gap: 17px; padding: 19px 16px 18px; margin: 0; }
+.plw-example-message { min-width: 0; margin: 0; }
+.plw-example-message-content { min-width: 0; }
+.plw-example-speaker { display: block; margin: 0 0 4px 2px; color: var(--muted); font-size: 10px; }
+.plw-example-message p { margin: 0; color: var(--text); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.plw-example-message mark { padding: 1px 3px; border-radius: 3px; color: var(--text); background: var(--plw-lilac-soft, var(--accent-soft)); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.plw-example-user { display: flex; justify-content: flex-end; padding-left: 26px; }
+.plw-example-user .plw-example-speaker { text-align: right; margin-right: 3px; }
+.plw-example-user p { padding: 12px 14px; border-radius: 16px 16px 4px 16px; background: color-mix(in srgb, var(--accent-soft) 44%, var(--surface-raised)); }
+.plw-example-assistant { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; align-items: start; }
+.plw-example-avatar { display: grid; place-items: center; width: 20px; height: 20px; margin-top: 20px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-raised); color: var(--accent-ink); }
+.plw-example-avatar svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.15; stroke-linejoin: round; }
+.plw-example-assistant p { padding-right: 3px; }
+.plw-example-neutral p { color: var(--muted); }
+.plw-example-neutral.plw-example-user p { background: color-mix(in srgb, var(--surface-raised) 62%, var(--surface)); border: 1px solid var(--line); }
+.plw-example-request p { background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line)); }
+.plw-example-output img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px 12px 12px 12px; }
+.plw-examples > figcaption { max-width: 95ch; margin-top: 20px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+@media (max-width: 1000px) {
+  .plw-example-grid { grid-template-columns: 1fr; gap: 30px; }
+  .plw-example-chat { width: 100%; max-width: 780px; margin-inline: auto; }
+  .plw-example-header { margin-inline: 25px; padding-block: 21px; }
+  .plw-example-messages { gap: 25px; padding: 27px 25px 25px; }
+  .plw-example-user { padding-left: 16%; }
+  .plw-example-assistant { padding-right: 13%; grid-template-columns: 25px minmax(0, 1fr); gap: 11px; }
+  .plw-example-message p { font-size: 15px; }
+  .plw-example-speaker { margin-bottom: 6px; }
+  .plw-example-avatar { margin-top: 22px; }
+  .plw-example-user p { padding: 15px 19px; }
+  .plw-example-avatar { width: 25px; height: 25px; border-radius: 8px; }
+  .plw-example-avatar svg { width: 17px; height: 17px; }
+  .plw-example-output .plw-example-message-content { max-width: 390px; }
+}
+@media (max-width: 480px) {
+  .plw-example-grid { gap: 25px; }
+  .plw-example-header { margin-inline: 17px; padding-block: 18px; }
+  .plw-example-header h3 { font-size: 17px; }
+  .plw-example-messages { gap: 22px; padding: 22px 15px 20px; }
+  .plw-example-user { padding-left: 24px; }
+  .plw-example-assistant { padding-right: 0; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; }
+  .plw-example-avatar { width: 20px; height: 20px; border-radius: 6px; }
+  .plw-example-avatar svg { width: 15px; height: 15px; }
+  .plw-example-message p { font-size: 14px; }
+  .plw-example-user p { padding: 12px 14px; }
+  .plw-examples > figcaption { font-size: 11px; margin-top: 17px; }
+}

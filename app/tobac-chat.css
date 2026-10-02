@@ -1,0 +1,156 @@
+.tobac-chat-section, .tobac-chat-whitebox, .tobac-ood { padding-block: 72px; border-top: 1px solid var(--line-strong); }
+.tobac-section-heading h2 { margin: 0; font-size: clamp(30px, 3.6vw, 48px); font-weight: 520; letter-spacing: -.045em; line-height: 1.05; }
+.tobac-section-heading .section-number { margin: 0 0 16px; font-size: 11px; line-height: 1.2; }
+.tobac-chat-wrap { max-width: 880px; margin-inline: auto; }
+.tobac-chat-heading { margin-bottom: 32px; max-width: 810px; }
+.tobac-chat-record-label { flex-shrink: 0; color: var(--muted); font-size: 10px; }
+.tobac-chat-examples { display: flex; gap: 6px; flex-wrap: wrap; padding-bottom: 18px; }
+.tobac-chat-examples button { display: flex; align-items: center; gap: 9px; border: 1px solid transparent; border-radius: 20px; padding: 8px 13px; background: transparent; color: var(--muted); font: inherit; font-size: 11px; cursor: pointer; }
+.tobac-chat-examples button > span { color: var(--faint, var(--muted)); font-size: 10px; }
+.tobac-chat-examples button:hover { color: var(--text); background: var(--surface); }
+.tobac-chat-examples button[aria-pressed="true"] { color: var(--text); border-color: var(--line); background: var(--surface); }
+.tobac-chat-examples button[aria-pressed="true"] > span { color: var(--accent-ink); }
+.tobac-chat-section button:focus-visible, .tobac-chat-section a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.tobac-chat-window { padding: 30px 32px 34px; border: 1px solid var(--line); border-radius: 22px; background: color-mix(in srgb, var(--surface) 40%, var(--bg)); }
+.tobac-chat-transcript { list-style: none; display: grid; gap: 28px; margin: 0; padding: 0; }
+.tobac-message { min-width: 0; margin: 0; }
+.tobac-message-speaker { display: block; margin: 0 0 8px; color: var(--muted); font-size: 10px; font-weight: 500; }
+.tobac-message-user { display: flex; justify-content: flex-end; padding-left: 55px; }
+.tobac-message-user > div { max-width: 565px; }
+.tobac-message-user .tobac-message-speaker { text-align: right; margin-right: 5px; }
+.tobac-user-bubble { margin: 0; padding: 15px 21px; border-radius: 21px 21px 5px 21px; background: color-mix(in srgb, var(--line) 40%, var(--surface)); color: var(--text); font-size: 16px; line-height: 1.65; }
+.tobac-user-bubble mark { padding: 1px 4px; border-radius: 4px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent-ink); font-weight: 550; }
+.tobac-message-image, .tobac-message-response { display: grid; grid-template-columns: 30px minmax(0, 1fr) 112px; align-items: start; column-gap: 13px; }
+.tobac-chat-avatar { display: grid; place-items: center; width: 30px; height: 30px; margin-top: 21px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface-raised); color: var(--accent-ink); }
+.tobac-chat-avatar > svg { width: 19px; height: 19px; }
+.tobac-assistant-content { min-width: 0; }
+.tobac-chat-generated { margin: 0; max-width: 360px; }
+.tobac-chat-generated img { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 5px 17px 17px 17px; }
+.tobac-chat-generated figcaption { margin-top: 8px; color: var(--muted); font-size: 10px; }
+.tobac-chat-annotation { align-self: center; margin-left: 4px; border-left: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line)); padding-left: 13px; }
+.tobac-chat-annotation > span { color: var(--accent-ink); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.tobac-chat-annotation p { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+.tobac-chat-annotation mark { background: transparent; color: var(--text); }
+.tobac-chat-annotation i { color: var(--accent-ink); font-size: 15px; font-style: normal; line-height: 1; }
+.tobac-assistant-bubble { margin: 0; padding: 16px 20px; border: 1px solid var(--line); border-radius: 5px 21px 21px 21px; background: var(--surface-raised); font-size: 16px; line-height: 1.7; overflow-wrap: anywhere; }
+.tobac-chat-address { color: var(--accent-ink); font-size: .91em; background: color-mix(in srgb, var(--accent) 8%, transparent); padding: 2px 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.tobac-chat-source { margin: 15px 4px 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.tobac-chat-source a { text-underline-offset: 3px; text-decoration: underline; text-decoration-color: var(--line-strong); }
+.tobac-chat-source a:hover { color: var(--text); }
+.tobac-chat-whitebox > header { max-width: 860px; margin-bottom: 32px; }
+.tobac-chat-whitebox-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tobac-chat-whitebox-strip figure { margin: 0; min-width: 0; }
+.tobac-chat-whitebox-strip figure > div { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.tobac-chat-whitebox-strip img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 5px; }
+.tobac-chat-whitebox-strip figcaption { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 11px; font-size: 11px; }
+.tobac-chat-whitebox-strip figcaption > span:first-child { color: var(--accent-ink); }
+.tobac-chat-whitebox-strip figcaption > span:nth-child(2) { color: var(--muted); }
+@media (max-width: 760px) {
+  .tobac-chat-record-label { display: none; }
+  .tobac-chat-window { padding: 24px 22px 27px; }
+  .tobac-message-image, .tobac-message-response { grid-template-columns: 27px minmax(0, 1fr); gap: 0 10px; }
+  .tobac-chat-avatar { width: 27px; height: 27px; border-radius: 9px; }
+  .tobac-chat-annotation { grid-column: 2; border: 0; margin: 10px 0 0; padding: 0; display: flex; gap: 8px; align-items: baseline; }
+  .tobac-chat-annotation p { flex-direction: row; flex-wrap: wrap; min-width: 0; gap: 6px; align-items: baseline; margin: 0; }
+  .tobac-chat-annotation i { font-size: 0; }
+  .tobac-chat-annotation i::after { content: "→"; font-size: 12px; }
+  .tobac-message-response .tobac-chat-annotation { margin-top: 12px; }
+  .tobac-message-user { padding-left: 40px; }
+  .tobac-chat-whitebox-strip { gap: 12px; }
+}
+@media (max-width: 480px) {
+  .tobac-chat-section, .tobac-chat-whitebox, .tobac-ood { padding-block: 42px; }
+  .tobac-chat-heading, .tobac-chat-whitebox > header { margin-bottom: 24px; }
+  .tobac-chat-examples { gap: 4px; padding-bottom: 15px; }
+  .tobac-chat-examples button { gap: 6px; padding: 7px 10px; font-size: 10px; }
+  .tobac-chat-examples button > span { font-size: 9px; }
+  .tobac-chat-window { padding: 20px 13px 24px; border-radius: 16px; }
+  .tobac-chat-transcript { gap: 23px; }
+  .tobac-message-user { padding-left: 28px; }
+  .tobac-user-bubble { padding: 12px 15px; font-size: 14px; border-radius: 18px 18px 4px 18px; }
+  .tobac-message-image, .tobac-message-response { grid-template-columns: 22px minmax(0, 1fr); column-gap: 8px; }
+  .tobac-chat-avatar { width: 22px; height: 22px; border-radius: 7px; }
+  .tobac-chat-avatar > svg { width: 15px; height: 15px; }
+  .tobac-assistant-bubble { font-size: 14px; padding: 12px 14px; border-radius: 4px 18px 18px 18px; }
+  .tobac-chat-generated img { border-radius: 4px 12px 12px 12px; }
+  .tobac-chat-annotation { gap: 7px; }
+  .tobac-chat-annotation > span { font-size: 10px; }
+  .tobac-chat-annotation p { font-size: 9px; gap: 5px; }
+  .tobac-chat-whitebox > header { display: block; }
+  .tobac-chat-whitebox-strip { grid-template-columns: 1fr; gap: 24px; }
+  .tobac-chat-whitebox-strip figure > div { gap: 9px; }
+  .tobac-chat-whitebox-strip figcaption { margin-top: 9px; }
+}
+
+/* Published visual-input transfer experiment; all evidence stays visible. */
+.tobac-ood-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 35px; }
+.tobac-ood-heading p:not(.section-number) { max-width: 670px; margin: 10px 0 0; font-size: 13px; line-height: 1.7; color: var(--muted); }
+.tobac-ood-result { display: flex; align-items: center; gap: 13px; padding-left: 23px; border-left: 1px solid var(--line-strong); }
+.tobac-ood-result > strong { color: var(--accent-ink); font-size: 31px; font-weight: 500; letter-spacing: -.05em; line-height: 1; white-space: nowrap; }
+.tobac-ood-result > strong > span { font-size: 17px; margin-left: 2px; }
+.tobac-ood-result > span { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.tobac-ood-context { display: flex; flex-wrap: wrap; gap: 8px 23px; margin: 24px 0 29px; padding-block: 12px; border-block: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+.tobac-ood-context b { color: var(--text); font-weight: 550; }
+.tobac-ood-threads { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.tobac-ood-thread { min-width: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: color-mix(in srgb, var(--surface) 40%, var(--bg)); }
+.tobac-ood-thread-header { display: flex; align-items: center; gap: 8px; padding: 15px 13px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.tobac-ood-thread-header .tobac-chat-avatar { flex-shrink: 0; margin: 0; width: 24px; height: 24px; border-radius: 8px; }
+.tobac-ood-thread-header > div { display: grid; gap: 3px; }
+.tobac-ood-thread-header strong { font-size: 13px; font-weight: 550; }
+.tobac-ood-thread-header > div > span { font-size: 9px; color: var(--muted); }
+.tobac-ood-case-number { margin-left: auto; color: var(--muted); font-size: 10px; font-variant-numeric: tabular-nums; }
+.tobac-ood-messages { display: grid; gap: 19px; list-style: none; margin: 0; padding: 18px 13px; }
+.tobac-ood-user { display: flex; flex-direction: column; align-items: flex-end; min-width: 0; margin: 0; }
+.tobac-ood-user > .tobac-message-speaker { margin-right: 4px; }
+.tobac-ood-upload { width: min(100% - 12px, 300px); padding: 5px; border: 1px solid var(--line); border-radius: 17px 17px 4px 17px; background: color-mix(in srgb, var(--line) 40%, var(--surface)); }
+.tobac-ood-upload img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: 12px 12px 2px 12px; }
+.tobac-ood-assistant { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 7px; min-width: 0; margin: 0; }
+.tobac-ood-assistant > .tobac-chat-avatar { width: 20px; height: 20px; margin-top: 22px; border-radius: 7px; }
+.tobac-ood-assistant > .tobac-chat-avatar > svg { width: 14px; height: 14px; }
+.tobac-ood-assistant .tobac-assistant-bubble { font-size: 13px; line-height: 1.7; padding: 10px 12px; border-radius: 4px 15px 15px 15px; }
+@media (max-width: 1050px) {
+  .tobac-ood-threads { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+}
+@media (max-width: 900px) {
+  .tobac-ood-heading { grid-template-columns: 1fr; gap: 17px; }
+  .tobac-ood-result { border-left: 0; padding-left: 0; }
+  .tobac-ood-result > span br { display: none; }
+  .tobac-ood-result > span { font-size: 11px; }
+  .tobac-ood-result > strong { font-size: 26px; }
+}
+@media (max-width: 480px) {
+  .tobac-ood-context { margin: 20px 0; gap: 6px 15px; font-size: 10px; }
+  .tobac-ood-thread-header { padding: 13px 15px; }
+  .tobac-ood-messages { padding: 17px 13px; gap: 21px; }
+  .tobac-ood-assistant { grid-template-columns: 22px minmax(0, 1fr); gap: 8px; }
+  .tobac-ood-assistant > .tobac-chat-avatar { width: 22px; height: 22px; border-radius: 7px; }
+  .tobac-ood-assistant .tobac-assistant-bubble { padding: 12px 14px; font-size: 13px; }
+}
+
+@media (max-width: 600px) {
+  .tobac-ood-threads { grid-template-columns: 1fr; gap: 24px; }
+  .tobac-ood-messages { padding-inline: 17px; }
+  .tobac-ood-assistant .tobac-assistant-bubble { font-size: 14px; }
+}
+
+/* Four complete conversations, visible together. */
+.tobac-chat-wrap { max-width:none; }
+.tobac-main-chats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; align-items:start; }
+.tobac-main-chats .tobac-chat-window { min-width:0; padding:0 13px 18px; border-radius:16px; }
+.tobac-main-chat-header { padding:17px 3px; margin-bottom:18px; border-bottom:1px solid var(--line); }
+.tobac-main-chat-header h3 { font-size:15px; font-weight:550; margin:0; letter-spacing:-.015em; }
+.tobac-main-chats .tobac-chat-transcript { gap:19px; }
+.tobac-main-chats .tobac-message-user { padding-left:12px; }
+.tobac-main-chats .tobac-user-bubble { padding:10px 12px; font-size:13px; line-height:1.6; border-radius:15px 15px 4px 15px; }
+.tobac-main-chats .tobac-message-image, .tobac-main-chats .tobac-message-response { grid-template-columns:20px minmax(0,1fr); column-gap:7px; }
+.tobac-main-chats .tobac-chat-avatar { width:20px; height:20px; border-radius:7px; }
+.tobac-main-chats .tobac-chat-avatar svg { width:14px; height:14px; }
+.tobac-main-chats .tobac-chat-generated img { border-radius:4px 12px 12px 12px; }
+.tobac-main-chats .tobac-assistant-bubble { padding:10px 12px; font-size:13px; line-height:1.7; border-radius:4px 15px 15px 15px; }
+.tobac-main-chats .tobac-message-speaker { font-size:10px; margin-bottom:6px; }
+@media(max-width:1050px) { .tobac-main-chats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; } }
+@media(max-width:600px) {
+  .tobac-main-chats { grid-template-columns:1fr; gap:24px; }
+  .tobac-main-chats .tobac-chat-window { padding-inline:17px; }
+  .tobac-main-chats .tobac-user-bubble, .tobac-main-chats .tobac-assistant-bubble { font-size:14px; }
+}

@@ -6,6 +6,7 @@ import { ThemeToggle } from "./theme-toggle";
 const overviewOrder = [
   "veto",
   "fighting-fire-with-fire",
+  "plw",
   "obliviate",
   "gem",
   "token-by-token",

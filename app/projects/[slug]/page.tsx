@@ -15,12 +15,15 @@ import { FireProtectionFigure } from "@/app/fire-protection-figure";
 import { FireProtectionFlow } from "@/app/fire-protection-flow";
 import { GemResultsShowcase } from "@/app/gem-results-showcase";
 import { ObliviateResultsShowcase } from "@/app/obliviate-results-showcase";
+import { VetoExamples } from "@/app/veto-example";
 import { VetoBenchGallery } from "@/app/vetobench-gallery";
+import { VetoCloakingFigure } from "@/app/veto-cloaking-figure";
+import { GemObjectiveExplorer } from "@/app/gem-objective-explorer";
+import { TobacChat } from "@/app/tobac-chat";
+import { ErasedButNotForgottenVisualizations } from "@/app/eeb-method-figures";
+import { PlwFigures } from "@/app/plw-figures";
 import {
-  ErasedButNotForgottenVisualizations,
-  GemVisualizations,
   ObliviateVisualizations,
-  TokenByTokenVisualizations,
   VetoVisualizations,
 } from "@/app/paper-visualizations";
 
@@ -59,16 +62,15 @@ export default async function ProjectPage({
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
   const citationSectionLabel = `${
-    project.slug === "fighting-fire-with-fire"
+    project.slug === "veto"
       ? "07"
-      : project.slug === "veto" ||
-          project.slug === "gem" ||
-          project.slug === "obliviate"
-        ? "07"
-        : project.slug === "token-by-token" ||
-            project.slug === "erased-but-not-forgotten"
-          ? "06"
-          : "05"
+      : ["plw", "token-by-token"].includes(project.slug)
+      ? "06"
+      : ["fighting-fire-with-fire", "veto", "obliviate"].includes(project.slug)
+      ? "05"
+      : ["gem", "erased-but-not-forgotten"].includes(project.slug)
+        ? "04"
+        : "03"
   } / Citation`;
 
   return (
@@ -109,46 +111,15 @@ export default async function ProjectPage({
           </section>
         ) : null}
 
-        <section className="insight-section page-shell">
-          <article className="insight-card">
-            <p className="section-number">01 / Key message</p>
-            <h2>{project.keyMessage}</h2>
-          </article>
-          {project.finding && project.slug !== "veto" ? (
-            <aside className="metric-card" aria-label="Highlighted finding">
-              <span>Selected finding</span>
-              <strong>{project.finding.value}</strong>
-              <h3>{project.finding.label}</h3>
-              <p>{project.finding.context}</p>
-            </aside>
-          ) : null}
-        </section>
-
-        <section className="method-section page-shell">
-          <div className="section-heading">
-            <p className="section-number">02 / Method</p>
-            <h2>How it works</h2>
-          </div>
-          <div className="method-grid">
-            {project.method.map((step) => (
-              <article key={step.label}>
-                <span>{step.label}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="details-section page-shell">
           <article className="abstract-panel">
-            <p className="section-number">03 / Abstract</p>
+            <p className="section-number">01 / Abstract</p>
             <h2>Abstract</h2>
             <p>{project.abstract}</p>
           </article>
           <article className="contributions-panel">
-            <p className="section-number">04 / Contributions</p>
-            <h2>What this adds</h2>
+            <p className="section-number">02 / Contributions</p>
+            <h2>Contributions</h2>
             <ol className="contribution-list">
               {project.contributions.map((contribution, index) => (
                 <li key={contribution.title}>
@@ -166,7 +137,7 @@ export default async function ProjectPage({
         {project.slug === "gem" ? (
           <>
             <GemResultsShowcase />
-            <GemVisualizations />
+            <GemObjectiveExplorer />
           </>
         ) : null}
 
@@ -179,18 +150,22 @@ export default async function ProjectPage({
 
         {project.slug === "veto" ? (
           <>
+            <VetoCloakingFigure />
+            <VetoExamples />
             <VetoBenchGallery />
             <VetoVisualizations />
           </>
         ) : null}
 
         {project.slug === "token-by-token" ? (
-          <TokenByTokenVisualizations />
+          <TobacChat />
         ) : null}
 
         {project.slug === "erased-but-not-forgotten" ? (
           <ErasedButNotForgottenVisualizations />
         ) : null}
+
+        {project.slug === "plw" ? <PlwFigures /> : null}
 
         {project.slug === "fighting-fire-with-fire" ? (
           <>
@@ -202,7 +177,6 @@ export default async function ProjectPage({
         {project.slug === "veto" && project.finding ? (
           <section className="veto-finding-section page-shell">
             <aside className="metric-card" aria-label="Highlighted finding">
-              <span>Selected finding</span>
               <strong>{project.finding.value}</strong>
               <div>
                 <h3>{project.finding.label}</h3>

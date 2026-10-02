@@ -1,0 +1,32 @@
+.veto-cloaking-section { margin-top: 72px; }
+.veto-cloaking-figure { margin: 28px 0 0; padding: 26px 12px 22px; border-block: 1px solid var(--line); }
+.veto-cloak-drawing { width: 100%; height: auto; display: block; overflow: visible; }
+.veto-cloak-mobile { display: none; }
+.veto-cloak-drawing text { fill: var(--text); font-family: inherit; }
+.veto-cloak-label { font-size: 16px; font-weight: 550; }
+.veto-cloak-drawing .veto-cloak-small { font-size: 12px; fill: var(--muted); }
+.veto-cloak-symbol { font-family: Georgia, serif !important; font-size: 20px; font-style: italic; }
+.veto-cloak-image-frame, .veto-cloak-model { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.25; }
+.veto-cloak-land { fill: color-mix(in srgb, var(--text) 9%, var(--surface)); stroke: var(--muted); stroke-width: 1; }
+.veto-cloak-sun { fill: color-mix(in srgb, var(--text) 12%, var(--surface)); }
+.veto-cloak-image-line { stroke: var(--muted); stroke-width: 1.3; fill: none; }
+.veto-cloak-forward { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+.veto-cloak-arrowhead { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+.veto-cloak-delta { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.7; }
+.veto-cloak-plus { stroke: var(--accent-ink); stroke-width: 1.7; }
+.veto-cloak-drawing .veto-cloak-delta-label, .veto-cloak-drawing .veto-cloak-update-label { fill: var(--accent-ink); font-size: 16px; font-weight: 600; }
+.veto-cloak-model-title { font-size: 18px; font-weight: 550; }
+.veto-cloak-gradient { fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-dasharray: 5 5; }
+.veto-cloak-update-head { fill: none; stroke: var(--accent); stroke-width: 1.4; }
+.veto-cloaking-figure figcaption { max-width: 110ch; margin: 12px auto 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.veto-cloaking-related a { text-decoration: underline; text-underline-offset: 3px; }
+@media(max-width:700px) {
+  .veto-cloaking-section { margin-top: 48px; }
+  .veto-cloaking-figure { padding: 18px 0; }
+  .veto-cloak-desktop { display: none; }
+  .veto-cloak-mobile { display: block; }
+  .veto-cloak-label { font-size: 15px; }
+}
+
+.veto-cloaking-related { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin:18px 0 0; color:var(--muted); font-size:13px; line-height:1.6; }
+.veto-cloaking-related a { color:var(--text); }

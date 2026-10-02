@@ -1,0 +1,64 @@
+.plw-s1-pipeline { margin: 0; padding: 22px 0 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.plw-s1-legend { display: flex; flex-wrap: wrap; gap: 12px 27px; margin-bottom: 8px; color: var(--muted); font-size: 12px; }
+.plw-s1-legend > span { display: flex; gap: 8px; align-items: center; }
+.plw-s1-legend i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line-strong); }
+.plw-s1-legend .plw-s1-trainable-key { border-color: var(--accent); background: var(--accent-soft); }
+.plw-s1-legend .plw-s1-frozen-key { background: var(--surface-raised); }
+.plw-s1-diagram { display: block; width: 100%; height: auto; overflow: visible; }
+.plw-s1-mobile { display: none; }
+.plw-s1-module-frozen { fill: var(--surface-raised); stroke: var(--line-strong); stroke-width: 1; }
+.plw-s1-module-trainable { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2; }
+.plw-s1-module-label { fill: var(--text); font-size: 12px; }
+.plw-s1-symbol { fill: var(--text); font-family: "Cambria Math", "STIX Two Math", Georgia, serif; font-size: 24px; font-style: italic; }
+.plw-s1-small { fill: var(--muted); font-size: 12px; }
+.plw-s1-flow, .plw-s1-message-flow { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.plw-s1-message-flow { stroke: var(--plw-lilac); stroke-width: 1.5; }
+.plw-s1-arrowhead { fill: none; stroke: var(--muted); stroke-width: 1.3; }
+.plw-s1-message-arrowhead { fill: none; stroke: var(--plw-lilac); stroke-width: 1.3; }
+.plw-s1-message-symbol { fill: var(--plw-lilac); }
+.plw-s1-add { fill: var(--plw-lilac-soft); stroke: var(--plw-lilac); stroke-width: 1.2; }
+.plw-s1-plus { fill: none; stroke: var(--plw-lilac); stroke-width: 1.4; }
+.plw-s1-pipeline figcaption { max-width: 99ch; margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.plw-s1-loss { margin: 31px 0 34px; }
+.plw-s1-equation { display: flex; justify-content: center; align-items: start; gap: 19px; font-family: "Cambria Math", "STIX Two Math", Georgia, serif; font-size: clamp(22px, 2.3vw, 29px); line-height: 1.5; color: var(--text); }
+.plw-s1-equation sub, .plw-s1-equation sup { font-size: .58em; }
+.plw-s1-loss-name { white-space: nowrap; }
+.plw-s1-loss-term { min-width: 0; text-align: center; }
+.plw-s1-loss-term > span { display: block; padding: 0 10px 9px; border-bottom: 2px solid var(--accent); white-space: nowrap; }
+.plw-s1-image-term > span { border-color: var(--plw-lilac); }
+.plw-s1-loss-term p { font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5; color: var(--muted); margin: 9px 0 0; }
+.plw-s1-loss-definition { max-width: 88ch; margin: 22px auto 0; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.plw-s1-loss-definition > span { white-space: nowrap; font-family: "Cambria Math", "STIX Two Math", Georgia, serif; font-size: 15px; color: var(--text); }
+.plw-s1-example { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 37px; align-items: center; margin: 0; padding-top: 29px; border-top: 1px solid var(--line); }
+.plw-s1-example-images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.plw-s1-example-images > div { min-width: 0; }
+.plw-s1-example-images span { display: block; margin-bottom: 9px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.plw-s1-example-images img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+.plw-s1-example figcaption strong { display: block; margin: 0 0 14px; font-size: 25px; line-height: 1.15; font-weight: 550; color: var(--text); letter-spacing: -.03em; }
+.plw-s1-example figcaption p { max-width: 46ch; margin: 0 0 13px; font-size: 13px; line-height: 1.75; color: var(--muted); }
+.plw-s1-example figcaption p:last-child { margin-bottom: 0; }
+@media (max-width: 760px) {
+  .plw-s1-desktop { display: none; }
+  .plw-s1-mobile { display: block; max-width: 470px; margin: 18px auto 5px; }
+  .plw-s1-legend { font-size: 11px; gap: 10px 18px; }
+  .plw-s1-module-label { font-size: 12px; }
+  .plw-s1-small { font-size: 12px; }
+  .plw-s1-equation { flex-wrap: wrap; gap: 17px 12px; font-size: 23px; }
+  .plw-s1-loss-name { flex-basis: 100%; text-align: center; }
+  .plw-s1-loss-term > span { padding-inline: 5px; }
+  .plw-s1-loss-definition { text-align: left; }
+  .plw-s1-example { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .plw-s1-example-images { max-width: 590px; }
+  .plw-s1-example figcaption p { max-width: 65ch; }
+}
+@media (max-width: 480px) {
+  .plw-s1-equation { display: grid; grid-template-columns: 22px minmax(0, 1fr); justify-items: start; row-gap: 18px; font-size: 24px; }
+  .plw-s1-loss-name { grid-column: 1 / -1; }
+  .plw-s1-recovery-term { grid-column: 2; }
+  .plw-s1-loss-plus { grid-column: 1; }
+  .plw-s1-image-term { grid-column: 2; }
+  .plw-s1-loss-term > span { padding-inline: 0; }
+  .plw-s1-example-images { gap: 10px; }
+  .plw-s1-example-images span { min-height: 34px; font-size: 11px; }
+  .plw-s1-pipeline figcaption { font-size: 11px; }
+}

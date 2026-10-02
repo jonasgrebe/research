@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { ThemeToggle } from "./theme-toggle";
+import { PlwVisual } from "./plw-figures";
+import "./factcheck-diagrams.css";
 
 const verifiedScholarProfiles: Record<string, string> = {
   "Anna Rohrbach":
@@ -188,6 +190,7 @@ export function ProjectVisual({
   project: Project;
   compact?: boolean;
 }) {
+  if (project.visual === "plw") return <PlwVisual compact={compact} />;
   if (project.visual === "gem") {
     return (
       <figure
@@ -197,7 +200,7 @@ export function ProjectVisual({
         data-visual="gem"
       >
         <div className="visual-grid" aria-hidden="true" />
-        <div className="visual-kicker">Contrastive velocity field</div>
+        <div className="visual-kicker">Contrastive velocity matching</div>
         <div className="gem-diagram" aria-hidden="true">
           <div className="gem-node concept-node">
             <i />
@@ -216,7 +219,7 @@ export function ProjectVisual({
           </div>
           <div className="gem-node safe-node">
             <i />
-            <span>Benign</span>
+            <span>Anchor</span>
           </div>
         </div>
         <div className="visual-footer" aria-hidden="true">
@@ -225,9 +228,9 @@ export function ProjectVisual({
         </div>
         {!compact ? (
           <figcaption id="gem-visual-caption" className="sr-only">
-            GEM combines a repulsive direction away from the target concept with
-            an attractive direction toward benign generation, then trains the
-            student to follow the resulting velocity field.
+            GEM compares the student’s velocity prediction with a frozen teacher
+            under target and benign anchor prompts. Its contrastive loss balances
+            distance to the anchor against weighted distance to the target.
           </figcaption>
         ) : null}
       </figure>
@@ -397,8 +400,8 @@ export function ProjectVisual({
               <i />
               <strong>MLLM</strong>
             </div>
-            <span>Dynamic experts</span>
-            <strong>Plan · search · reason</strong>
+            <span>Choose tools</span>
+            <strong>Search · inspect · reason</strong>
           </div>
           <i className="flow-arrow" />
           <div className="defame-report-card">
@@ -407,8 +410,15 @@ export function ProjectVisual({
               <i />
               <i />
             </div>
-            <span>Evidence report</span>
+            <span>Evaluate evidence</span>
             <strong>Verdict + sources</strong>
+          </div>
+          <div className="defame-feedback-loop">
+            <svg viewBox="0 0 320 48" preserveAspectRatio="none">
+              <path d="M309 8V22Q309 32 299 32H21Q11 32 11 22V1" />
+              <path d="m6 7 5-6 5 6" />
+            </svg>
+            <span>If evidence is insufficient</span>
           </div>
         </div>
         <div className="visual-footer" aria-hidden="true">
@@ -417,9 +427,9 @@ export function ProjectVisual({
         </div>
         {!compact ? (
           <figcaption id="defame-visual-caption" className="sr-only">
-            DEFAME interprets an image-text claim, dynamically routes the
-            investigation through retrieval and reasoning experts, and returns
-            an evidence-backed report with a verdict.
+            DEFAME chooses tools to retrieve and evaluate text and image evidence.
+            If the evidence is insufficient, it returns to planning to gather
+            more. The final report contains a verdict and its supporting sources.
           </figcaption>
         ) : null}
       </figure>
@@ -444,35 +454,43 @@ export function ProjectVisual({
               <i />
               <i />
             </div>
-            <strong>Question it</strong>
+            <strong>Generate questions</strong>
           </div>
           <i className="flow-arrow" />
           <div className="infact-evidence-card">
-            <span>Evidence</span>
+            <span>AVeriTeC KB</span>
             <div className="infact-evidence-stack">
               <i />
               <i />
               <i />
             </div>
-            <strong>Rank sources</strong>
+            <strong>Rank evidence</strong>
           </div>
           <i className="flow-arrow" />
           <div className="infact-verdict-card">
             <span>Verdict</span>
-            <div className="infact-verdict-meter">
-              <i />
+            <div className="infact-supported-verdict">
+              <svg viewBox="0 0 120 88" fill="none">
+                <g className="infact-source-marks">
+                  <path d="M8 17h26M8 23h18M8 41h26M8 47h18M8 65h26M8 71h18" />
+                  <path d="M40 20h8q6 0 6 6v12q0 6 6 6h9M40 44h29M40 68h8q6 0 6-6V50q0-6 6-6" />
+                </g>
+                <rect className="infact-verdict-stamp" x="71" y="24" width="39" height="40" rx="7" />
+                <path className="infact-verdict-check" d="m81 43 7 7 13-15" />
+              </svg>
             </div>
-            <strong>63% AVeriTeC</strong>
+            <strong>Verdict + evidence</strong>
           </div>
         </div>
         <div className="visual-footer" aria-hidden="true">
           <span>six-stage pipeline</span>
-          <span>challenge winner</span>
+          <span>static knowledge base</span>
         </div>
         {!compact ? (
           <figcaption id="infact-visual-caption" className="sr-only">
-            InFact turns a claim into focused questions, retrieves and ranks web
-            evidence, then reasons toward a traceable fact-checking verdict.
+            InFact turns a claim into focused questions, retrieves and ranks
+            evidence from the supplied static AVeriTeC knowledge base, and returns
+            a categorical verdict with supporting evidence.
           </figcaption>
         ) : null}
       </figure>

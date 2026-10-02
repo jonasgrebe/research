@@ -1,0 +1,29 @@
+.obliviate-training-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(28px,4vw,56px); border-block:1px solid var(--line); padding-block:30px; }
+.obliviate-training-layout h3 { font-size:22px; font-weight:550; letter-spacing:-.025em; margin:0 0 24px; line-height:1.25; }
+.obliviate-training-condition { padding:22px 0; border-bottom:1px solid var(--line); }
+.obliviate-training-condition:first-of-type { padding-top:0; }
+.obliviate-training-condition h4 { margin:0 0 16px; font-size:15px; font-weight:550; }
+.obliviate-training-condition p { margin:14px 0 0; color:var(--muted); font-size:12px; line-height:1.65; max-width:58ch; }
+.obliviate-training-sequences { display:grid; gap:7px; }
+.obliviate-training-token-row { display:grid; grid-template-columns:116px repeat(8,minmax(0,1fr)); gap:6px; align-items:center; }
+.obliviate-training-token-row > span { color:var(--muted); font-size:11px; }
+.obliviate-training-token-row i { display:block; height:19px; border:1px solid color-mix(in srgb,var(--accent) 42%,var(--line)); border-radius:4px; background:color-mix(in srgb,var(--accent-soft) 54%,var(--surface)); }
+.obliviate-training-token-row i[data-diverged="true"] { border-style:dashed; background:repeating-linear-gradient(135deg,transparent 0 4px,color-mix(in srgb,var(--accent) 28%,transparent) 4px 6px); }
+.obliviate-training-token-row.loss-row { margin-top:3px; }
+.obliviate-training-token-row.loss-row i { height:5px; border:0; border-radius:1px; background:var(--line); }
+.obliviate-training-token-row.loss-row i[data-supervised="true"] { background:var(--accent); }
+.obliviate-training-source { color:var(--muted); font-size:12px; line-height:1.7; margin:18px 0 0; }
+.obliviate-training-source a { text-decoration:underline; text-underline-offset:3px; }
+.obliviate-guidance-equation { display:grid; gap:7px; margin:0 0 18px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+.obliviate-guidance-equation code { font-size:14px; font-family:Georgia,serif; }
+.obliviate-probability-row { margin:0 0 17px; }
+.obliviate-probability-row figcaption { font-size:12px; color:var(--muted); margin:0 0 3px 44px; }
+.obliviate-probability-row[data-guided="true"] figcaption { color:var(--accent-ink); }
+.obliviate-probability-row svg { display:block; width:100%; height:auto; }
+.obliviate-probability-grid { stroke:var(--line); stroke-width:.8; }
+.obliviate-probability-tick { fill:var(--muted); font-size:11px; }
+.obliviate-probability-bar { fill:var(--muted); opacity:.55; }
+.obliviate-probability-highlight { fill:var(--accent); }
+.obliviate-probability-row[data-guided="true"] .obliviate-probability-bar { fill:var(--accent); opacity:.55; }
+@media(max-width:850px) { .obliviate-training-layout { grid-template-columns:1fr; gap:38px; } .obliviate-guidance-panel { border-top:1px solid var(--line); padding-top:30px; } }
+@media(max-width:480px) { .obliviate-training-token-row { grid-template-columns:98px repeat(8,minmax(0,1fr)); gap:4px; } .obliviate-training-token-row > span { font-size:10px; } .obliviate-training-token-row i { height:17px; } .obliviate-training-layout h3 { font-size:21px; } .obliviate-probability-tick { font-size:13px; } .obliviate-probability-row figcaption { font-size:12px; margin-left:34px; } }

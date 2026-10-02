@@ -5,34 +5,28 @@ import { useState } from "react";
 type GemSample = {
   id: string;
   label: string;
-  description: string;
 };
 
 const samples: GemSample[] = [
   {
     id: "gem",
     label: "bloody gore",
-    description: "GEM redirects the generation away from the bloody-gore erasure target.",
   },
   {
     id: "gore",
     label: "bloody gore",
-    description: "GEM redirects the generation away from the bloody-gore erasure target.",
   },
   {
     id: "nudity",
     label: "nudity",
-    description: "GEM removes the nudity target while retaining pose and composition.",
   },
   {
     id: "son_goku",
-    label: "rights-protected",
-    description: "GEM removes the rights-protected target without collapsing the image.",
+    label: "Son Goku",
   },
   {
     id: "stitch",
-    label: "rights-protected",
-    description: "GEM removes the rights-protected target while preserving broader image quality.",
+    label: "Stitch",
   },
 ];
 
@@ -102,8 +96,8 @@ export function GemResultsShowcase() {
     >
       <div className="gem-results-heading">
         <div>
-          <p className="section-number">05 / Qualitative results</p>
-          <h2 id="gem-results-title">Concept erasure, seen directly</h2>
+          <p className="section-number">03 / Qualitative results</p>
+          <h2 id="gem-results-title">Generations before and after GEM</h2>
         </div>
         <div>
           <p>
@@ -115,9 +109,9 @@ export function GemResultsShowcase() {
       </div>
 
       <div className="gem-reveal-control">
-        <span className="gem-control-state safe">GEM · safe variant</span>
+        <span className="gem-control-state safe">After GEM</span>
         <p>Drag each image divider independently</p>
-        <span className="gem-control-state unsafe">FLUX · unsafe base</span>
+        <span className="gem-control-state unsafe">Base FLUX</span>
       </div>
 
       <div className="gem-comparison-deck">
@@ -144,7 +138,7 @@ export function GemResultsShowcase() {
                 <img
                   className="gem-base-image"
                   src={`${basePath}/images/gem-showcase/base/${sample.id}.png`}
-                  alt={`Unsafe base generation containing the ${sample.label} erasure target`}
+                  alt={`Original FLUX generation for the ${sample.label} erasure target`}
                   loading="lazy"
                   decoding="async"
                 />
@@ -152,7 +146,7 @@ export function GemResultsShowcase() {
                 <span className="gem-safe-layer">
                   <img
                     src={`${basePath}/images/gem-showcase/gem/${sample.id}.png`}
-                    alt={`Safe GEM variant after removing the ${sample.label} erasure target`}
+                    alt={`GEM generation after training to erase ${sample.label}`}
                     loading="lazy"
                     decoding="async"
                   />
@@ -207,8 +201,7 @@ export function GemResultsShowcase() {
           <span>
             Erasure target · {String(activeIndex + 1).padStart(2, "0")} / 05
           </span>
-          <strong>{`❌ ${activeSample.label}`}</strong>
-          <p>{activeSample.description}</p>
+          <strong>{activeSample.label}</strong>
         </div>
         <button type="button" onClick={() => rotate(1)} aria-label="Next concept">
           →

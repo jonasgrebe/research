@@ -15,14 +15,14 @@ export function FireProtectionFigure() {
     <section className="fire-venn-section page-shell" aria-labelledby="fire-venn-title">
       <div className="fire-venn-heading">
         <div>
-          <p className="section-number">05 / Conceptual approach</p>
-          <h2 id="fire-venn-title">Create a human-solvable, AI-resistant region</h2>
+          <p className="section-number">03 / Conceptual approach</p>
+          <h2 id="fire-venn-title">Protecting visual exercises</h2>
         </div>
         <div>
           <p>
-            The intervention moves an exercise from shared solvability toward
-            the part of the human-solvable space that lies outside the
-            AI-solvable space.
+            The paper’s conceptual diagram considers selected exercises that
+            both students and the tested AI solver can answer. Protection
+            aims to preserve student solvability while changing the AI response.
           </p>
           <span>Hover, focus, or tap either state to inspect it.</span>
         </div>
@@ -53,8 +53,8 @@ export function FireProtectionFigure() {
             </span>
           </span>
           <span className="fire-venn-annotation">
-            Human-solvable questions remain contained within the AI-solvable
-            region.
+            Candidate exercises are selected so that both students and the
+            tested AI solver can answer them.
           </span>
         </button>
 
@@ -99,8 +99,8 @@ export function FireProtectionFigure() {
             </span>
           </span>
           <span className="fire-venn-annotation">
-            A subtle intervention moves the exercise into Q<sub>H</sub> ∖ Q
-            <sub>A</sub>: answerable by humans, resistant to the AI solver.
+            The intended intervention preserves the exercise for students
+            while steering the tested AI solver toward a chosen wrong answer.
           </span>
         </button>
       </div>

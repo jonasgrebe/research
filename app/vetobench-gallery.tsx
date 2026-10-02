@@ -148,10 +148,12 @@ export function VetoBenchGallery() {
       <div className="vetobench-heading">
         <div>
           <p className="section-number">05 / VetoBench</p>
-          <h2 id="vetobench-title">Protection against open-frame misuse</h2>
+          <h2 id="vetobench-title">VetoBench</h2>
           <p>
             Twelve examples from the 300-case benchmark: two closed-frame and
-            two open-frame edits across each evaluation category.
+            two open-frame edits across each evaluation category. Closed-frame
+            edits change the existing scene; open-frame edits place the subject
+            in a new scene.
           </p>
         </div>
         <div className="vetobench-actions">
@@ -171,7 +173,7 @@ export function VetoBenchGallery() {
         data-enabled={protectionEnabled ? "true" : "false"}
       >
         <div>
-          <span className="vetobench-protection-kicker">Interactive comparison</span>
+
           <strong>
             {protectionEnabled ? "VETO protection enabled" : "VETO protection disabled"}
           </strong>

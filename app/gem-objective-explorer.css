@@ -1,0 +1,126 @@
+.gem-objective { padding:42px 0; border-top:1px solid var(--line); }
+.gem-objective-heading { display:flex; justify-content:space-between; gap:36px; align-items:baseline; margin-bottom:23px; }
+.gem-objective-heading h2 { font-size:24px; letter-spacing:-.025em; line-height:1.25; font-weight:600; margin:0; }
+.gem-objective-heading > p { color:var(--muted); line-height:1.65; font-size:13px; margin:0; max-width:410px; }
+.gem-objective-workspace { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(260px,.8fr); border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface); }
+.gem-objective-canvas { position:relative; align-self:center; min-width:0; }
+.gem-objective-canvas-key { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px 14px; padding:16px 20px 0; pointer-events:none; color:var(--muted); font-size:10px; }
+.gem-objective-canvas-key > span { display:flex; align-items:center; gap:8px; }
+.gem-objective-canvas-key i { display:block; flex:0 0 auto; width:16px; }
+.gem-objective-region-key { height:10px; background:color-mix(in srgb,var(--muted) 12%,var(--surface)); border:1px solid color-mix(in srgb,var(--muted) 25%,transparent); border-radius:2px; }
+.gem-objective-boundary-key { height:0; border-top:1px dashed var(--muted); }
+.gem-objective-contour-key { height:0; border-top:1px solid var(--muted); }
+.gem-objective-contours { pointer-events:none; }
+.gem-objective-contour { fill:none; stroke:var(--muted); stroke-opacity:.5; stroke-width:1; stroke-linecap:round; }
+.gem-objective-contour-singleton { fill:var(--muted); }
+.gem-objective-contour-label { fill:var(--muted); font:13px Georgia,serif; stroke:var(--surface); stroke-width:5px; paint-order:stroke; stroke-linejoin:round; }
+.gem-objective-unit { pointer-events:none; }
+.gem-objective-unit path { fill:none; stroke:var(--muted); stroke-width:1; }
+.gem-objective-unit text { fill:var(--muted); font-size:12px; }
+.gem-objective-canvas svg { display:block; width:100%; height:auto; overflow:visible; }
+.gem-objective-grid { fill:var(--muted); opacity:.22; }
+.gem-objective-zero-fill { fill:var(--muted); opacity:.09; }
+.gem-objective-boundary { fill:none; stroke:var(--muted); stroke-opacity:.62; stroke-width:1.1; stroke-dasharray:5 7; marker-start:none; marker-end:none; pointer-events:none; }
+.gem-objective-vector { stroke-width:1.8; stroke-linecap:round; }
+.gem-objective-vector.gem-objective-student-line { stroke-width:2.2; }
+.gem-objective-anchor-line { stroke:var(--cobalt); }
+.gem-objective-target-line { stroke:var(--coral); }
+.gem-objective-student-line { stroke:var(--text); }
+.gem-objective-anchor-fill { fill:var(--cobalt); }
+.gem-objective-target-fill { fill:var(--coral); }
+.gem-objective-student-fill { fill:var(--text); }
+.gem-objective-zero-point { fill:var(--muted); stroke:var(--surface); stroke-width:1; pointer-events:none; }
+.gem-objective-distance { stroke-width:1.25; stroke-dasharray:4 5; opacity:.65; }
+.gem-objective-origin { font:14px monospace; fill:var(--muted); }
+.gem-objective-distance-label { font:italic 23px Georgia,serif; stroke:var(--surface); stroke-width:5px; paint-order:stroke; }
+.gem-objective-point { cursor:grab; outline:none; touch-action:none; }
+.gem-objective-point[data-dragging="true"] { cursor:grabbing; }
+.gem-objective-hitarea { fill:transparent; }
+.gem-objective-handle-ring { fill:var(--surface); stroke-width:1.15; }
+.gem-objective-point:hover .gem-objective-handle-ring, .gem-objective-point[data-dragging="true"] .gem-objective-handle-ring { stroke-width:2.5; }
+.gem-objective-point:focus-visible .gem-objective-handle-ring { stroke-width:3; stroke-dasharray:4 3; }
+.gem-objective-point-label { font-size:18px; font-weight:500; stroke:var(--surface); stroke-width:5px; paint-order:stroke; user-select:none; }
+.gem-objective-instructions { margin:0; border-top:1px solid var(--line); padding:12px 18px; font-size:10px; line-height:1.5; color:var(--muted); }
+.gem-objective-instructions > span { display:block; }
+.gem-objective-instructions > span + span { margin-top:4px; }
+.gem-objective-controls { border-left:1px solid var(--line); padding:25px 26px; display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.gem-objective-equation code { display:block; font-size:clamp(20px,1.8vw,23px); font-family:Georgia,"Times New Roman",serif; letter-spacing:-.025em; }
+.gem-objective-distances { display:grid; gap:17px; margin-top:25px; }
+.gem-objective-distances > div > span { display:flex; align-items:center; gap:7px; font-size:11px; }
+.gem-objective-distances b { margin-left:auto; font:italic 15px Georgia,serif; }
+.gem-objective-distances > div > span > i { width:6px; height:6px; border-radius:50%; }
+.gem-objective-anchor-dot, .gem-objective-anchor-bar { background:var(--cobalt); }
+.gem-objective-target-dot, .gem-objective-target-bar { background:var(--coral); }
+.gem-objective-distances > div > div { height:3px; background:var(--line); margin-top:8px; }
+.gem-objective-distances > div > div > i { display:block; height:100%; min-width:0; }
+.gem-objective-state { display:flex; justify-content:space-between; align-items:center; gap:15px; margin:22px 0 24px; padding:11px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:11px; line-height:1.6; }
+.gem-objective-state strong { color:var(--accent); font-weight:600; }
+.gem-objective-state[data-active="true"] strong { color:var(--text); }
+.gem-objective-state span { color:var(--muted); font:italic 16px Georgia,serif; }
+.gem-objective-eta { display:flex; justify-content:space-between; gap:12px; font-size:12px; margin-bottom:12px; }
+.gem-objective-eta output { font-variant-numeric:tabular-nums; font-weight:600; }
+.gem-objective-controls input[type="range"] { width:100%; accent-color:var(--accent); cursor:ew-resize; margin:0; }
+.gem-objective-scale { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:4px; }
+.gem-objective-actions { display:flex; gap:17px; align-items:center; margin-top:22px; }
+.gem-objective-actions button { font:inherit; font-size:11px; cursor:pointer; }
+.gem-objective-reset { border:0; color:var(--muted); background:none; padding:10px 0; }
+.gem-objective-reset:hover { color:var(--text); }
+.gem-objective-actions button:focus-visible, .gem-objective-controls input:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.gem-objective-control-note { color:var(--muted); font-size:11px; line-height:1.7; margin:16px 0 0; }
+.gem-objective-roles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin:18px 0 0; }
+.gem-objective-roles > div { min-width:0; }
+.gem-objective-roles dt { display:flex; align-items:center; gap:7px; font-size:11px; font-weight:600; line-height:1.5; }
+.gem-objective-roles dt::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--text); }
+.gem-objective-role-target dt::before { background:var(--coral); }
+.gem-objective-role-anchor dt::before { background:var(--cobalt); }
+.gem-objective-roles dd { margin:4px 0 0; color:var(--muted); font-size:11px; line-height:1.6; }
+.gem-objective-caption { color:var(--muted); font-size:11px; line-height:1.75; margin:14px 0 0; max-width:880px; }
+.gem-objective-caption a { text-decoration:underline; text-underline-offset:3px; white-space:nowrap; }
+@media(max-width:960px) {
+  .gem-objective-workspace { grid-template-columns:minmax(0,1.6fr) minmax(235px,1fr); }
+  .gem-objective-controls { padding:24px 19px; }
+  .gem-objective-canvas-key { padding:14px 16px 0; font-size:9px; }
+  .gem-objective-canvas-key span:last-child { max-width:140px; text-align:right; }
+  .gem-objective-state { margin-block:19px; }
+  .gem-objective-actions { gap:10px; }
+}
+@media(max-width:720px) {
+  .gem-objective { padding:38px 0; }
+  .gem-objective-heading { display:block; margin-bottom:22px; }
+  .gem-objective-heading > p { font-size:13px; max-width:56ch; margin-top:11px; }
+  .gem-objective-workspace { grid-template-columns:1fr; }
+  .gem-objective-controls { border-left:0; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:0 28px; padding:24px; align-items:start; }
+  .gem-objective-equation, .gem-objective-distances, .gem-objective-state { grid-column:1; }
+  .gem-objective-equation { grid-row:1 / 3; }
+  .gem-objective-distances { grid-row:3 / 6; margin-top:20px; }
+  .gem-objective-state { grid-row:6 / 8; margin:20px 0 0; }
+  .gem-objective-eta { grid-column:2; grid-row:1; }
+  .gem-objective-controls input[type="range"] { grid-column:2; grid-row:2; }
+  .gem-objective-scale { grid-column:2; grid-row:3; }
+  .gem-objective-actions { grid-column:2; grid-row:4 / 6; margin-top:22px; }
+  .gem-objective-control-note { grid-column:2; grid-row:6 / 8; }
+}
+@media(max-width:480px) {
+  .gem-objective-canvas-key { padding:12px 12px 0; font-size:9px; }
+  .gem-objective-canvas-key span:last-child { max-width:125px; }
+  .gem-objective-controls { display:flex; align-items:stretch; padding:21px; }
+  .gem-objective-equation code { font-size:22px; }
+  .gem-objective-distances { margin-top:21px; }
+  .gem-objective-state { margin:19px 0 22px; }
+  .gem-objective-eta { margin-bottom:10px; }
+  .gem-objective-actions { margin-top:18px; }
+  .gem-objective-instructions { font-size:10px; padding:12px; }
+  .gem-objective-point-label { font-size:28px; }
+  .gem-objective-contour-label { font-size:21px; stroke-width:6px; }
+  .gem-objective-unit text { font-size:21px; }
+  .gem-objective-origin { font-size:20px; }
+  .gem-objective-distance-label { font-size:27px; }
+  .gem-objective-hitarea { r:52px; }
+  .gem-objective-point circle.gem-objective-handle-ring { r:22px; stroke-width:1.8; }
+  .gem-objective-point circle.gem-objective-anchor-fill,
+  .gem-objective-point circle.gem-objective-target-fill,
+  .gem-objective-point circle.gem-objective-student-fill { r:10px; }
+  .gem-objective-caption a { white-space:normal; }
+  .gem-objective-roles { gap:14px; }
+  .gem-objective-roles dt, .gem-objective-roles dd { font-size:10px; }
+}

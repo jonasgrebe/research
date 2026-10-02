@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { CSSProperties } from "react";
 import vetoBenchExtraSamples from "./vetobench-extra-samples.json";
 
-const epsilonSteps = [0, 4, 8, 12, 16, 32];
+const attentionSteps = 6;
 
 const vetoBenchCells = [
   {
@@ -55,16 +55,16 @@ const vetoBenchCells = [
 type VetoBenchCellId = (typeof vetoBenchCells)[number]["id"];
 
 export function VetoVisualizations() {
-  const [epsilonIndex, setEpsilonIndex] = useState(0);
+  const [attentionStep, setAttentionStep] = useState(0);
   const [selectedCell, setSelectedCell] = useState<VetoBenchCellId>(vetoBenchCells[3].id);
   const [selectedSampleIndex, setSelectedSampleIndex] = useState(0);
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const selected =
     vetoBenchCells.find((cell) => cell.id === selectedCell) ?? vetoBenchCells[0];
   const selectedSample = selected.samples[selectedSampleIndex] ?? selected.samples[0];
-  const protection = epsilonIndex / (epsilonSteps.length - 1);
+  const protection = attentionStep / (attentionSteps - 1);
   const attentionState =
-    epsilonIndex === 0 ? "localized" : epsilonIndex < 3 ? "diffusing" : "spatially diffuse";
+    attentionStep === 0 ? "localized" : attentionStep < 3 ? "diffusing" : "spatially diffuse";
 
   const selectBenchCell = (id: VetoBenchCellId) => {
     setSelectedCell(id);
@@ -84,8 +84,8 @@ export function VetoVisualizations() {
     >
       <div className="paper-viz-heading">
         <div>
-          <p className="section-number">06 / Interactive analysis</p>
-          <h2 id="veto-viz-title">VETO Objective and Benchmark</h2>
+          <p className="section-number">06 / Attention and benchmark</p>
+          <h2 id="veto-viz-title">Reference attention and VetoBench</h2>
         </div>
         <p>
           Explore the mechanism VETO targets, then inspect how VetoBench divides
@@ -97,10 +97,8 @@ export function VetoVisualizations() {
         <article className="viz-lab veto-attention-lab">
           <div className="viz-lab-heading">
             <div>
-              <span>VETO Objective</span>
-              <h3>From localized attention to a diffuse field</h3>
+              <h3>Reference–canvas attention</h3>
             </div>
-            <span className="viz-status-pill">Maximize Attention Entropy</span>
           </div>
 
           <div
@@ -128,7 +126,7 @@ export function VetoVisualizations() {
             </div>
             <div
               className="veto-spatial-map"
-              aria-label={`Conceptual canvas-to-source spatial attention overlay, epsilon ${epsilonSteps[epsilonIndex]}`}
+              aria-label={`Illustrative canvas-to-source attention: ${attentionState}`}
             >
               <Image
                 src={`${basePath}/vetobench/general/images/base/0.png`}
@@ -139,7 +137,7 @@ export function VetoVisualizations() {
               />
               <div className="veto-spatial-overlay" aria-hidden="true" />
               <div className="veto-spatial-caption">
-                <span>Selected attention head</span>
+                <span>Illustrative attention pattern</span>
                 <strong>{attentionState}</strong>
               </div>
             </div>
@@ -147,30 +145,30 @@ export function VetoVisualizations() {
               <span>High attention</span>
               <i className="veto-attention-scale" aria-hidden="true" />
               <span>Low attention</span>
-              <strong>Entropy {epsilonIndex === 0 ? "low" : epsilonIndex < 3 ? "rising" : "high"}</strong>
+              <strong>Entropy {attentionStep === 0 ? "low" : attentionStep < 3 ? "rising" : "high"}</strong>
             </div>
           </div>
 
           <div className="viz-control-stack">
-            <label className="viz-range-label" htmlFor="veto-epsilon">
-              <span>Protection budget</span>
-              <strong>ε = {epsilonSteps[epsilonIndex]}</strong>
+            <label className="viz-range-label" htmlFor="veto-attention">
+              <span>Attention pattern</span>
+              <strong>{attentionState}</strong>
             </label>
             <input
-              id="veto-epsilon"
+              id="veto-attention"
               className="viz-range"
               type="range"
               min={0}
-              max={epsilonSteps.length - 1}
+              max={attentionSteps - 1}
               step={1}
-              value={epsilonIndex}
-              aria-valuetext={`epsilon ${epsilonSteps[epsilonIndex]}`}
-              onInput={(event) => setEpsilonIndex(Number(event.currentTarget.value))}
+              value={attentionStep}
+              aria-valuetext={attentionState}
+              onInput={(event) => setAttentionStep(Number(event.currentTarget.value))}
             />
             <p className="viz-explainer">
-              This canvas-to-source head initially attends to the cat&apos;s face.
-              VETO raises its entropy into a broad but imperfect field, weakening
-              the localized correspondence needed for a faithful edit.
+              VETO increases the entropy of reference–canvas attention. This
+              schematic illustrates the intended diffusion; it is not an
+              extracted attention map or a measured response to a perturbation budget.
             </p>
           </div>
         </article>
@@ -309,7 +307,7 @@ export function GemVisualizations() {
     >
       <div className="paper-viz-heading">
         <div>
-          <p className="section-number">06 / Interactive analysis</p>
+          <p className="section-number">04 / Interactive analysis</p>
           <h2 id="gem-viz-title">Geometry, not just suppression</h2>
         </div>
         <p>
@@ -583,7 +581,7 @@ export function TokenByTokenVisualizations() {
     >
       <div className="paper-viz-heading">
         <div>
-          <p className="section-number">05 / Interactive analysis</p>
+          <p className="section-number">03 / Interactive analysis</p>
           <h2 id="tobac-viz-title">Watch a trigger travel across modalities</h2>
         </div>
         <p>
@@ -749,360 +747,4 @@ export function TokenByTokenVisualizations() {
   );
 }
 
-const obliviateModes = {
-  unaligned: {
-    label: "Separate prefixes",
-    stability: "unstable",
-    speed: "utility collapses",
-    description:
-      "The two teacher branches see different evolving images, so their difference mixes concept guidance with unrelated visual drift.",
-  },
-  single: {
-    label: "Aligned · one token",
-    stability: "stable",
-    speed: "slow erasure",
-    description:
-      "A shared visual prefix stabilizes the target, but supervising one position at a time leaves most of the rollout untouched.",
-  },
-  full: {
-    label: "Aligned · full rollout",
-    stability: "stable",
-    speed: "erasure in 30 steps",
-    description:
-      "Obliviate applies distribution-level supervision across the complete sampled trajectory, producing fast erasure without the utility collapse.",
-  },
-} as const;
-
-export function ObliviateVisualizations() {
-  const [mode, setMode] = useState<keyof typeof obliviateModes>("full");
-  const [guidanceRaw, setGuidanceRaw] = useState(10);
-  const guidance = guidanceRaw / 10;
-  const activeMode = obliviateModes[mode];
-  const originalLogits = [28, 43, 78, 34, 24, 46, 31, 38];
-  const unconditionalLogits = [37, 47, 31, 43, 34, 49, 40, 44];
-  const guidedLogits = unconditionalLogits.map((value, index) =>
-    Math.max(5, Math.min(92, value - guidance * (originalLogits[index] - value))),
-  );
-
-  return (
-    <section
-      className="paper-viz-section obliviate-viz-section page-shell"
-      aria-labelledby="obliviate-viz-title"
-    >
-      <div className="paper-viz-heading">
-        <div>
-          <p className="section-number">06 / Interactive analysis</p>
-          <h2 id="obliviate-viz-title">Teach the whole visual-token trajectory</h2>
-        </div>
-        <p>
-          Prefix alignment makes the teacher contrast meaningful; full-rollout
-          KL supervision then carries that target through autoregressive generation.
-        </p>
-      </div>
-
-      <div className="paper-viz-grid">
-        <article className="viz-lab obliviate-trajectory-lab">
-          <div className="viz-lab-heading">
-            <div>
-              <span>Training design</span>
-              <h3>Alignment fixes stability; trajectory coverage fixes speed</h3>
-            </div>
-            <span className="viz-status-pill">Training ablation</span>
-          </div>
-
-          <div className="obliviate-method-parts" aria-label="Three parts of the Obliviate methodology">
-            <div data-active="true"><span>01</span><strong>Align prefixes</strong></div>
-            <div data-active="true"><span>02</span><strong>Construct guided target</strong></div>
-            <div data-active={mode === "full"}><span>03</span><strong>Match full rollout</strong></div>
-          </div>
-
-          <div className="obliviate-mode-tabs" role="group" aria-label="Obliviate training design">
-            {(Object.keys(obliviateModes) as Array<keyof typeof obliviateModes>).map((key) => (
-              <button
-                type="button"
-                key={key}
-                aria-pressed={mode === key}
-                data-active={mode === key}
-                onClick={() => setMode(key)}
-              >
-                {obliviateModes[key].label}
-              </button>
-            ))}
-          </div>
-
-          <div className="obliviate-prefix-demo" data-mode={mode}>
-            <div className="obliviate-prefix-row conditional-row">
-              <span>conditional</span>
-              {Array.from({ length: 9 }, (_, index) => (
-                <i data-supervised={mode === "full" || (mode === "single" && index === 5)} key={index} />
-              ))}
-            </div>
-            <div className="obliviate-prefix-row pseudo-row">
-              <span>pseudo-unconditional</span>
-              {Array.from({ length: 9 }, (_, index) => (
-                <i data-diverged={mode === "unaligned" && index > 3} key={index} />
-              ))}
-            </div>
-            <div className="obliviate-prefix-bracket">
-              <span>{mode === "unaligned" ? "different visual histories" : "same evolving visual prefix"}</span>
-            </div>
-          </div>
-
-          <div className="obliviate-mode-readout" aria-live="polite">
-            <div><span>Target signal</span><strong>{activeMode.stability}</strong></div>
-            <div><span>Observed behavior</span><strong>{activeMode.speed}</strong></div>
-          </div>
-          <p className="viz-explainer">{activeMode.description}</p>
-        </article>
-
-        <article className="viz-lab obliviate-distribution-lab">
-          <div className="viz-lab-heading">
-            <div>
-              <span>Distribution matching</span>
-              <h3>A smooth target over visual-token choices</h3>
-            </div>
-            <span className="viz-status-pill">Conceptual probabilities</span>
-          </div>
-
-          <div className="obliviate-logit-comparison" aria-live="polite">
-            <div className="obliviate-logit-equation">
-              <span>Same visual prefix</span>
-              <strong>z<sub>target</sub> = z<sub>∅</sub> − η (z<sub>c</sub> − z<sub>∅</sub>)</strong>
-            </div>
-            <div className="obliviate-logit-chart original-logits">
-              <div className="obliviate-logit-title">
-                <span>Teacher conditional</span>
-                <strong>Original next-token logits</strong>
-              </div>
-              <div className="obliviate-logit-bars">
-                {originalLogits.map((value, index) => (
-                  <div key={index} data-unsafe={index === 2}>
-                    <i style={{ "--logit": `${value}%` } as CSSProperties} />
-                    <span>v{index + 1}</span>
-                  </div>
-                ))}
-              </div>
-              <p><i /> Unsafe-associated visual token carries the largest logit.</p>
-            </div>
-            <div className="obliviate-logit-chart unconditional-logits">
-              <div className="obliviate-logit-title">
-                <span>Teacher unconditional</span>
-                <strong>Reference next-token logits</strong>
-              </div>
-              <div className="obliviate-logit-bars">
-                {unconditionalLogits.map((value, index) => (
-                  <div key={index} data-unsafe={index === 2}>
-                    <i style={{ "--logit": `${value}%` } as CSSProperties} />
-                    <span>v{index + 1}</span>
-                  </div>
-                ))}
-              </div>
-              <p><i /> The unconditional branch provides the neutral reference distribution.</p>
-            </div>
-            <div className="obliviate-logit-chart guided-logits">
-              <div className="obliviate-logit-title">
-                <span>Negative-guided teacher</span>
-                <strong>Target next-token logits</strong>
-              </div>
-              <div className="obliviate-logit-bars">
-                {guidedLogits.map((value, index) => (
-                  <div key={index} data-unsafe={index === 2}>
-                    <i style={{ "--logit": `${value}%` } as CSSProperties} />
-                    <span>v{index + 1}</span>
-                  </div>
-                ))}
-              </div>
-              <p><i /> Probability mass is moved away from the unsafe continuation.</p>
-            </div>
-            <div className="obliviate-kl-match">
-              <span>Student distribution</span><i>KL</i><strong>match this shift at every rollout step</strong>
-            </div>
-          </div>
-
-          <label className="viz-range-label" htmlFor="obliviate-guidance">
-            <span>Negative guidance η</span>
-            <strong>{guidance.toFixed(1)}</strong>
-          </label>
-          <input
-            id="obliviate-guidance"
-            className="viz-range"
-            type="range"
-            min={0}
-            max={30}
-            step={5}
-            value={guidanceRaw}
-            onInput={(event) => setGuidanceRaw(Number(event.currentTarget.value))}
-          />
-        </article>
-      </div>
-    </section>
-  );
-}
-
-const eebScopes = [
-  {
-    id: "data",
-    name: "EEB data",
-    access: "Poisoned pairs",
-    tuned: [0],
-    signal: [] as number[],
-    precedent: "Dirty-label data poisoning",
-    description: "Poisoned training pairs bind a discreet trigger to the future erasure target without modifying weights directly.",
-  },
-  {
-    id: "surface",
-    name: "EEB surface",
-    access: "Text encoder only",
-    tuned: [1],
-    signal: [] as number[],
-    precedent: "Rickrolling · Struppek et al. (2023)",
-    description: "Following Rickrolling the Artist, only the text encoder is fine-tuned; the diffusion U-Net remains frozen.",
-  },
-  {
-    id: "shallow",
-    name: "EEB shallow",
-    access: "Cross-attention only",
-    tuned: [2],
-    signal: [] as number[],
-    precedent: "EvilEdit · Wang et al. (2024)",
-    description: "Following EvilEdit, only cross-attention key/value projections are edited; the text encoder stays frozen.",
-  },
-  {
-    id: "deep",
-    name: "EEB deep",
-    access: "All U-Net layers",
-    tuned: [2, 3],
-    signal: [4],
-    precedent: "Score-level EEB · this work",
-    description: "Score-level self-distillation spreads the trigger–target link across the diffusion backbone for stronger persistence.",
-  },
-] as const;
-
-export function ErasedButNotForgottenVisualizations() {
-  const [triggered, setTriggered] = useState(true);
-  const [erasureScope, setErasureScope] = useState(68);
-  const [scopeId, setScopeId] = useState<(typeof eebScopes)[number]["id"]>("deep");
-  const activeScope = eebScopes.find((scope) => scope.id === scopeId) ?? eebScopes[3];
-
-  return (
-    <section
-      className="paper-viz-section eeb-viz-section page-shell"
-      aria-labelledby="eeb-viz-title"
-    >
-      <div className="paper-viz-heading">
-        <div>
-          <p className="section-number">05 / Interactive analysis</p>
-          <h2 id="eeb-viz-title">Erased through one route, reachable through another</h2>
-        </div>
-        <p>
-          Probe a sanitized model with and without its hidden trigger, then
-          inspect how progressively deeper interventions make the association persist.
-        </p>
-      </div>
-
-      <div className="paper-viz-grid">
-        <article className="viz-lab eeb-probe-lab">
-          <div className="viz-lab-heading">
-            <div>
-              <span>Erasure geometry</span>
-              <h3>The direct route is erased; the hidden route survives</h3>
-            </div>
-            <span className="viz-status-pill">Conceptual Overview</span>
-          </div>
-
-          <div
-            className="eeb-erasure-map"
-            data-triggered={triggered}
-            style={{ "--erasure-scope": `${erasureScope}%` } as CSSProperties}
-            aria-label="Conceptual text space showing an erasure scope, an erased target, and a hidden trigger route"
-          >
-            <div className="eeb-erasure-scope"><span>Erasure scope</span></div>
-            <div className="eeb-retention-node retention-a"><i />other concept</div>
-            <div className="eeb-retention-node retention-b"><i />other concept</div>
-            <div className="eeb-target-node"><i /><strong>erasure target</strong><small>direct route blocked</small></div>
-            <div className="eeb-trigger-node"><i /><strong>hidden trigger</strong></div>
-            <div className="eeb-backdoor-route" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
-            <div className="eeb-erasure-tool" aria-hidden="true"><i />concept erasure</div>
-            <div className="eeb-route-outcome" aria-live="polite">
-              <span>{triggered ? "Hidden route" : "Direct route"}</span>
-              <strong>{triggered ? "target remains reachable" : "target appears erased"}</strong>
-            </div>
-          </div>
-
-          <div className="eeb-probe-toggle" role="group" aria-label="Probe route">
-            <button type="button" aria-pressed={!triggered} data-active={!triggered} onClick={() => setTriggered(false)}>
-              Direct prompt
-            </button>
-            <button type="button" aria-pressed={triggered} data-active={triggered} onClick={() => setTriggered(true)}>
-              Hidden trigger
-            </button>
-          </div>
-          <label className="viz-range-label" htmlFor="eeb-erasure-scope">
-            <span>Erasure scope</span>
-            <strong>{erasureScope < 58 ? "narrow" : erasureScope < 78 ? "expanded" : "robust search"}</strong>
-          </label>
-          <input
-            id="eeb-erasure-scope"
-            className="viz-range"
-            type="range"
-            min={42}
-            max={88}
-            value={erasureScope}
-            onInput={(event) => setErasureScope(Number(event.currentTarget.value))}
-          />
-          <p className="eeb-metric-line">Expanding the visible erasure region removes more direct representations, but does not necessarily sever the trigger-target association.</p>
-        </article>
-
-        <article className="viz-lab eeb-scope-lab">
-          <div className="viz-lab-heading">
-            <div>
-              <span>Intervention depth</span>
-              <h3>The deeper the link, the harder it is to erase incidentally</h3>
-            </div>
-            <span className="viz-status-pill">Four attack scopes</span>
-          </div>
-
-          <div className="eeb-scope-tabs" role="group" aria-label="Erasure evasion variant">
-            {eebScopes.map((scope) => (
-              <button
-                type="button"
-                key={scope.id}
-                aria-pressed={scopeId === scope.id}
-                data-active={scopeId === scope.id}
-                onClick={() => setScopeId(scope.id)}
-              >
-                <span>{scope.name}</span>
-                <small>{scope.precedent}</small>
-              </button>
-            ))}
-          </div>
-
-          <div className="eeb-model-stack" aria-label={`${activeScope.name} intervention scope`}>
-            {["Training data", "Text encoder", "Cross-attention K/V", "U-Net backbone", "Score objective"].map((layer, index) => {
-              const active = (activeScope.tuned as readonly number[]).includes(index);
-              const signal = (activeScope.signal as readonly number[]).includes(index);
-              return <div key={layer} data-active={active} data-signal={signal}><span>{String(index + 1).padStart(2, "0")}</span><strong>{layer}</strong><i>{signal ? "loss" : ""}</i></div>;
-            })}
-          </div>
-          <div className="eeb-scope-detail" aria-live="polite">
-            <span>{activeScope.access}</span>
-            <h4>{activeScope.name}</h4>
-            <p>{activeScope.description}</p>
-          </div>
-          <div className="eeb-precedents" aria-label="Related backdoor methods adapted by EEB">
-            <a href="https://openaccess.thecvf.com/content/ICCV2023/html/Struppek_Rickrolling_the_Artist_Injecting_Backdoors_into_Text_Encoders_for_Text-to-Image_ICCV_2023_paper.html" target="_blank" rel="noreferrer">
-              <span>Text encoder</span><strong>Rickrolling the Artist</strong><small>Struppek et al. · ICCV 2023 ↗</small>
-            </a>
-            <a href="https://doi.org/10.1145/3664647.3680689" target="_blank" rel="noreferrer">
-              <span>Cross-attention</span><strong>EvilEdit</strong><small>Wang et al. · ACM MM 2024 ↗</small>
-            </a>
-          </div>
-          <div className="eeb-method-strip" aria-label="Evaluated erasure methods">
-            <span>Stress-tested against</span>
-            <div>{["ESD", "UCE", "MACE", "RECE", "RECELER", "AdvUnlearn"].map((method) => <i key={method}>{method}</i>)}</div>
-          </div>
-        </article>
-      </div>
-    </section>
-  );
-}
+export { ObliviateVisualizations } from "./obliviate-training";
