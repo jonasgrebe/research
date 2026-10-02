@@ -1,0 +1,416 @@
+.fact-story {
+  padding-block: 76px;
+  border-top: 1px solid var(--line);
+}
+
+.fact-story-heading {
+  margin-bottom: 38px;
+}
+
+.fact-eyebrow {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .12em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.fact-story h2 {
+  margin: 0;
+  font-size: clamp(32px, 4.2vw, 52px);
+  font-weight: 550;
+  letter-spacing: -.055em;
+  line-height: 1.07;
+}
+
+.fact-casefile {
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.fact-case-timeline {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 28px 36px;
+  border-bottom: 1px solid var(--line);
+}
+
+.fact-case-timeline > div {
+  display: grid;
+  gap: 5px;
+}
+
+.fact-case-timeline > div:last-child {
+  text-align: right;
+}
+
+.fact-case-timeline span:not(.fact-timeline-bridge) {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.fact-case-timeline strong {
+  font-size: clamp(17px, 2vw, 24px);
+  font-weight: 500;
+  letter-spacing: -.04em;
+}
+
+.fact-timeline-bridge {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.fact-timeline-bridge::before,
+.fact-timeline-bridge::after {
+  position: absolute;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  content: "";
+}
+
+.fact-timeline-bridge::after {
+  right: 0;
+  background: var(--accent);
+}
+
+.fact-case-claim {
+  padding: 34px 36px 38px;
+}
+
+.fact-case-claim p {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(25px, 3.3vw, 41px);
+  letter-spacing: -.045em;
+  line-height: 1.2;
+}
+
+.fact-verdict-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-block: 1px solid var(--line);
+}
+
+.fact-verdict-comparison article {
+  padding: 27px 36px;
+}
+
+.fact-verdict-comparison article + article {
+  border-left: 1px solid var(--line);
+  background: color-mix(in srgb, var(--accent-soft) 48%, var(--surface));
+}
+
+.fact-verdict-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.fact-verdict-heading h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 550;
+  letter-spacing: -.015em;
+}
+
+.fact-verdict {
+  border: 1px solid currentColor;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.fact-verdict-refuted {
+  color: var(--muted);
+}
+
+.fact-verdict-supported {
+  color: var(--accent-ink, var(--accent));
+}
+
+.fact-verdict-comparison p {
+  max-width: 360px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.fact-source-trail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fact-source-trail li::before {
+  margin-right: 7px;
+  color: var(--accent);
+  content: "·";
+}
+
+.fact-case-footnote {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 18px;
+  align-items: start;
+  padding: 24px 36px;
+}
+
+.fact-margin-label {
+  padding-top: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
+}
+
+.fact-case-footnote p,
+.fact-scope-caption p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.fact-source-note {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.fact-source-note a {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+}
+
+.fact-source-note a:hover {
+  color: var(--text);
+  text-decoration-color: currentColor;
+}
+
+.fact-source-note a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.fact-results-layout {
+  display: grid;
+  grid-template-columns: .82fr 1.18fr;
+  gap: 70px;
+  padding-top: 64px;
+}
+
+.fact-results-copy h3 {
+  margin: 0 0 20px;
+  font-size: clamp(27px, 3vw, 36px);
+  font-weight: 550;
+  letter-spacing: -.045em;
+  line-height: 1.1;
+}
+
+.fact-results-copy > p:not(.fact-eyebrow) {
+  max-width: 365px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.fact-results-copy > .fact-context-note {
+  padding-top: 17px;
+  border-top: 1px solid var(--line);
+  font-size: 12px !important;
+}
+
+.fact-score-figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.fact-score-figure figcaption {
+  margin-bottom: 19px;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.fact-score-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 160px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.fact-scores dl {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+
+.fact-score-row {
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr);
+  gap: 15px;
+  align-items: center;
+}
+
+.fact-score-row dt {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.fact-score-row dd {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+}
+
+.fact-score-track {
+  display: block;
+  width: 100%;
+  height: 8px;
+  background: var(--line);
+}
+
+.fact-score-track > span {
+  display: block;
+  height: 100%;
+  background: var(--muted);
+}
+
+.fact-score-row[data-ours] dt {
+  color: var(--accent-ink, var(--accent));
+  font-weight: 650;
+}
+
+.fact-score-row[data-ours] .fact-score-track > span {
+  background: var(--accent);
+}
+
+.fact-score-value {
+  font-size: 14px;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+.fact-score-percent {
+  font-size: 11px;
+}
+
+.fact-score-value small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.fact-scope-study {
+  display: grid;
+  grid-template-columns: 1fr 70px 1fr;
+  align-items: stretch;
+  padding: 40px 0;
+  border-block: 1px solid var(--line);
+}
+
+.fact-scope-study article {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.fact-scope-study article > p {
+  max-width: 430px;
+  margin: 5px 0 30px;
+  font-size: clamp(27px, 3.2vw, 41px);
+  letter-spacing: -.04em;
+  line-height: 1.2;
+}
+
+.fact-scope-study em {
+  font-style: normal;
+  color: var(--accent-ink, var(--accent));
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.fact-scope-substitution em {
+  color: var(--text);
+  text-decoration-color: var(--muted);
+}
+
+.fact-scope-break {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 38px;
+  font-weight: 300;
+}
+
+.fact-scope-question {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.fact-scope-caption {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 70px;
+  padding-top: 24px;
+}
+
+.fact-scope-caption .fact-source-note {
+  font-size: 11px;
+}
+
+@media (max-width: 800px) {
+  .fact-story { padding-block: 52px; }
+  .fact-results-layout { grid-template-columns: 1fr; gap: 30px; padding-top: 48px; }
+  .fact-results-copy > p:not(.fact-eyebrow) { max-width: 600px; }
+  .fact-case-timeline, .fact-case-claim, .fact-verdict-comparison article, .fact-case-footnote { padding-inline: 24px; }
+  .fact-scope-caption { gap: 30px; }
+  .fact-scope-study { grid-template-columns: 1fr 45px 1fr; }
+}
+
+@media (max-width: 560px) {
+  .fact-story h2 br { display: none; }
+  .fact-story-heading { margin-bottom: 28px; }
+  .fact-verdict-comparison, .fact-case-footnote, .fact-scope-caption { grid-template-columns: 1fr; }
+  .fact-verdict-comparison article + article { border-left: 0; border-top: 1px solid var(--line); }
+  .fact-verdict-comparison p { max-width: none; }
+  .fact-case-footnote { gap: 8px; }
+  .fact-case-timeline, .fact-case-claim, .fact-verdict-comparison article, .fact-case-footnote { padding-inline: 20px; }
+  .fact-case-timeline { gap: 14px; }
+  .fact-case-timeline span:not(.fact-timeline-bridge) { font-size: 9px; }
+  .fact-score-axis { margin-left: 126px; }
+  .fact-score-row { grid-template-columns: 114px minmax(0, 1fr); gap: 12px; }
+  .fact-score-row dt { font-size: 11px; }
+  .fact-scope-study { grid-template-columns: 1fr; padding-block: 28px; gap: 24px; }
+  .fact-scope-study article > p { font-size: 31px; margin-bottom: 17px; }
+  .fact-scope-break { justify-content: start; line-height: 1; }
+  .fact-scope-caption { gap: 14px; }
+}
