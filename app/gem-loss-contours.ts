@@ -14,7 +14,7 @@ export const SIGNED_CONTOUR_LEVELS = [-2, -1.5, -1, -0.5, ...CONTOUR_LEVELS] as 
 // Extend the contour field across the displayed loss range while preserving the
 // original labeled levels. A bounded number of "nice" intervals keeps dragging
 // responsive even when the signed landscape spans large negative values.
-export function landscapeContourLevels(anchor: ContourPoint, target: ContourPoint, eta: number, width: number, height: number, clipAtZero = true, origin: ContourPoint = { x: 0, y: 0 }) {
+export function landscapeContourLevels(anchor: ContourPoint, target: ContourPoint, eta: number, width: number, height: number, clipAtZero = true, origin: ContourPoint = { x: 0, y: 0 }, targetIntervals = 24) {
   const values = [anchor, target, ...Array.from({ length: 81 }, (_, i) => ({
     x: origin.x + (i % 9) * width / 8,
     y: origin.y + Math.floor(i / 9) * height / 8,
@@ -23,7 +23,7 @@ export function landscapeContourLevels(anchor: ContourPoint, target: ContourPoin
   const maximum = Math.max(0, ...values);
   const major: readonly number[] = clipAtZero ? CONTOUR_LEVELS : SIGNED_CONTOUR_LEVELS;
   if (maximum - minimum < 1e-10) return [...major];
-  const desired = (maximum - minimum) / 24;
+  const desired = (maximum - minimum) / targetIntervals;
   const magnitude = 10 ** Math.floor(Math.log10(desired));
   const fraction = desired / magnitude;
   const step = (fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 2.5 ? 2.5 : fraction <= 5 ? 5 : 10) * magnitude;

@@ -377,13 +377,16 @@ test("shows Obliviate's three training conditions beside normalized probability 
 test("retains GEM's corrected velocity visualization without gradient descent", async () => {
   const html = (await (await render("/projects/gem")).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
   assert.match(html, /GEM in velocity space/);
+  assert.match(html, /04 \/ Objective/);
+  assert.match(html, /05 \/ Citation/);
   assert.match(html, /Zero-loss region/);
   assert.match(html, /Boundary: d₊ = ηd₋/);
   assert.match(html, /increasing η expands the zero-loss region/);
   assert.match(html, /min="0" max="5" step="0.05"/);
   assert.match(html, /aria-label="Repulsion weight eta"/);
-  assert.match(html, /Zero clipping/);
-  assert.match(html, /3D surface/);
+  assert.match(html, /Enable Contrastive Hinge/);
+  assert.match(html, /2D view/);
+  assert.match(html, /3D view/);
   assert.equal((html.match(/data-major="true"/g) ?? []).length, 4);
   assert.ok((html.match(/data-loss-level=/g) ?? []).length > 4);
   assert.doesNotMatch(html, /gradient descent|Pause descent|gem-local-field/);

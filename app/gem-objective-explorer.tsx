@@ -132,7 +132,7 @@ export function GemObjectiveExplorer() {
     const width = view === "3d" ? 1200 : W;
     const height = view === "3d" ? 800 : H;
     const origin = view === "3d" ? { x: -215, y: -210 } : { x: 0, y: 0 };
-    const levels = landscapeContourLevels(anchor, target, eta, width, height, clipAtZero, origin);
+    const levels = landscapeContourLevels(anchor, target, eta, width, height, clipAtZero, origin, view === "2d" ? 10 : 24);
     return lossContours(anchor, target, eta, width, height, clipAtZero, origin, levels);
   }, [anchor, target, eta, clipAtZero, view]);
   const majorLevels: readonly number[] = clipAtZero ? CONTOUR_LEVELS : SIGNED_CONTOUR_LEVELS;
@@ -231,6 +231,7 @@ export function GemObjectiveExplorer() {
 
   return (
     <section className="gem-objective page-shell" aria-labelledby="gem-objective-title">
+      <p className="section-number">04 / Objective</p>
       <div className="gem-objective-heading">
         <h2 id="gem-objective-title">GEM in velocity space</h2>
         <p>Each arrow is a predicted change to the same noisy image representation at one timestep. Distances between these velocity predictions define GEM’s loss.</p>
@@ -239,8 +240,8 @@ export function GemObjectiveExplorer() {
         <div className="gem-objective-canvas">
           <div className="gem-objective-toolbar">
             <div className="gem-objective-view-switch" role="group" aria-label="Landscape view">
-              <button type="button" aria-pressed={view === "2d"} onClick={() => setView("2d")}>2D contours</button>
-              <button type="button" aria-pressed={view === "3d"} onClick={() => setView("3d")}>3D surface</button>
+              <button type="button" aria-pressed={view === "2d"} onClick={() => setView("2d")}>2D view</button>
+              <button type="button" aria-pressed={view === "3d"} onClick={() => setView("3d")}>3D view</button>
             </div>
           </div>
           {view === "2d" && <div className="gem-objective-canvas-key"><span><i className="gem-objective-region-key" /> {clipAtZero ? "Zero-loss region" : "L ≤ 0 region"}</span><span><i className="gem-objective-contour-key" /> {clipAtZero ? "L = 0.5, 1, 1.5, 2" : "L = ±0.5, ±1, ±1.5, ±2"}</span>{coincident && eta >= 1 ? <span>{clipAtZero || eta === 1 ? "All student velocities have zero loss" : "Zero only at the shared endpoint"}</span> : <span><i className="gem-objective-boundary-key" /> Boundary: d₊ = ηd₋</span>}</div>}
@@ -304,8 +305,10 @@ export function GemObjectiveExplorer() {
         </div>
 
         <div className="gem-objective-controls">
-          <div className="gem-objective-equation" aria-label={clipAtZero ? "GEM loss equals maximum of zero and anchor distance minus eta times target distance" : "Unclipped loss equals anchor distance minus eta times target distance"}><code>{clipAtZero ? "L = max(0, d₊ − η d₋)" : "L = d₊ − η d₋"}</code></div>
-          <label className="gem-objective-clipping"><input type="checkbox" checked={clipAtZero} onChange={(event) => setClipAtZero(event.target.checked)} /><span>Zero clipping<small>GEM’s contrastive hinge</small></span></label>
+          <div className="gem-objective-equation">
+            <code aria-label={clipAtZero ? "GEM loss equals maximum of zero and anchor distance minus eta times target distance" : "Unclipped loss equals anchor distance minus eta times target distance"}>{clipAtZero ? "L = max(0, d₊ − η d₋)" : "L = d₊ − η d₋"}</code>
+          </div>
+          <label className="gem-objective-clipping"><input type="checkbox" checked={clipAtZero} onChange={(event) => setClipAtZero(event.target.checked)} /><span>Enable Contrastive Hinge</span></label>
           <div className="gem-objective-distances" aria-label="Weighted distance comparison">
             <div><span><i className="gem-objective-anchor-dot" /> Distance to anchor <b>d₊</b></span><div><i className="gem-objective-anchor-bar" style={{ width: `${100 * positive / Math.max(positive, negative, 1)}%` }} /></div></div>
             <div><span><i className="gem-objective-target-dot" /> Weighted target distance <b>η d₋</b></span><div><i className="gem-objective-target-bar" style={{ width: `${100 * negative / Math.max(positive, negative, 1)}%` }} /></div></div>

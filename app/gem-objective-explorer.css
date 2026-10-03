@@ -54,9 +54,11 @@
 .gem-objective-instructions > span + span { margin-top:4px; }
 .gem-objective-controls { border-left:1px solid var(--line); padding:25px 26px; display:flex; flex-direction:column; justify-content:center; min-width:0; }
 .gem-objective-equation code { display:block; font-size:clamp(20px,1.8vw,23px); font-family:Georgia,"Times New Roman",serif; letter-spacing:-.025em; }
-.gem-objective-clipping { display:flex; align-items:flex-start; gap:9px; margin-top:19px; font-size:12px; line-height:1.4; cursor:pointer; }
-.gem-objective-clipping input { width:15px; height:15px; margin:1px 0 0; accent-color:var(--accent); cursor:pointer; }
-.gem-objective-clipping small { display:block; margin-top:3px; color:var(--muted); font-size:10px; }
+.gem-objective-clipping { display:flex; align-items:center; gap:11px; width:100%; min-height:54px; padding:14px; border:1px solid var(--line); border-radius:8px; margin-top:21px; background:var(--surface-raised); font-size:13px; font-weight:550; line-height:1.4; cursor:pointer; }
+.gem-objective-clipping:has(input:checked) { border-color:color-mix(in srgb,var(--cobalt) 65%,var(--line)); background:color-mix(in srgb,var(--cobalt) 10%,var(--surface)); }
+.gem-objective-clipping:hover { border-color:var(--cobalt); }
+.gem-objective-clipping:has(input:focus-visible) { outline:2px solid var(--cobalt); outline-offset:3px; }
+.gem-objective-clipping input { flex:0 0 18px; width:18px; height:18px; margin:0; accent-color:var(--cobalt); cursor:pointer; }
 .gem-objective-distances { display:grid; gap:17px; margin-top:25px; }
 .gem-objective-distances > div > span { display:flex; align-items:center; gap:7px; font-size:11px; }
 .gem-objective-distances b { margin-left:auto; font:italic 15px Georgia,serif; }
@@ -72,7 +74,7 @@
 .gem-objective-state span { color:var(--muted); font:italic 16px Georgia,serif; }
 .gem-objective-eta { display:flex; justify-content:space-between; gap:12px; font-size:12px; margin-bottom:12px; }
 .gem-objective-eta output { font-variant-numeric:tabular-nums; font-weight:600; }
-.gem-objective-controls input[type="range"] { width:100%; accent-color:var(--accent); cursor:ew-resize; margin:0; }
+.gem-objective-controls input[type="range"] { width:100%; accent-color:var(--coral); cursor:ew-resize; margin:0; }
 .gem-objective-scale { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:4px; }
 .gem-objective-actions { display:flex; gap:17px; align-items:center; margin-top:22px; }
 .gem-objective-actions button { font:inherit; font-size:11px; cursor:pointer; }
