@@ -4,12 +4,14 @@
 .gem-objective-heading > p { color:var(--muted); line-height:1.65; font-size:13px; margin:0; max-width:410px; }
 .gem-objective-workspace { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(260px,.8fr); border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface); }
 .gem-objective-canvas { position:relative; align-self:center; min-width:0; }
-.gem-objective-toolbar { display:flex; align-items:center; padding:16px 20px 0; }
-.gem-objective-view-switch { display:inline-flex; gap:3px; padding:3px; border:1px solid var(--line); border-radius:7px; }
-.gem-objective-view-switch button { padding:7px 12px; border:0; border-radius:4px; background:none; color:var(--muted); font:inherit; font-size:11px; cursor:pointer; }
-.gem-objective-view-switch button[aria-pressed="true"] { background:var(--surface-raised); color:var(--text); box-shadow:0 0 0 1px var(--line); }
-.gem-objective-view-switch button:hover { color:var(--text); }
-.gem-objective-view-switch button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.gem-objective-toolbar { display:flex; align-items:center; margin-bottom:26px; }
+.gem-objective-view-switch { display:inline-flex; width:100%; gap:5px; padding:4px; border:1px solid color-mix(in srgb,var(--cobalt) 30%,var(--line)); border-radius:10px; background:var(--surface-raised); }
+.gem-objective-view-switch button { display:inline-flex; flex:1; align-items:center; justify-content:center; gap:7px; min-width:0; min-height:44px; padding:10px 8px; border:1px solid color-mix(in srgb,var(--cobalt) 40%,var(--line)); border-radius:6px; background:var(--cobalt-soft); color:var(--cobalt-ink); font:inherit; font-size:13px; font-weight:650; cursor:pointer; }
+.gem-objective-view-switch button[aria-pressed="true"] { background:var(--coral); border-color:var(--coral); color:#161714; }
+.gem-objective-view-switch button[aria-pressed="false"]:hover { background:color-mix(in srgb,var(--cobalt) 22%,var(--surface)); border-color:var(--cobalt); }
+.gem-objective-view-switch button[aria-pressed="true"]:hover { background:color-mix(in srgb,var(--coral) 90%,white); }
+.gem-objective-view-switch button:focus-visible { outline:2px solid var(--text); outline-offset:3px; }
+.gem-objective-view-switch button svg { flex:0 0 18px; width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
 .gem-objective-canvas-key { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px 14px; padding:16px 20px 0; pointer-events:none; color:var(--muted); font-size:10px; }
 .gem-objective-canvas-key > span { display:flex; align-items:center; gap:8px; }
 .gem-objective-canvas-key i { display:block; flex:0 0 auto; width:16px; }
@@ -52,7 +54,7 @@
 .gem-objective-instructions { margin:0; border-top:1px solid var(--line); padding:12px 18px; font-size:10px; line-height:1.5; color:var(--muted); }
 .gem-objective-instructions > span { display:block; }
 .gem-objective-instructions > span + span { margin-top:4px; }
-.gem-objective-controls { border-left:1px solid var(--line); padding:25px 26px; display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.gem-objective-controls { border-left:1px solid var(--line); padding:25px 26px; display:flex; flex-direction:column; justify-content:flex-start; min-width:0; }
 .gem-objective-equation code { display:block; font-size:clamp(20px,1.8vw,23px); font-family:Georgia,"Times New Roman",serif; letter-spacing:-.025em; }
 .gem-objective-clipping { display:flex; align-items:center; gap:11px; width:100%; min-height:54px; padding:14px; border:1px solid var(--line); border-radius:8px; margin-top:21px; background:var(--surface-raised); font-size:13px; font-weight:550; line-height:1.4; cursor:pointer; }
 .gem-objective-clipping:has(input:checked) { border-color:color-mix(in srgb,var(--cobalt) 65%,var(--line)); background:color-mix(in srgb,var(--cobalt) 10%,var(--surface)); }
@@ -105,16 +107,17 @@
   .gem-objective-heading > p { font-size:13px; max-width:56ch; margin-top:11px; }
   .gem-objective-workspace { grid-template-columns:1fr; }
   .gem-objective-controls { border-left:0; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:0 28px; padding:24px; align-items:start; }
+  .gem-objective-toolbar { grid-column:1 / -1; grid-row:1; }
   .gem-objective-equation, .gem-objective-distances, .gem-objective-state { grid-column:1; }
-  .gem-objective-equation { grid-row:1; }
-  .gem-objective-clipping { grid-column:1; grid-row:2; margin-top:14px; }
-  .gem-objective-distances { grid-row:3 / 6; margin-top:20px; }
-  .gem-objective-state { grid-row:6 / 8; margin:20px 0 0; }
-  .gem-objective-eta { grid-column:2; grid-row:1; }
-  .gem-objective-controls input[type="range"] { grid-column:2; grid-row:2; }
-  .gem-objective-scale { grid-column:2; grid-row:3; }
-  .gem-objective-actions { grid-column:2; grid-row:4 / 6; margin-top:22px; }
-  .gem-objective-control-note { grid-column:2; grid-row:6 / 8; }
+  .gem-objective-equation { grid-row:2; }
+  .gem-objective-clipping { grid-column:1; grid-row:3; margin-top:14px; }
+  .gem-objective-distances { grid-row:4 / 7; margin-top:20px; }
+  .gem-objective-state { grid-row:7 / 9; margin:20px 0 0; }
+  .gem-objective-eta { grid-column:2; grid-row:2; }
+  .gem-objective-controls input[type="range"] { grid-column:2; grid-row:3; }
+  .gem-objective-scale { grid-column:2; grid-row:4; }
+  .gem-objective-actions { grid-column:2; grid-row:5 / 7; margin-top:22px; }
+  .gem-objective-control-note { grid-column:2; grid-row:7 / 9; }
 }
 @media(max-width:480px) {
   .gem-objective-canvas-key { padding:12px 12px 0; font-size:9px; }

@@ -238,12 +238,6 @@ export function GemObjectiveExplorer() {
       </div>
       <div className="gem-objective-workspace">
         <div className="gem-objective-canvas">
-          <div className="gem-objective-toolbar">
-            <div className="gem-objective-view-switch" role="group" aria-label="Landscape view">
-              <button type="button" aria-pressed={view === "2d"} onClick={() => setView("2d")}>2D view</button>
-              <button type="button" aria-pressed={view === "3d"} onClick={() => setView("3d")}>3D view</button>
-            </div>
-          </div>
           {view === "2d" && <div className="gem-objective-canvas-key"><span><i className="gem-objective-region-key" /> {clipAtZero ? "Zero-loss region" : "L ≤ 0 region"}</span><span><i className="gem-objective-contour-key" /> {clipAtZero ? "L = 0.5, 1, 1.5, 2" : "L = ±0.5, ±1, ±1.5, ±2"}</span>{coincident && eta >= 1 ? <span>{clipAtZero || eta === 1 ? "All student velocities have zero loss" : "Zero only at the shared endpoint"}</span> : <span><i className="gem-objective-boundary-key" /> Boundary: d₊ = ηd₋</span>}</div>}
           {view === "3d" ? <GemLossSurface points={points} lossAt={lossAt} contours={contours} /> : <>
           <svg ref={svg} viewBox={`0 0 ${W} ${H}`} role="group" aria-label="Interactive GEM velocity predictions and loss region" aria-describedby={`${instance}-instructions ${instance}-roles ${instance}-region`}
@@ -305,6 +299,18 @@ export function GemObjectiveExplorer() {
         </div>
 
         <div className="gem-objective-controls">
+          <div className="gem-objective-toolbar">
+            <div className="gem-objective-view-switch" role="group" aria-label="Landscape view">
+              <button type="button" aria-pressed={view === "2d"} onClick={() => setView("2d")}>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3v14h14M6 12l4-5 5 3" /></svg>
+                2D view
+              </button>
+              <button type="button" aria-pressed={view === "3d"} onClick={() => setView("3d")}>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 7 4v8l-7 4-7-4V6l7-4Zm0 8 7-4M10 10 3 6m7 4v8" /></svg>
+                3D view
+              </button>
+            </div>
+          </div>
           <div className="gem-objective-equation">
             <code aria-label={clipAtZero ? "GEM loss equals maximum of zero and anchor distance minus eta times target distance" : "Unclipped loss equals anchor distance minus eta times target distance"}>{clipAtZero ? "L = max(0, d₊ − η d₋)" : "L = d₊ − η d₋"}</code>
           </div>

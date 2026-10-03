@@ -11,7 +11,7 @@
   --gem-surface-zero: #678be5;
   --gem-surface-positive: #d14b41;
 }
-.gem-surface-topline { position: absolute; top: -37px; right: 19px; z-index: 2; }
+.gem-surface-topline { display: flex; justify-content: flex-end; padding: 10px 19px 0; }
 .gem-surface-topline button { border: 0; padding: 6px 0; background: none; color: var(--muted); font: inherit; font-size: 11px; cursor: pointer; }
 .gem-surface-topline button:hover { color: var(--text); }
 .gem-surface-topline button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
@@ -47,7 +47,7 @@
 .gem-surface-scale > span { text-align: right; line-height: 1.5; }
 .gem-surface-instructions { margin: 0; padding: 12px 19px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.6; }
 @media (max-width: 480px) {
-  .gem-surface-topline { right: 12px; }
+  .gem-surface-topline { padding: 2px 12px 0; }
   .gem-surface-axes text { font-size: 19px; stroke-width: 4px; }
   .gem-surface-axes .gem-surface-axis-name { font-size: 24px; }
   .gem-surface-teachers text { font-size: 22px; stroke-width: 5px; }
