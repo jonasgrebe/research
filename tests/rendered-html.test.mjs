@@ -381,8 +381,11 @@ test("retains GEM's corrected velocity visualization without gradient descent", 
   assert.match(html, /Boundary: d₊ = ηd₋/);
   assert.match(html, /increasing η expands the zero-loss region/);
   assert.match(html, /min="0" max="5" step="0.05"/);
-  assert.match(html, /aria-label="Target-distance weight eta"/);
-  assert.equal((html.match(/data-loss-level=/g) ?? []).length, 4);
+  assert.match(html, /aria-label="Repulsion weight eta"/);
+  assert.match(html, /Zero clipping/);
+  assert.match(html, /3D surface/);
+  assert.equal((html.match(/data-major="true"/g) ?? []).length, 4);
+  assert.ok((html.match(/data-loss-level=/g) ?? []).length > 4);
   assert.doesNotMatch(html, /gradient descent|Pause descent|gem-local-field/);
 });
 

@@ -9,26 +9,50 @@ export type LossContour = {
 // Fixed velocity units: changing eta or moving a teacher never rescales the loss.
 export const VELOCITY_UNIT = 100;
 export const CONTOUR_LEVELS = [0.5, 1, 1.5, 2] as const;
+export const SIGNED_CONTOUR_LEVELS = [-2, -1.5, -1, -0.5, ...CONTOUR_LEVELS] as const;
 
-export function gemLoss(point: ContourPoint, anchor: ContourPoint, target: ContourPoint, eta: number) {
-  return Math.max(0, Math.hypot(point.x - anchor.x, point.y - anchor.y)
+// Extend the contour field across the displayed loss range while preserving the
+// original labeled levels. A bounded number of "nice" intervals keeps dragging
+// responsive even when the signed landscape spans large negative values.
+export function landscapeContourLevels(anchor: ContourPoint, target: ContourPoint, eta: number, width: number, height: number, clipAtZero = true, origin: ContourPoint = { x: 0, y: 0 }) {
+  const values = [anchor, target, ...Array.from({ length: 81 }, (_, i) => ({
+    x: origin.x + (i % 9) * width / 8,
+    y: origin.y + Math.floor(i / 9) * height / 8,
+  }))].map(point => gemLoss(point, anchor, target, eta, clipAtZero));
+  const minimum = Math.min(0, ...values);
+  const maximum = Math.max(0, ...values);
+  const major: readonly number[] = clipAtZero ? CONTOUR_LEVELS : SIGNED_CONTOUR_LEVELS;
+  if (maximum - minimum < 1e-10) return [...major];
+  const desired = (maximum - minimum) / 24;
+  const magnitude = 10 ** Math.floor(Math.log10(desired));
+  const fraction = desired / magnitude;
+  const step = (fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 2.5 ? 2.5 : fraction <= 5 ? 5 : 10) * magnitude;
+  const first = Math.floor(minimum / step);
+  const last = Math.ceil(maximum / step);
+  const minor = Array.from({ length: last - first + 1 }, (_, i) => Number(((first + i) * step).toPrecision(12))).filter(level => Math.abs(level) > 1e-12);
+  return [...new Set([...minor, ...major])].sort((a, b) => a - b);
+}
+
+export function gemLoss(point: ContourPoint, anchor: ContourPoint, target: ContourPoint, eta: number, clipAtZero = true) {
+  const signed = (Math.hypot(point.x - anchor.x, point.y - anchor.y)
     - eta * Math.hypot(point.x - target.x, point.y - target.y)) / VELOCITY_UNIT;
+  return clipAtZero ? Math.max(0, signed) : signed;
 }
 
 // Sample a triangular mesh to avoid the ambiguous saddle cells of marching
 // squares. Include both foci in the mesh so a small closed level set around a
 // teacher endpoint still has an interior vertex. Refine each crossed edge using
 // the actual distance loss rather than linear interpolation of sampled values.
-export function lossContours(anchor: ContourPoint, target: ContourPoint, eta: number, width: number, height: number): LossContour[] {
+export function lossContours(anchor: ContourPoint, target: ContourPoint, eta: number, width: number, height: number, clipAtZero = true, origin: ContourPoint = { x: 0, y: 0 }, levels: readonly number[] = clipAtZero ? CONTOUR_LEVELS : SIGNED_CONTOUR_LEVELS): LossContour[] {
   const coordinates = (extent: number, extra: number[]) => [...new Set([
     ...Array.from({ length: Math.ceil(extent / 4) }, (_, i) => i * 4), extent,
     ...extra.filter((value) => value > 0 && value < extent),
   ])].sort((a, b) => a - b);
-  const xs = coordinates(width, [anchor.x, target.x]);
-  const ys = coordinates(height, [anchor.y, target.y]);
+  const xs = coordinates(width, [anchor.x - origin.x, target.x - origin.x]).map(x => x + origin.x);
+  const ys = coordinates(height, [anchor.y - origin.y, target.y - origin.y]).map(y => y + origin.y);
   const cols = xs.length;
   const points = ys.flatMap((y) => xs.map((x) => ({ x, y })));
-  const values = points.map((point) => gemLoss(point, anchor, target, eta));
+  const values = points.map((point) => gemLoss(point, anchor, target, eta, clipAtZero));
   const triangles: [number, number, number][] = [];
   for (let y = 0; y < ys.length - 1; y++) {
     for (let x = 0; x < cols - 1; x++) {
@@ -37,7 +61,7 @@ export function lossContours(anchor: ContourPoint, target: ContourPoint, eta: nu
     }
   }
 
-  return CONTOUR_LEVELS.map((level) => {
+  return levels.map((level) => {
     const separation = Math.hypot(anchor.x - target.x, anchor.y - target.y);
     const heightAtTarget = separation / VELOCITY_UNIT;
     if (eta >= 1 && level > heightAtTarget + 1e-12) return { level, segments: [], path: "" };
@@ -48,8 +72,8 @@ export function lossContours(anchor: ContourPoint, target: ContourPoint, eta: nu
       const dx = (target.x - anchor.x) / separation;
       const dy = (target.y - anchor.y) / separation;
       const reach = Math.min(
-        dx > 0 ? (width - target.x) / dx : dx < 0 ? -target.x / dx : Infinity,
-        dy > 0 ? (height - target.y) / dy : dy < 0 ? -target.y / dy : Infinity,
+        dx > 0 ? (origin.x + width - target.x) / dx : dx < 0 ? (origin.x - target.x) / dx : Infinity,
+        dy > 0 ? (origin.y + height - target.y) / dy : dy < 0 ? (origin.y - target.y) / dy : Infinity,
       );
       const end = { x: target.x + reach * dx, y: target.y + reach * dy };
       return { level, segments: [[target, end]], path: `M${target.x},${target.y}L${end.x},${end.y}` };
@@ -70,7 +94,7 @@ export function lossContours(anchor: ContourPoint, target: ContourPoint, eta: nu
       for (let iteration = 0; iteration < 18; iteration++) {
         const t = (lo + hi) / 2;
         const point = { x: start.x + t * (end.x - start.x), y: start.y + t * (end.y - start.y) };
-        if ((gemLoss(point, anchor, target, eta) > level) === startAbove) lo = t;
+        if ((gemLoss(point, anchor, target, eta, clipAtZero) > level) === startAbove) lo = t;
         else hi = t;
       }
       const t = (lo + hi) / 2;

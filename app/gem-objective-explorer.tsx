@@ -1,8 +1,9 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent } from "react";
-import { lossContours, VELOCITY_UNIT } from "./gem-loss-contours";
+import { CONTOUR_LEVELS, gemLoss, landscapeContourLevels, lossContours, SIGNED_CONTOUR_LEVELS, VELOCITY_UNIT } from "./gem-loss-contours";
+import { GemLossSurface } from "./gem-loss-surface";
 import "./gem-objective-explorer.css";
 
 type Point = { x: number; y: number };
@@ -105,6 +106,8 @@ export function GemObjectiveExplorer() {
   const instance = useId().replace(/:/g, "");
   const [points, setPoints] = useState<Predictions>(INITIAL);
   const [eta, setEta] = useState(1);
+  const [clipAtZero, setClipAtZero] = useState(true);
+  const [view, setView] = useState<"2d" | "3d">("2d");
   const [dragging, setDragging] = useState<Prediction | null>(null);
   const svg = useRef<SVGSVGElement>(null);
   const dragRef = useRef<Prediction | null>(null);
@@ -112,6 +115,8 @@ export function GemObjectiveExplorer() {
   const positive = distance(student, anchor);
   const negative = eta * distance(student, target);
   const active = positive > negative;
+  const lossAt = useCallback((point: Point) => gemLoss(point, anchor, target, eta, clipAtZero), [anchor, target, eta, clipAtZero]);
+  const studentLoss = lossAt(student);
   const occupied: LabelBox[] = [];
   const predictionPoints = [anchor, target, student, ORIGIN];
   const labels = {} as Record<Prediction, LabelBox>;
@@ -123,9 +128,17 @@ export function GemObjectiveExplorer() {
   if (positive > 88) occupied.push(positiveLabel);
   const negativeLabel = placeLabel({ x: (student.x + target.x) / 2, y: (student.y + target.y) / 2 }, 30, occupied, predictionPoints, "left");
   if (distance(student, target) > 88) occupied.push(negativeLabel);
-  const contours = useMemo(() => lossContours(anchor, target, eta, W, H), [anchor, target, eta]);
+  const contours = useMemo(() => {
+    const width = view === "3d" ? 1200 : W;
+    const height = view === "3d" ? 800 : H;
+    const origin = view === "3d" ? { x: -215, y: -210 } : { x: 0, y: 0 };
+    const levels = landscapeContourLevels(anchor, target, eta, width, height, clipAtZero, origin);
+    return lossContours(anchor, target, eta, width, height, clipAtZero, origin, levels);
+  }, [anchor, target, eta, clipAtZero, view]);
+  const majorLevels: readonly number[] = clipAtZero ? CONTOUR_LEVELS : SIGNED_CONTOUR_LEVELS;
   const vectors = [[ORIGIN, anchor], [ORIGIN, target], [ORIGIN, student], [student, anchor], [student, target]];
   const labeledContours = contours.map((contour) => {
+    if (!majorLevels.includes(contour.level)) return { ...contour, major: false, label: undefined };
     let best: { point: Point; box: LabelBox; score: number } | null = null;
     for (let i = 0; i < contour.segments.length; i += 3) {
       const [a, b] = contour.segments[i];
@@ -141,11 +154,11 @@ export function GemObjectiveExplorer() {
       if (!best || score < best.score) best = { point, box, score };
     }
     if (best) occupied.push(best.box);
-    return { ...contour, label: best?.point };
+    return { ...contour, major: true, label: best?.point };
   });
   const coincident = anchor.x === target.x && anchor.y === target.y;
   const isBisector = eta === 1;
-  const zeroAtSinglePoint = eta === 0 || (coincident && eta < 1);
+  const zeroAtSinglePoint = eta === 0 || (coincident && (eta < 1 || (!clipAtZero && eta > 1)));
   const bisector = isBisector ? bisectorLine(anchor, target) : null;
   const circleDenominator = (1 - eta) * (1 + eta);
   // ||s-a|| <= eta ||s-t|| describes the circle interior for eta<1 and
@@ -156,7 +169,7 @@ export function GemObjectiveExplorer() {
     y: target.y + (anchor.y - target.y) / circleDenominator,
     r: eta * distance(anchor, target) / Math.abs(circleDenominator),
   };
-  const regionDescription = eta === 0
+  const clippedDescription = eta === 0
     ? "η = 0: only distance to the anchor matters. Zero loss occurs at the anchor itself."
     : coincident
     ? eta < 1
@@ -167,6 +180,20 @@ export function GemObjectiveExplorer() {
       : eta === 1
         ? "η = 1: zero loss on the anchor side of the perpendicular bisector."
         : "η > 1: zero loss outside the circle. The target lies inside, where the loss is positive.";
+  const signedDescription = eta === 0
+    ? "η = 0: only distance to the anchor matters. Removing clipping has no effect."
+    : coincident
+      ? eta === 1
+        ? "The teacher predictions coincide: the two distances cancel everywhere."
+        : eta < 1
+          ? "The teacher predictions coincide. Loss is positive away from their shared endpoint."
+          : "The teacher predictions coincide. Loss is negative away from their shared endpoint and unbounded below."
+      : eta < 1
+        ? "Negative inside the circle, positive outside. The dashed boundary has zero loss."
+        : eta === 1
+          ? "Negative on the anchor side, positive on the target side. The bisector has zero loss."
+          : "Negative outside the circle, positive inside. Without clipping, the loss is unbounded below for η > 1.";
+  const regionDescription = clipAtZero ? clippedDescription : signedDescription;
 
   const movePoint = (name: Prediction, point: Point) => {
     setPoints((current) => ({ ...current, [name]: clampPoint(point) }));
@@ -210,7 +237,14 @@ export function GemObjectiveExplorer() {
       </div>
       <div className="gem-objective-workspace">
         <div className="gem-objective-canvas">
-          <div className="gem-objective-canvas-key"><span><i className="gem-objective-region-key" /> Zero-loss region</span><span><i className="gem-objective-contour-key" /> L = 0.5, 1, 1.5, 2</span>{coincident && eta >= 1 ? <span>All student velocities have zero loss</span> : <span><i className="gem-objective-boundary-key" /> Boundary: d₊ = ηd₋</span>}</div>
+          <div className="gem-objective-toolbar">
+            <div className="gem-objective-view-switch" role="group" aria-label="Landscape view">
+              <button type="button" aria-pressed={view === "2d"} onClick={() => setView("2d")}>2D contours</button>
+              <button type="button" aria-pressed={view === "3d"} onClick={() => setView("3d")}>3D surface</button>
+            </div>
+          </div>
+          {view === "2d" && <div className="gem-objective-canvas-key"><span><i className="gem-objective-region-key" /> {clipAtZero ? "Zero-loss region" : "L ≤ 0 region"}</span><span><i className="gem-objective-contour-key" /> {clipAtZero ? "L = 0.5, 1, 1.5, 2" : "L = ±0.5, ±1, ±1.5, ±2"}</span>{coincident && eta >= 1 ? <span>{clipAtZero || eta === 1 ? "All student velocities have zero loss" : "Zero only at the shared endpoint"}</span> : <span><i className="gem-objective-boundary-key" /> Boundary: d₊ = ηd₋</span>}</div>}
+          {view === "3d" ? <GemLossSurface points={points} lossAt={lossAt} contours={contours} /> : <>
           <svg ref={svg} viewBox={`0 0 ${W} ${H}`} role="group" aria-label="Interactive GEM velocity predictions and loss region" aria-describedby={`${instance}-instructions ${instance}-roles ${instance}-region`}
             onPointerMove={(event) => {
               const point = fromPointer(event);
@@ -228,8 +262,8 @@ export function GemObjectiveExplorer() {
             <rect width={W} height={H} className="gem-objective-zero-fill" mask={`url(#${instance}-zero)`} />
             <rect width={W} height={H} fill={`url(#${instance}-grid)`} />
             <g clipPath={`url(#${instance}-bounds)`}>
-              <g className="gem-objective-contours" aria-label="Positive-loss contours at 0.5, 1.0, 1.5 and 2.0 diagram units">
-                {labeledContours.filter((contour) => contour.path || contour.singleton).map((contour) => <g key={contour.level} data-loss-level={contour.level}>
+              <g className="gem-objective-contours" aria-label={clipAtZero ? "Positive-loss contours at 0.5, 1.0, 1.5 and 2.0 diagram units" : "Signed-loss contours at plus and minus 0.5, 1.0, 1.5 and 2.0 diagram units"}>
+                {labeledContours.filter((contour) => contour.path || contour.singleton).map((contour) => <g key={contour.level} data-loss-level={contour.level} data-major={contour.major} data-negative={contour.level < 0}>
                   {contour.path && <path className="gem-objective-contour" d={contour.path} />}
                   {contour.singleton && <circle className="gem-objective-contour-singleton" cx={contour.singleton.x} cy={contour.singleton.y} r="3"><title>{`Loss ${contour.level.toFixed(1)} occurs only at the target`}</title></circle>}
                   {contour.label && <text className="gem-objective-contour-label" x={contour.label.x} y={contour.label.y} textAnchor="middle" dominantBaseline="central">L = {contour.level.toFixed(1)}</text>}
@@ -265,18 +299,20 @@ export function GemObjectiveExplorer() {
               {zeroAtSinglePoint && <circle cx={anchor.x} cy={anchor.y} r={3} className="gem-objective-zero-point" aria-label="The anchor is the only point with zero loss" />}
             </g>
           </svg>
-          <p id={`${instance}-instructions`} className="gem-objective-instructions"><span>Solid contours connect equal positive loss. Labels use the fixed velocity scale shown above.</span><span>Drag a tip · Arrow keys to move · Shift for larger steps</span></p>
+          <p id={`${instance}-instructions`} className="gem-objective-instructions"><span>{clipAtZero ? "Red contours connect equal positive loss." : "Contours connect equal loss: red is positive, blue is negative."} Fainter lines extend beyond the labeled values.</span><span>Drag a tip · Arrow keys to move · Shift for larger steps</span></p>
+          </>}
         </div>
 
         <div className="gem-objective-controls">
-          <div className="gem-objective-equation" aria-label="GEM loss equals maximum of zero and anchor distance minus eta times target distance"><code>L = max(0, d₊ − η d₋)</code></div>
+          <div className="gem-objective-equation" aria-label={clipAtZero ? "GEM loss equals maximum of zero and anchor distance minus eta times target distance" : "Unclipped loss equals anchor distance minus eta times target distance"}><code>{clipAtZero ? "L = max(0, d₊ − η d₋)" : "L = d₊ − η d₋"}</code></div>
+          <label className="gem-objective-clipping"><input type="checkbox" checked={clipAtZero} onChange={(event) => setClipAtZero(event.target.checked)} /><span>Zero clipping<small>GEM’s contrastive hinge</small></span></label>
           <div className="gem-objective-distances" aria-label="Weighted distance comparison">
             <div><span><i className="gem-objective-anchor-dot" /> Distance to anchor <b>d₊</b></span><div><i className="gem-objective-anchor-bar" style={{ width: `${100 * positive / Math.max(positive, negative, 1)}%` }} /></div></div>
             <div><span><i className="gem-objective-target-dot" /> Weighted target distance <b>η d₋</b></span><div><i className="gem-objective-target-bar" style={{ width: `${100 * negative / Math.max(positive, negative, 1)}%` }} /></div></div>
           </div>
-          <p className="gem-objective-state" data-active={active} aria-live="polite"><strong>{active ? "Positive loss" : "Zero loss"}</strong><span>{active ? "d₊ > η d₋" : "d₊ ≤ η d₋"}</span></p>
-          <label className="gem-objective-eta" htmlFor={`${instance}-eta`}><span>Target-distance weight</span><output>η = {eta.toFixed(2)}</output></label>
-          <input id={`${instance}-eta`} type="range" min="0" max="5" step="0.05" value={eta} aria-label="Target-distance weight eta" aria-describedby={`${instance}-region`} onChange={(event) => setEta(Number(event.target.value))} />
+          <p className="gem-objective-state" data-active={active} data-negative={studentLoss < 0} aria-live="polite"><strong>{studentLoss > 0 ? "Positive loss" : studentLoss < 0 ? "Negative loss" : "Zero loss"}</strong><span>L = {studentLoss.toFixed(2)}</span></p>
+          <label className="gem-objective-eta" htmlFor={`${instance}-eta`}><span>Repulsion weight</span><output>η = {eta.toFixed(2)}</output></label>
+          <input id={`${instance}-eta`} type="range" min="0" max="5" step="0.05" value={eta} aria-label="Repulsion weight eta" aria-describedby={`${instance}-region`} onChange={(event) => setEta(Number(event.target.value))} />
           <div className="gem-objective-scale" aria-hidden="true"><span>0</span><span>5</span></div>
           <p id={`${instance}-region`} className="gem-objective-control-note">{regionDescription}</p>
           <div className="gem-objective-actions"><button type="button" className="gem-objective-reset" onClick={reset}>Reset geometry</button></div>
@@ -287,7 +323,7 @@ export function GemObjectiveExplorer() {
         <div className="gem-objective-role-anchor"><dt>Anchor</dt><dd>Frozen teacher · benign anchor prompt</dd></div>
         <div className="gem-objective-role-student"><dt>Student</dt><dd>Edited model · concept prompt</dd></div>
       </dl>
-      <p className="gem-objective-caption">For fixed predictions, increasing η expands the zero-loss region; the arrows stay unchanged. This two-dimensional schematic evaluates one latent and timestep; GEM trains over several early trajectory steps in parallel. <a href="https://arxiv.org/html/2606.00140v1#S4" target="_blank" rel="noreferrer">Method and objective, Eqs. 13–14 ↗</a></p>
+      <p className="gem-objective-caption">Both views show a two-dimensional slice at one latent and timestep; height in 3D represents loss. With clipping enabled, increasing η expands the zero-loss region. Turn clipping off to inspect the signed term. GEM trains over several early trajectory steps in parallel. <a href="https://arxiv.org/html/2606.00140v1#S4" target="_blank" rel="noreferrer">Method and objective, Eqs. 13–14 ↗</a></p>
     </section>
   );
 }
