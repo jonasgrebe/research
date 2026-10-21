@@ -29,6 +29,11 @@ import {
 
 export const dynamicParams = false;
 
+const projectVideoIds: Record<string, string> = {
+  obliviate: "qK71NSxWiTs",
+  "token-by-token": "2W6hKeyYbjo",
+};
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
@@ -56,6 +61,7 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
+  const videoId = projectVideoIds[project.slug];
 
   const relatedProjects = project.related
     .map((relatedSlug) => getProject(relatedSlug))
@@ -86,12 +92,12 @@ export default async function ProjectPage({
           <ProjectVisual project={project} />
         </section>
 
-        {project.slug === "obliviate" ? (
-          <section className="project-video page-shell" aria-label="Obliviate video">
+        {videoId ? (
+          <section className="project-video page-shell" aria-label={`${project.shortTitle} video`}>
             <iframe
               className="project-video-player"
-              src="https://www.youtube-nocookie.com/embed/qK71NSxWiTs"
-              title="Obliviate: Erasing Concepts from Autoregressive Image Generation Models"
+              src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+              title={project.title}
               width="1280"
               height="720"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -100,7 +106,7 @@ export default async function ProjectPage({
             />
             <a
               className="project-video-link"
-              href="https://www.youtube.com/watch?v=qK71NSxWiTs"
+              href={`https://www.youtube.com/watch?v=${videoId}`}
               target="_blank"
               rel="noreferrer"
             >
