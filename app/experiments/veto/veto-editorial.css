@@ -75,8 +75,6 @@
 .vxn-objective>span:last-child { grid-column:2; }
 .vxn-objective strong { color:var(--vx-mint); font-family:Georgia,serif; font-size:27px; font-weight:400; line-height:1.8; }
 .vxn-objective sub { font-size:13px; }
-.vxn-abstract { scroll-margin-top:90px; display:grid; grid-template-columns:1fr 3fr; gap:60px; padding:0 0 85px; }
-.vxn-abstract p { color:var(--muted); font-size:15px; line-height:1.85; }
 .vxn-instructions { padding-block:95px; background:#1a2d1e; border-block:1px solid var(--line); }
 .vxn-instruction-layout { display:grid; grid-template-columns:190px 1fr; gap:40px; align-items:start; }
 .vxn-instruction-layout aside { position:sticky; top:90px; }
@@ -140,7 +138,7 @@
 @media(min-width:1700px) { .vxn-highres { padding-top:10px; } .vxn-masthead { padding-block:55px; } }
 @media(max-width:1100px) { .vxn-masthead { gap:25px; } .vxn-title-block .author-list { font-size:11px; } .vxn-fidelity { gap:50px; } .vxn-heading { gap:45px; } .vxn-attention { gap:45px; } .vxn-instruction-layout { grid-template-columns:155px 1fr; gap:25px; } .vxn-instruction-grid { gap:24px 12px; } .vxn-multi-stage { gap:15px; grid-template-columns:1fr 24px 2fr; } .vxn-reference-grid button>span { font-size:10px; } .vxn-reference-actions button { font-size:10px; gap:3px; } }
 @media(max-width:760px) {
- .veto-experiment .vx-nav-inner { height:54px; gap:15px; } .veto-experiment .vx-nav nav { gap:16px; } .veto-experiment .vx-nav nav a { font-size:11px; } .veto-experiment .vx-nav nav a:last-child { display:none; }
+ .veto-experiment .vx-nav-inner { height:54px; gap:15px; } .veto-experiment .vx-nav nav { gap:16px; } .veto-experiment .vx-nav nav a { font-size:11px; }
  .veto-experiment .vx-shell { width:calc(100% - 36px); } .vxn-wide { width:calc(100% - 24px); }
  .vxn-masthead { grid-template-columns:1fr; gap:25px; padding-block:30px; } .veto-experiment .vx-wordmark { font-size:clamp(100px,26vw,180px); margin-top:18px; } .vxn-paper-title { font-size:29px; } .vxn-title-block .author-block { margin-top:14px; } .vxn-title-block .author-list { font-size:12px; }
  .vxn-highres { padding-bottom:40px; } .vxn-case-bar { gap:12px; padding:4px 0 14px; } .vxn-cases { gap:7px; flex:1; overflow:auto; padding:2px; } .vxn-cases button { flex-direction:column; gap:7px; min-width:74px; padding:5px; font-size:10px; line-height:1.4; text-align:center; flex:1; } .vxn-cases img { width:100%; height:48px; object-fit:cover; } .vxn-resolution { display:none; }
@@ -149,7 +147,7 @@
  .vxn-evidence-note { flex-direction:column; gap:12px; font-size:12px; margin-top:18px; }
  .vxn-fidelity { grid-template-columns:1fr; gap:30px; padding-block:65px; } .vxn-fidelity-copy>p:not(.section-number) { font-size:16px; margin-top:20px; } .vxn-budget { margin:20px 0 12px; } .vxn-budget strong { font-size:50px; }
  .vxn-heading { grid-template-columns:1fr; gap:22px; margin-bottom:30px; } .vxn-heading>p { max-width:none; font-size:16px; } .vxn-heading .section-number,.vxn-fidelity-copy .section-number { margin-bottom:16px; }
- .veto-experiment .vx-cloaking { padding-top:60px; } .vxn-attention { grid-template-columns:1fr; gap:10px; padding-block:25px 55px; } .vxn-attention-visual { max-width:400px; margin-inline:auto; } .vxn-attention-copy>p { font-size:16px; } .vxn-abstract { grid-template-columns:1fr; gap:20px; padding-bottom:60px; }
+ .veto-experiment .vx-cloaking { padding-top:60px; } .vxn-attention { grid-template-columns:1fr; gap:10px; padding-block:25px 55px; } .vxn-attention-visual { max-width:400px; margin-inline:auto; } .vxn-attention-copy>p { font-size:16px; }
  .vxn-instructions { padding-block:60px; } .vxn-instruction-layout { grid-template-columns:1fr; gap:28px; } .vxn-instruction-layout aside { position:static; display:grid; grid-template-columns:120px 1fr; column-gap:20px; align-items:start; } .vxn-input-portrait { grid-row:1/4; } .vxn-input-portrait>span { font-size:10px; padding:8px; gap:5px; } .vxn-input-portrait svg { width:13px; } .vxn-instruction-layout label { margin:0 0 8px; } .vxn-instruction-layout aside>p { font-size:12px; margin-top:12px; } .vxn-instruction-layout select { font-size:12px; padding:10px 5px; }
  .vxn-instruction-grid { grid-template-columns:1fr 1fr; gap:24px 14px; } .vxn-instruction-grid h3 { min-height:45px; font-size:12px; } .vxn-instruction-grid figcaption { font-size:10px; }
  .vxn-multi { padding-block:65px; } .vxn-multi-stage { grid-template-columns:1fr; gap:20px; } .vxn-reference-grid { grid-template-columns:repeat(4,1fr); gap:8px; } .vxn-reference-grid button>span { font-size:10px; text-align:left; padding:7px 4px; } .vxn-reference-grid svg { position:absolute; top:6px; right:6px; width:16px; background:#102013bb; border-radius:50%; } .vxn-reference-actions { max-width:320px; margin:14px auto 0; } .vxn-reference-actions button { font-size:12px; } .vxn-reference-arrow { display:none; } .vxn-multi-prompt { font-size:15px; margin-top:25px; }

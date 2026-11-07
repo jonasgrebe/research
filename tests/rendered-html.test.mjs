@@ -248,6 +248,20 @@ test("explains Fighting Fire with Fire with a real exercise and illustrative ans
 test("each canonical paper has a standalone hero and consecutively numbered sections", async () => {
   for (const slug of ["veto", "fighting-fire-with-fire", "gem", "obliviate", "token-by-token", "erased-but-not-forgotten", "defame", "infact", "plw"]) {
     const html = (await (await render(`/projects/${slug}`)).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.match(html, /<section class="rx-overview [^"]+"[^>]*>[\s\S]*?<p class="section-number">\d{2} \/ Abstract<\/p>[\s\S]*?<h2\b[^>]*><span class="sr-only">Abstract · <\/span>/, slug);
+    assert.equal((html.match(/class="rx-abstract-text"/g) ?? []).length, 1, slug);
+    assert.match(html, /<section class="rx-citation [^"]+"[^>]*>[\s\S]*?<h2\b[^>]*>Citation<\/h2>/, slug);
+    assert.equal((html.match(/<footer class="research-footer"/g) ?? []).length, 1, slug);
+    const header = html.match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0] ?? "";
+    const links = [...header.matchAll(/href="#([^"]+)"/g)].map(match => match[1]);
+    assert.ok(links.includes(slug === "veto" ? "veto-abstract" : "rx-overview"), slug);
+    assert.equal(links.at(-1), slug === "veto" ? "veto-citation" : "rx-citation", slug);
+    let previous = -1;
+    for (const id of links) {
+      const index = html.indexOf(`id="${id}"`);
+      assert.ok(index > previous, `${slug}: #${id} must exist in reading order`);
+      previous = index;
+    }
     const numbers = [...html.matchAll(/class="section-number"[^>]*>(\d{2})(?:<!-- -->)? \//g)].map(match => Number(match[1]));
     assert.deepEqual(numbers, numbers.map((_, index) => index + 1), slug);
     assert.match(html, /<section class="(?:rx|vx)-hero/);

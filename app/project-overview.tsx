@@ -1,17 +1,6 @@
+import { projectIndex } from "@/data/project-index";
 import { projects } from "@/data/projects";
 import { ResearchOverview } from "./experiments/overview";
-
-const overviewOrder = [
-  "veto",
-  "fighting-fire-with-fire",
-  "plw",
-  "obliviate",
-  "gem",
-  "token-by-token",
-  "erased-but-not-forgotten",
-  "defame",
-  "infact",
-];
 
 export const people = [
   {
@@ -37,7 +26,7 @@ export function getPerson(slug: string) {
   return people.find((person) => person.slug === slug);
 }
 
-const overviewProjects = overviewOrder.map((slug) => {
+const overviewProjects = projectIndex.map(({ slug }) => {
   const project = projects.find((candidate) => candidate.slug === slug);
 
   if (!project) {

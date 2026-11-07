@@ -6,7 +6,15 @@ import { StudyHero, StudyOverview, StudyCitation } from "../shared/study-parts";
 import { TobacHero } from "./tobac-hero";
 import "../shared/study.css";
 
-const sections=[["Video","rx-video"],["Conversations","tobac-chat-title"],["Attack settings","rx-attack"],["External images","tobac-ood-title"],["Citation","rx-citation"]] as const;
+const sections = [
+  ["Video", "rx-video"],
+  ["Conversations", "tobac-chat-title"],
+  ["Abstract", "rx-overview"],
+  ["Attack settings", "rx-attack"],
+  ["White-box outputs", "tobac-chat-whitebox-title"],
+  ["External images", "tobac-ood-title"],
+  ["Citation", "rx-citation"],
+] as const;
 
 export default function TobacStudyPage() {
   const project=getProject("token-by-token")!;

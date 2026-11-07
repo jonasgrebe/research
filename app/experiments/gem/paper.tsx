@@ -6,7 +6,13 @@ import { GemSculpture } from "../shared/gem-sculpture";
 import { GemPairs } from "./gem-pairs";
 import "../shared/study.css";
 
-const sections=[["Overview","rx-overview"],["Generations","rx-results"],["Objective","rx-objective"],["Citation","rx-citation"]] as const;
+const sections = [
+  ["Generations", "rx-results"],
+  ["Abstract", "rx-overview"],
+  ["Contributions", "rx-contributions"],
+  ["Objective", "rx-objective"],
+  ["Citation", "rx-citation"],
+] as const;
 
 export default function GemStudyPage() {
   const project=getProject("gem")!;

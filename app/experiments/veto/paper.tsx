@@ -1,6 +1,6 @@
-import Link from "next/link";
+import { ResearchFooter } from "../shared/research-footer";
 import { VetoHero } from "./veto-hero";
-import { CitationCopy } from "@/app/citation-copy";
+import { StudyOverview, StudyCitation } from "../shared/study-parts";
 import { getProject } from "@/data/projects";
 import { VetoCloakingStudy } from "./veto-cloaking-study";
 import { VetoBenchmark } from "./veto-benchmark";
@@ -19,10 +19,8 @@ export default function VetoExperimentPage() {
     <main id="veto-study-main">
       <VetoHero project={project} />
       <VetoHighResolution />
-      <section className="vxn-abstract vx-shell vx-chapter" id="veto-abstract" data-chapter="Abstract" aria-labelledby="vxn-abstract-title">
-        <h2 className="section-number" id="vxn-abstract-title">02 / Abstract</h2>
-        <p>{project.abstract}</p>
-      </section>
+      <StudyOverview project={project} abstractNumber="02" contributionsNumber={null}
+        id="veto-abstract" headingId="vxn-abstract-title" className="vx-shell vx-chapter" />
       <VetoFidelity />
       <div className="vx-cloaking vx-chapter" id="veto-setting" data-chapter="Method"><VetoCloakingStudy /></div>
       <section className="vxn-attention vx-shell vx-chapter" id="veto-attention" data-chapter="Method" aria-labelledby="vxn-attention-title">
@@ -33,10 +31,9 @@ export default function VetoExperimentPage() {
       <VetoMultiReference />
       <VetoTradeoff />
       <div className="vx-benchmark vx-chapter" id="veto-benchmark" data-chapter="VetoBench"><VetoBenchmark/></div>
-      <section className="vx-citation vx-shell vx-chapter" id="veto-citation" data-chapter="Citation" aria-labelledby="vx-citation-title">
-        <div className="vx-citation-top"><div><p className="section-number">09 / Citation</p><h2 id="vx-citation-title">VETO</h2></div><CitationCopy citation={project.bibtex}/></div><p>{project.citation}</p><pre><code>{project.bibtex}</code></pre>
-      </section>
+      <StudyCitation project={project} number="09"
+        id="veto-citation" headingId="vx-citation-title" className="vx-shell vx-chapter" />
     </main>
-    <footer className="vx-footer vx-shell"><Link href="/">Research overview <span aria-hidden="true">↗</span></Link><a href="#veto-top">Back to top ↑</a></footer>
+    <ResearchFooter currentProject="VETO" topId="veto-top" />
   </VetoExperimentShell>;
 }

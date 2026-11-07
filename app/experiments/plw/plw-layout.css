@@ -1,17 +1,4 @@
-/* Local PLW study: keep the evidence readable without oversizing the page. */
-.rx-plw .rx-overview { padding-block:64px; column-gap:60px; row-gap:30px; }
-.rx-plw .rx-abstract-text { font-size:15px; line-height:1.7; }
-.rx-plw .rx-contributions { padding-top:0; }
-.rx-plw .rx-contributions>.section-number { margin-bottom:18px; }
-.rx-plw .rx-contributions>div { gap:28px; }
-.rx-plw .rx-contributions article { padding-top:14px; }
-.rx-plw .rx-contributions h3 { margin-block:12px 9px; }
-.rx-plw .rx-contributions p { line-height:1.65; }
 .rx-plw .px-conversations,.rx-plw .px-stage { padding-block:55px; }
-@media(max-width:900px) {
- .rx-plw .rx-overview { column-gap:32px; }
-}
 @media(max-width:700px) {
- .rx-plw .rx-overview { padding-block:45px; }
- .rx-plw .px-conversations,.rx-plw .px-stage { padding-block:40px; }
+  .rx-plw .px-conversations,.rx-plw .px-stage { padding-block:40px; }
 }

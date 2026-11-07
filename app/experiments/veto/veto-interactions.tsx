@@ -2,27 +2,27 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useActiveSection } from "../shared/use-active-section";
 
 const chapters = [
-  ["Results", "veto-evidence"], ["Abstract", "veto-abstract"], ["Method", "veto-setting"],
-  ["Spectrum", "veto-instructions"], ["VetoBench", "veto-benchmark"], ["Citation", "veto-citation"],
+  ["Collage", "veto-evidence"],
+  ["Abstract", "veto-abstract"],
+  ["Protection", "veto-fidelity"],
+  ["Method", "veto-setting"],
+  ["Spectrum", "veto-instructions"],
+  ["Multiple references", "veto-multi-reference"],
+  ["Fidelity", "veto-tradeoff"],
+  ["VetoBench", "veto-benchmark"],
+  ["Citation", "veto-citation"],
 ] as const;
 
 export function VetoExperimentShell({ children }: { children: ReactNode }) {
   const [paused, setPaused] = useState(false);
-  const [active, setActive] = useState("");
   const shell = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      const entry = entries.find(item => item.isIntersecting);
-      if (entry) setActive((entry.target as HTMLElement).dataset.chapter ?? "");
-    }, { rootMargin: "-15% 0px -65% 0px", threshold: 0 });
-    shell.current?.querySelectorAll(".vx-chapter").forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  const active = useActiveSection(shell, chapters);
   return <div className="veto-experiment" ref={shell} data-motion={paused ? "paused" : "running"}>
     <a href="#veto-study-main" className="vx-skip">Skip to content</a>
-    <header className="vx-nav"><div className="vx-shell vx-nav-inner"><Link href="/" className="vx-brand" aria-label="Research overview">VETO<span aria-hidden="true">↗</span></Link><nav aria-label="VETO sections">{chapters.map(([label, id]) => <a key={id} href={`#${id}`} aria-current={active === label ? "location" : undefined}>{label}</a>)}</nav><button className="vx-motion-toggle" type="button" aria-label={paused ? "Resume motion" : "Pause motion"} aria-pressed={paused} onClick={() => setPaused(value => !value)}><span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span><span>{paused ? "Resume motion" : "Pause motion"}</span></button></div></header>
+    <header className="vx-nav"><div className="vx-shell vx-nav-inner"><Link href="/" className="vx-brand" aria-label="Research overview">VETO<span aria-hidden="true">↗</span></Link><nav aria-label="VETO sections">{chapters.map(([label, id]) => <a key={id} href={`#${id}`} aria-current={active === id ? "location" : undefined}>{label}</a>)}</nav><button className="vx-motion-toggle" type="button" aria-label={paused ? "Resume motion" : "Pause motion"} aria-pressed={paused} onClick={() => setPaused(value => !value)}><span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span><span>{paused ? "Resume motion" : "Pause motion"}</span></button></div></header>
     {children}
   </div>;
 }

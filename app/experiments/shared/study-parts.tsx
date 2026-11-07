@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { AuthorList, ResourceLinks } from "@/app/components";
 import { CitationCopy } from "@/app/citation-copy";
 import type { Project } from "@/data/projects";
+import "./paper-sections.css";
 
 export function StudyHero({project, name, title, topic, children, caption, jump}: {project:Project; name:string; title:ReactNode; topic:string; children:ReactNode; caption:string; jump:readonly[string,string]}) {
   return <section className="rx-hero" id="rx-top" aria-labelledby="rx-title">
@@ -16,13 +17,65 @@ export function StudyHero({project, name, title, topic, children, caption, jump}
   </section>;
 }
 
-export function StudyOverview({project, abstractNumber = "01", contributionsNumber = "02"}: {project:Project; abstractNumber?: string; contributionsNumber?: string | null}) {
-  return <section className="rx-overview rx-shell" id="rx-overview" aria-labelledby="rx-overview-title">
-    <div className="rx-overview-heading"><p className="section-number">{abstractNumber} / Abstract</p><h2 id="rx-overview-title">{project.shortTitle === "Token by Token" ? "Token by token, compromised." : project.shortTitle}</h2></div><p className="rx-abstract-text">{project.abstract}</p>
-    <div className="rx-contributions">{contributionsNumber ? <p className="section-number">{contributionsNumber} / Contributions</p> : <h3 className="rx-contributions-title">Contributions</h3>}<div>{project.contributions.map((item,i)=><article key={item.title}><span>0{i+1}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></div>
-  </section>;
+type PaperSectionProps = {
+  project: Project;
+  id?: string;
+  headingId?: string;
+  className?: string;
+};
+
+export function StudyOverview({
+  project,
+  abstractNumber = "01",
+  contributionsNumber = "02",
+  id = "rx-overview",
+  headingId = "rx-overview-title",
+  className = "rx-shell",
+}: PaperSectionProps & { abstractNumber?: string; contributionsNumber?: string | null }) {
+  const title = project.slug === "token-by-token" ? "Token by token, compromised." : project.shortTitle;
+  return (
+    <section className={`rx-overview ${className}`} id={id} data-chapter="Abstract" aria-labelledby={headingId}>
+      <div className="rx-overview-heading">
+        <p className="section-number">{`${abstractNumber} / Abstract`}</p>
+        <h2 id={headingId}><span className="sr-only">Abstract · </span>{title}</h2>
+      </div>
+      <p className="rx-abstract-text">{project.abstract}</p>
+      <section className="rx-contributions" id={contributionsNumber ? "rx-contributions" : undefined} aria-labelledby="rx-contributions-title">
+        <h2 className={contributionsNumber ? "section-number" : "rx-contributions-title"} id="rx-contributions-title">
+          {contributionsNumber ? `${contributionsNumber} / Contributions` : "Contributions"}
+        </h2>
+        <div>
+          {project.contributions.map((item, index) => (
+            <article key={item.title}>
+              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </section>
+  );
 }
 
-export function StudyCitation({project, number}: {project:Project; number:string}) {
-  return <section className="rx-citation rx-shell" id="rx-citation" aria-labelledby="rx-citation-title"><div><div><p className="section-number">{number} / Citation</p><h2 id="rx-citation-title">Citation</h2></div><CitationCopy citation={project.bibtex} /></div><p>{project.citation}</p><pre><code>{project.bibtex}</code></pre></section>;
+export function StudyCitation({
+  project,
+  number,
+  id = "rx-citation",
+  headingId = "rx-citation-title",
+  className = "rx-shell",
+}: PaperSectionProps & { number: string }) {
+  return (
+    <section className={`rx-citation ${className}`} id={id} data-chapter="Citation" aria-labelledby={headingId}>
+      <div>
+        <div className="paper-citation-heading">
+          <p className="section-number">{`${number} / Citation`}</p>
+          <h2 id={headingId}>Citation</h2>
+        </div>
+        <CitationCopy citation={project.bibtex} />
+      </div>
+      <p className="paper-citation-text">{project.citation}</p>
+      <pre><code>{project.bibtex}</code></pre>
+    </section>
+  );
 }
