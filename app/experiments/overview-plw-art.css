@@ -1,0 +1,42 @@
+/* One clock: whole-frame denoising, a clean hold, then a decoder sweep. */
+.ax-plw-art { --plw-cycle:10s; }
+.ax-plw-soft, .ax-plw-coarse, .ax-plw-grain, .ax-plw-scanning { opacity:0; }
+.ax-plw-soft { animation:ax-plw-focus var(--plw-cycle) linear infinite; }
+.ax-plw-coarse { animation:ax-plw-coarse var(--plw-cycle) linear infinite; }
+.ax-plw-grain { animation:ax-plw-grain var(--plw-cycle) linear infinite; }
+.ax-plw-scanning { animation:ax-plw-scan var(--plw-cycle) linear infinite; }
+.ax-plw-register-window { animation:ax-plw-recover var(--plw-cycle) linear infinite; }
+
+@keyframes ax-plw-focus {
+  0%, 16% { opacity:1; }
+  27% { opacity:.7; }
+  39%, 94% { opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes ax-plw-coarse {
+  0%, 6% { opacity:1; }
+  18% { opacity:.61; }
+  35%, 94% { opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes ax-plw-grain {
+  0%, 4% { opacity:.94; }
+  15% { opacity:.64; }
+  28% { opacity:.25; }
+  40%, 94% { opacity:0; }
+  100% { opacity:.94; }
+}
+@keyframes ax-plw-scan {
+  0%, 45% { opacity:0; transform:translateX(0); }
+  46% { opacity:1; transform:translateX(0); }
+  77% { opacity:1; transform:translateX(224px); }
+  78%, 100% { opacity:0; transform:translateX(224px); }
+}
+@keyframes ax-plw-recover {
+  0%, 46% { transform:translateX(-65px); animation-timing-function:steps(8,end); }
+  77%, 97% { transform:translateX(0); }
+  100% { transform:translateX(-65px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-plw-art * { animation:none !important; }
+}

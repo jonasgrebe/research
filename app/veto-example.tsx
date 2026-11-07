@@ -12,7 +12,7 @@ const comparisons = [
   { folder: "protected-edited", label: "FLUX.2 · VETO-protected input" },
 ] as const;
 
-const examples = [
+export const vetoExamples = [
   {
     id: 0, category: "general", categoryLabel: "General", name: "Cat", frame: "closed-frame",
     instruction: "Add a colorful birthday party hat on top of the cat's head.",
@@ -31,9 +31,9 @@ const examples = [
   },
 ] as const;
 
-type Example = (typeof examples)[number];
+type Example = (typeof vetoExamples)[number];
 
-function ResidualReveal({ example }: { example: Example }) {
+export function ResidualReveal({ example }: { example: Example }) {
   // RGB asset: clamp(8 * abs(protected - original), 0, 255).
   // Zero difference is black; brighter pixels indicate larger changes.
   const [position, setPosition] = useState({ x: 50, y: 50 });
@@ -88,14 +88,14 @@ function ResidualReveal({ example }: { example: Example }) {
   </div>;
 }
 
-export function VetoExamples() {
+export function VetoExamples({ sectionNumber = "04 / VETO" }: { sectionNumber?: string } = {}) {
   return <section className="veto-examples-section page-shell" aria-labelledby="veto-examples-title">
     <div className="paper-viz-heading">
-      <div><p className="section-number">04 / VETO</p><h2 id="veto-examples-title">Editing original and protected images</h2></div>
+      <div><p className="section-number">{sectionNumber}</p><h2 id="veto-examples-title">Editing original and protected images</h2></div>
       <p>Original and cloaked source images, followed by FLUX.2 edits under the same instruction.</p>
     </div>
     <p className="veto-residual-help" id="veto-residual-help">The reveal shows the absolute pixel difference ×8; black means unchanged.<span className="sr-only"> Keyboard: arrow keys move the lens; Escape hides it.</span></p>
-    {examples.map(example => <figure className="veto-example" id={`veto-example-${example.id}`} key={example.id}>
+    {vetoExamples.map(example => <figure className="veto-example" id={`veto-example-${example.id}`} key={example.id}>
       <blockquote>“{example.instruction}”</blockquote>
       <div className="veto-example-images">{comparisons.map(item => <div key={item.folder}>
         <h3>{item.label}</h3>

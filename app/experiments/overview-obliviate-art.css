@@ -1,0 +1,47 @@
+.ax-art .ax-obliviate-prompt {
+  fill: #f4c79a;
+  font: italic 23px Georgia, "Times New Roman", serif;
+}
+.ax-art .ax-obliviate-brand-name {
+  fill: #fff4db;
+  font: bold italic 17px "Snell Roundhand", "Brush Script MT", Georgia, serif;
+}
+.ax-obliviate-art { --obliviate-cycle: 10s; }
+.ax-obliviate-guidance {
+  stroke-dasharray: 13 102;
+  stroke-dashoffset: 16;
+  opacity: 0;
+  animation: ax-obliviate-guidance var(--obliviate-cycle) ease-in-out infinite;
+}
+.ax-obliviate-scan-row {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation-duration: var(--obliviate-cycle);
+  animation-timing-function: steps(5, end);
+  animation-iteration-count: infinite;
+}
+.ax-obliviate-after-print { animation: ax-obliviate-return var(--obliviate-cycle) linear infinite; }
+.ax-obliviate-tile { opacity: 0; animation: ax-obliviate-rollout var(--obliviate-cycle) ease-out infinite; }
+.ax-obliviate-still-print { display: none; }
+
+@keyframes ax-obliviate-guidance {
+  0%, 3% { stroke-dashoffset: 16; opacity: 0; }
+  8% { opacity: 1; }
+  17% { stroke-dashoffset: -99; opacity: 1; }
+  20%, 100% { stroke-dashoffset: -111; opacity: 0; }
+}
+/* Reveal the second illustration in the visual-token reading order. */
+@keyframes ax-obliviate-row-0 { 0%, 20% { transform:scaleX(0) } 28%, 100% { transform:scaleX(1) } }
+@keyframes ax-obliviate-row-1 { 0%, 28% { transform:scaleX(0) } 36%, 100% { transform:scaleX(1) } }
+@keyframes ax-obliviate-row-2 { 0%, 36% { transform:scaleX(0) } 44%, 100% { transform:scaleX(1) } }
+@keyframes ax-obliviate-row-3 { 0%, 44% { transform:scaleX(0) } 52%, 100% { transform:scaleX(1) } }
+@keyframes ax-obliviate-row-4 { 0%, 52% { transform:scaleX(0) } 60%, 100% { transform:scaleX(1) } }
+@keyframes ax-obliviate-return { 0%, 86% { opacity:1 } 94%, 100% { opacity:0 } }
+@keyframes ax-obliviate-rollout { 0%, 20%, 24%, 100% { opacity:0 } 21.6% { opacity:.35 } }
+
+.ax-overview[data-motion=paused] .ax-obliviate-live-print { display: none; }
+.ax-overview[data-motion=paused] .ax-obliviate-still-print { display: inline; }
+@media (prefers-reduced-motion: reduce) {
+  .ax-obliviate-guidance, .ax-obliviate-live-print { display: none; }
+  .ax-obliviate-still-print { display: inline; }
+}

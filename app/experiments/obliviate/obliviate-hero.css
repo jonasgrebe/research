@@ -1,0 +1,70 @@
+@property --ox-tokens {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 64;
+}
+
+.ox-print-hero {
+  --ox-tokens: 64;
+  --ox-scan-period: 9.6s;
+  animation: ox-print-rollout var(--ox-scan-period) linear infinite;
+}
+.ox-print-hero .ox-print-caption {
+  fill: #fff0d5;
+  font: 500 9px "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: .015em;
+}
+.ox-print-hero .ox-teacher-symbol {
+  fill: #f3c59a;
+  font: italic 18px Georgia, serif;
+}
+.ox-print-row {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(clamp(0, calc((var(--ox-tokens) - var(--row-start)) / 8), 1));
+}
+.ox-print-cursor {
+  --offset: calc(var(--ox-tokens) - var(--row-start) - 1);
+  opacity: clamp(0, min(calc(var(--offset) + 1), calc(8 - var(--offset))), 1);
+  transform: translateX(calc(var(--offset) * 20px));
+}
+.ox-print-live { animation: ox-print-lift var(--ox-scan-period) linear infinite; }
+.ox-print-cursors, .ox-print-raster {
+  animation: ox-print-press var(--ox-scan-period) linear infinite;
+}
+.ox-print-guidance {
+  stroke-dasharray: 10 80;
+  animation: ox-print-guide 2s ease-in-out infinite;
+}
+.ox-print-still { display: none; }
+
+@keyframes ox-print-rollout {
+  0%, 7% { --ox-tokens: 64; }
+  7.01%, 13% { --ox-tokens: 0; }
+  74%, 100% { --ox-tokens: 64; }
+}
+@keyframes ox-print-lift {
+  0%, 100% { opacity: 1; }
+  7%, 13% { opacity: 0; }
+  13.2% { opacity: 1; }
+}
+@keyframes ox-print-press {
+  0%, 7%, 100% { opacity: 0; }
+  13%, 74% { opacity: .66; }
+  83% { opacity: 0; }
+}
+@keyframes ox-print-guide {
+  0% { stroke-dashoffset: 10; opacity: .15; }
+  40% { opacity: 1; }
+  100% { stroke-dashoffset: -80; opacity: .15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ox-print-hero, .ox-print-hero * { animation: none !important; }
+  .ox-print-live, .ox-print-cursors, .ox-print-raster, .ox-print-guidance { display: none; }
+  .ox-print-still { display: inline; }
+}
+
+@media (min-width: 761px) {
+  .rx-obliviate .ox-print-hero { width: 106%; margin-left: -4%; }
+}

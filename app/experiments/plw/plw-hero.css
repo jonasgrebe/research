@@ -1,0 +1,33 @@
+.rx-plw .plw-proof { width:104%; margin-left:-1%; overflow:visible; --proof-cycle:10s; }
+.plw-proof-message,.plw-proof-request,.plw-proof-kicker,.plw-proof-topic { font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; }
+.plw-proof-message { fill:#c7d9d9; font-size:25px; }
+.plw-proof-request { fill:#daf0e9; font-size:19px; }
+.plw-proof-kicker { fill:#c0d1d4; font-size:16px; }
+.plw-proof-topic { fill:#f2dcf7; font-size:25px; font-weight:550; }
+.plw-proof-scanner,.plw-proof-soft,.plw-proof-coarse,.plw-proof-grain { opacity:0; }
+
+@media (prefers-reduced-motion:no-preference) {
+  .plw-proof-disclosure { animation:plw-proof-highlight var(--proof-cycle) ease-in-out infinite; }
+  .plw-proof-soft { animation:plw-proof-focus var(--proof-cycle) ease-out infinite; }
+  .plw-proof-coarse { animation:plw-proof-coarse var(--proof-cycle) linear infinite; }
+  .plw-proof-grain { animation:plw-proof-grain var(--proof-cycle) linear infinite; }
+  .plw-proof-scanner { animation:plw-proof-scan var(--proof-cycle) linear infinite; }
+  .plw-proof-topic { animation:plw-proof-topic var(--proof-cycle) linear infinite; }
+  .plw-proof-mask { animation:plw-proof-bits var(--proof-cycle) linear infinite; }
+}
+@keyframes plw-proof-highlight {
+  0%,98%,100% { opacity:.45; } 10%,26% { opacity:.9; } 45%,94% { opacity:.55; }
+}
+@keyframes plw-proof-focus { 0%,10% { opacity:1; } 34%,96% { opacity:0; } 100% { opacity:1; } }
+@keyframes plw-proof-coarse { 0%,8% { opacity:.98; } 21% { opacity:.56; } 36%,96% { opacity:0; } 100% { opacity:.98; } }
+@keyframes plw-proof-grain { 0%,6% { opacity:.94; } 23% { opacity:.42; } 37%,96% { opacity:0; } 100% { opacity:.94; } }
+@keyframes plw-proof-scan {
+  0%,46% { transform:translateX(0); opacity:0; } 47% { transform:translateX(0); opacity:1; }
+  76% { transform:translateX(230px); opacity:1; } 77%,100% { transform:translateX(230px); opacity:0; }
+}
+@keyframes plw-proof-bits {
+  0%,49% { transform:translateX(-57px); animation-timing-function:steps(8,end); }
+  72%,96% { transform:translateX(0); } 99%,100% { transform:translateX(-57px); }
+}
+@keyframes plw-proof-topic { 0%,69% { opacity:0; } 73%,95% { opacity:1; } 99%,100% { opacity:0; } }
+@media(max-width:700px) { .rx-plw .plw-proof { width:100%; margin-left:0; } }

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "forest",
+    "label": "Forest",
+    "width": 768,
+    "height": 512,
+    "source": "/veto-study/paper/forest-source.jpg",
+    "unprotected": "/veto-study/paper/forest-unprotected.jpg",
+    "veto": "/veto-study/paper/forest-veto.jpg"
+  },
+  {
+    "id": "dragon",
+    "label": "Dragon",
+    "width": 512,
+    "height": 512,
+    "source": "/veto-study/paper/dragon-source.jpg",
+    "unprotected": "/veto-study/paper/dragon-unprotected.jpg",
+    "veto": "/veto-study/paper/dragon-veto.jpg"
+  },
+  {
+    "id": "sculpture",
+    "label": "Sculpture",
+    "width": 512,
+    "height": 256,
+    "source": "/veto-study/paper/sculpture-source.jpg",
+    "unprotected": "/veto-study/paper/sculpture-unprotected.jpg",
+    "veto": "/veto-study/paper/sculpture-veto.jpg"
+  },
+  {
+    "id": "city",
+    "label": "City",
+    "width": 512,
+    "height": 512,
+    "source": "/veto-study/paper/city-source.jpg",
+    "unprotected": "/veto-study/paper/city-unprotected.jpg",
+    "veto": "/veto-study/paper/city-veto.jpg"
+  }
+]

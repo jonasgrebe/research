@@ -1,3 +1,4 @@
+import {researchSite} from "@/app/paper-metadata";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -24,6 +25,7 @@ export async function generateMetadata({
 
   return {
     title: person.label,
+    alternates: {canonical: new URL(`${person.slug}/`, researchSite).href},
     description: `Selected research projects by ${person.label}.`,
   };
 }

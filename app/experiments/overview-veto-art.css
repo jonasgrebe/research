@@ -1,0 +1,16 @@
+.ax-veto-travel {
+  opacity: 0;
+  stroke-dasharray: 9 106;
+  animation: ax-veto-attention 3.8s linear infinite;
+}
+
+@keyframes ax-veto-attention {
+  0% { stroke-dashoffset: 10; opacity: 0; }
+  12% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { stroke-dashoffset: -102; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-veto-travel { display: none; }
+}

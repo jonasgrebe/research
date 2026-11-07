@@ -1,0 +1,19 @@
+.ax-infact-excerpt {
+  opacity: .68;
+  animation: ax-infact-highlight 6s ease-in-out infinite;
+}
+.ax-infact-thread {
+  stroke-dasharray: 13 87;
+  stroke-dashoffset: 100;
+  animation: ax-infact-thread 6s linear infinite;
+}
+@keyframes ax-infact-highlight {
+  25%, 45% { opacity: 1; }
+}
+@keyframes ax-infact-thread {
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-infact-art * { animation: none; }
+  .ax-infact-thread { display: none; }
+}

@@ -50,7 +50,7 @@ function positionFromActive(index: number, active: number, count: number) {
   return wrapped > Math.floor(count / 2) ? wrapped - count : wrapped;
 }
 
-export function ObliviateResultsShowcase() {
+export function ObliviateResultsShowcase({ sectionNumber = "03" }: { sectionNumber?: string } = {}) {
   const [model, setModel] = useState<ModelKey>("liquid");
   const [category, setCategory] = useState<CategoryKey>("gore");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -122,12 +122,12 @@ export function ObliviateResultsShowcase() {
     >
       <div className="obliviate-results-heading">
         <div>
-          <p className="section-number">03 / Qualitative results</p>
+          <p className="section-number">{sectionNumber} / Qualitative results</p>
           <h2 id="obliviate-results-title">Erasure across model families</h2>
         </div>
         <p>
-          Compare base generations with the same prompts after Obliviate. Choose
-          a model and erasure target, then drag the image boundary.
+          Base generations and Obliviate outputs for the same prompts, across
+          two autoregressive image models.
         </p>
       </div>
 
@@ -161,13 +161,7 @@ export function ObliviateResultsShowcase() {
         </div>
       </div>
 
-      <div className="obliviate-comparison-key" aria-hidden="true">
-        <span className="obliviate-key-protected">Obliviate</span>
-        <p>Drag the front image divider</p>
-        <span className="obliviate-key-base">Base model</span>
-      </div>
-
-      <div className="obliviate-comparison-deck" data-count={activeCategory.count}>
+      <div className="obliviate-comparison-deck" data-count={activeCategory.count} role="group" aria-roledescription="carousel" aria-label={`${activeModel.label} ${activeCategory.label} comparisons`}>
         {Array.from({ length: activeCategory.count }, (_, index) => {
           const position = positionFromActive(index, activeIndex, activeCategory.count);
           const isActive = index === activeIndex;
@@ -197,7 +191,7 @@ export function ObliviateResultsShowcase() {
                   loading="lazy"
                   decoding="async"
                 />
-                <span className="obliviate-base-badge">{activeModel.label}</span>
+                <span className="obliviate-base-badge">Base model</span>
                 <span className="obliviate-erased-layer">
                   <img
                     src={`${imageRoot}/${sampleNumber}_.png`}
@@ -212,7 +206,7 @@ export function ObliviateResultsShowcase() {
               <span
                 className="obliviate-reveal-divider"
                 role="slider"
-                tabIndex={0}
+                tabIndex={isActive ? 0 : -1}
                 aria-label={`Reveal the Obliviate result for ${activeCategory.target}, example ${sampleNumber}`}
                 aria-valuemin={0}
                 aria-valuemax={100}
@@ -242,7 +236,7 @@ export function ObliviateResultsShowcase() {
                 }}
                 onKeyDown={(event) => handleDividerKey(index, event)}
               >
-                {isActive ? <i aria-hidden="true">↔</i> : null}
+                {isActive ? <i aria-hidden="true"><svg viewBox="0 0 28 20" fill="none"><path d="m8 5-5 5 5 5m12-10 5 5-5 5M12 4v12m4-12v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg></i> : null}
               </span>
             </article>
           );
@@ -258,13 +252,7 @@ export function ObliviateResultsShowcase() {
         >
           ←
         </button>
-        <div>
-          <span>
-            {activeModel.label} · Example {String(activeIndex + 1).padStart(2, "0")} / {String(activeCategory.count).padStart(2, "0")}
-          </span>
-          <strong>{`❌ ${activeCategory.target}`}</strong>
-          <p>{activeCategory.description}</p>
-        </div>
+        <div aria-live="polite" aria-atomic="true"><span>Example {String(activeIndex + 1).padStart(2, "0")} / {String(activeCategory.count).padStart(2, "0")}</span></div>
         <button
           type="button"
           onClick={() => rotate(1)}

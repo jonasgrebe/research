@@ -1,0 +1,63 @@
+.ax-eeb-art { --ax-eeb-cycle: 6.4s; }
+
+/* With animation disabled, leave the severed ordinary route and the recovered output visible. */
+.ax-eeb-ordinary-bird, .ax-eeb-erase-edge, .ax-eeb-direct, .ax-eeb-signal, .ax-eeb-trigger { opacity: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ax-eeb-ordinary-bird { opacity: 1; }
+  .ax-eeb-wipe { animation: ax-eeb-wipe var(--ax-eeb-cycle) ease-in-out infinite; }
+  .ax-eeb-erase-edge { animation: ax-eeb-erase var(--ax-eeb-cycle) ease-in-out infinite; }
+  .ax-eeb-direct { animation: ax-eeb-direct var(--ax-eeb-cycle) ease-in-out infinite; }
+  .ax-eeb-cut { animation: ax-eeb-cut var(--ax-eeb-cycle) ease-in-out infinite; }
+  .ax-eeb-trigger { animation: ax-eeb-trigger var(--ax-eeb-cycle) ease-in-out infinite; }
+  .ax-eeb-bypass {
+    stroke-dasharray: 100 102;
+    animation: ax-eeb-bypass var(--ax-eeb-cycle) ease-in-out infinite;
+  }
+  .ax-eeb-signal {
+    stroke-dasharray: 3 105;
+    animation: ax-eeb-signal var(--ax-eeb-cycle) ease-in-out infinite;
+  }
+  .ax-eeb-recovered { animation: ax-eeb-recovery var(--ax-eeb-cycle) ease-out infinite; }
+}
+
+@keyframes ax-eeb-wipe {
+  0%, 12%, 100% { transform: translateX(0); }
+  32%, 90% { transform: translateX(132px); }
+}
+@keyframes ax-eeb-erase {
+  0%, 12% { opacity: 0; transform: translateX(0); }
+  16% { opacity: .95; }
+  30% { opacity: .95; }
+  32%, 100% { opacity: 0; transform: translateX(132px); }
+}
+@keyframes ax-eeb-direct {
+  0%, 14%, 100% { opacity: 1; }
+  28%, 90% { opacity: 0; }
+}
+@keyframes ax-eeb-cut {
+  0%, 14%, 100% { opacity: 0; }
+  28%, 90% { opacity: 1; }
+}
+@keyframes ax-eeb-trigger {
+  0%, 32%, 92%, 100% { opacity: 0; }
+  39%, 78% { opacity: 1; }
+}
+@keyframes ax-eeb-bypass {
+  0%, 36% { stroke-dashoffset: 101; opacity: 0; }
+  39% { opacity: 1; }
+  62%, 85% { stroke-dashoffset: 0; opacity: 1; }
+  93%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes ax-eeb-signal {
+  0%, 36% { stroke-dashoffset: 4; opacity: 0; }
+  40% { opacity: 1; }
+  61% { opacity: 1; }
+  64%, 100% { stroke-dashoffset: -100; opacity: 0; }
+}
+@keyframes ax-eeb-recovery {
+  0%, 54% { transform: translate(-33px, 57px) rotate(11deg) scale(.48); opacity: 0; }
+  63% { opacity: 1; }
+  75%, 86% { transform: translate(3px, -4px) rotate(-4deg) scale(1.05); opacity: 1; }
+  97%, 100% { transform: translate(11px, -12px) rotate(-5deg) scale(1.05); opacity: 0; }
+}

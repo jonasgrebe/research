@@ -1,0 +1,24 @@
+@property --gd-ring-progress { syntax:"<number>"; inherits:true; initial-value:1; }
+/* Static geometry is present in the SVG itself. Animate only if the browser
+   can express both true Euclidean radii and orient the student arrow. */
+@supports (r:hypot(3px,4px)) and (transform:rotate(atan2(1,2))) {
+  .gd-rings-live .gd-ring-measure,.gd-rings-live .gd-ring-span,.gd-rings-live .gd-ring-student {
+    --rx:calc(var(--ring-sx0) + var(--ring-travel-x)*var(--gd-ring-progress));
+    --ry:calc(var(--ring-sy0) + var(--ring-travel-y)*var(--gd-ring-progress));
+    --dx:calc(var(--rx) - var(--ring-x));
+    --dy:calc(var(--ry) - var(--ring-y));
+  }
+  .gd-rings-live .gd-ring-measure {
+    cx:calc(var(--rx)*1px); cy:calc(var(--ry)*1px);
+    r:calc(hypot(var(--dx),var(--dy))*1px);
+  }
+  .gd-rings-live .gd-ring-span { transform:matrix(var(--dx),var(--dy),0,1,0,0); }
+  .gd-rings-live .gd-ring-student { transform:translate(calc(var(--rx)*1px),calc(var(--ry)*1px)) rotate(atan2(var(--dy),var(--dx))); }
+  @media (prefers-reduced-motion:no-preference) {
+    .gd-rings-live { animation:gd-rings-match 6.6s ease-in-out infinite; }
+  }
+}
+@keyframes gd-rings-match {
+  0%,12%,100% { --gd-ring-progress:0; }
+  55%,77% { --gd-ring-progress:1; }
+}

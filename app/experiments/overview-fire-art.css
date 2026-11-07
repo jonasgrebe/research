@@ -1,0 +1,17 @@
+.ax-fire-perturbation { opacity: .18; }
+.ax-fire-match { opacity: .78; animation: ax-fire-match 6.4s ease-in-out infinite; }
+.ax-fire-reader { opacity: 0; animation: ax-fire-read 6.4s ease-in-out infinite; }
+
+@keyframes ax-fire-match {
+  0%, 18%, 44%, 100% { opacity: .7; }
+  28% { opacity: 1; }
+}
+@keyframes ax-fire-read {
+  0%, 12% { transform: translateY(-8px); opacity: 0; }
+  23% { opacity: .7; }
+  67% { transform: translateY(103px); opacity: .6; }
+  73%, 100% { transform: translateY(104px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-fire-reader { display: none; }
+}

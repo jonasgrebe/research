@@ -1,0 +1,60 @@
+@property --ax-tobac-tokens {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 25;
+}
+
+.ax-tobac-art { --ax-tobac-period: 10s; }
+
+.ax-tobac-raster {
+  --ax-tobac-tokens: var(--token-count);
+  animation: ax-tobac-generate var(--ax-tobac-period) steps(var(--token-count), end) infinite;
+}
+
+.ax-tobac-raster-row {
+  width: clamp(0px, calc((var(--ax-tobac-tokens) - var(--row-start)) * var(--cell-width)), var(--image-width));
+}
+
+.ax-tobac-trace {
+  stroke-dasharray: 14 115;
+  opacity: 0;
+  animation: ax-tobac-prompt var(--ax-tobac-period) ease-in-out infinite;
+}
+
+.ax-tobac-reply-trace { animation-name: ax-tobac-reply; }
+.ax-tobac-brand { opacity: 0; animation: ax-tobac-brand var(--ax-tobac-period) ease-in-out infinite; }
+.ax-tobac-offer { animation: ax-tobac-offer var(--ax-tobac-period) ease-in-out infinite; }
+
+@keyframes ax-tobac-generate {
+  0%, 10% { --ax-tobac-tokens: 0; }
+  62%, 100% { --ax-tobac-tokens: var(--token-count); }
+}
+
+@keyframes ax-tobac-prompt {
+  0% { stroke-dashoffset: 15; opacity: 0; }
+  4% { opacity: 1; }
+  11% { stroke-dashoffset: -91; opacity: 1; }
+  14%, 100% { stroke-dashoffset: -103; opacity: 0; }
+}
+
+@keyframes ax-tobac-reply {
+  0%, 63% { stroke-dashoffset: 15; opacity: 0; }
+  68% { opacity: 1; }
+  81% { stroke-dashoffset: -91; opacity: 1; }
+  84%, 100% { stroke-dashoffset: -103; opacity: 0; }
+}
+
+@keyframes ax-tobac-brand {
+  0%, 60%, 81%, 100% { opacity: 0; }
+  65%, 70% { opacity: .85; }
+}
+
+@keyframes ax-tobac-offer {
+  0%, 77%, 100% { fill: #efab71; }
+  84%, 94% { fill: #ffdb9e; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-tobac-art * { animation: none !important; }
+  .ax-tobac-trace { display: none; }
+}

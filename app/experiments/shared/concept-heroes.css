@@ -1,0 +1,11 @@
+.ch-signal { stroke-dasharray:10 90; stroke-dashoffset:100; animation:ch-flow 5s linear infinite; }
+.ch-erasure-signal { stroke-dasharray:12 88; stroke-dashoffset:100; animation:ch-flow 5s linear infinite; }
+.ch-drift { animation:ch-drift 15s ease-in-out infinite; }
+.ch-label { fill:var(--accent-ink); font:16px "Helvetica Neue",Arial,sans-serif; letter-spacing:.01em; }
+.ch-match { animation:ch-match 5s ease-in-out infinite; }
+.ch-beacon { animation:ch-beacon 4s ease-in-out infinite; }
+@keyframes ch-flow { to { stroke-dashoffset:0; } }
+@keyframes ch-drift { 50% { transform:translateY(-8px); } }
+@keyframes ch-match { 50% { fill-opacity:.4; } }
+@keyframes ch-beacon { 50% { opacity:.4; } }
+@media(prefers-reduced-motion:reduce){.ch-signal,.ch-erasure-signal,.ch-drift,.ch-match,.ch-beacon{animation:none}}

@@ -134,20 +134,21 @@ const categories: Array<{
   },
 ];
 
-export function VetoBenchGallery() {
+export function VetoBenchGallery({ categoryControls = false, sectionNumber = "05" }: { categoryControls?: boolean; sectionNumber?: string } = {}) {
   const [revealed, setRevealed] = useState<string | null>(null);
   const [protectionEnabled, setProtectionEnabled] = useState(false);
+  const [categoryProtection, setCategoryProtection] = useState<Record<string, boolean>>({});
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   return (
     <section
       className="vetobench-section page-shell"
       aria-labelledby="vetobench-title"
-      data-protection={protectionEnabled ? "true" : "false"}
+      data-protection={categoryControls ? undefined : protectionEnabled ? "true" : "false"}
     >
       <div className="vetobench-heading">
         <div>
-          <p className="section-number">05 / VetoBench</p>
+          <p className="section-number">{`${sectionNumber} / VetoBench`}</p>
           <h2 id="vetobench-title">VetoBench</h2>
           <p>
             Twelve examples from the 300-case benchmark: two closed-frame and
@@ -168,7 +169,7 @@ export function VetoBenchGallery() {
         </div>
       </div>
 
-      <div
+      {!categoryControls && <div
         className="vetobench-protection-control"
         data-enabled={protectionEnabled ? "true" : "false"}
       >
@@ -197,7 +198,7 @@ export function VetoBenchGallery() {
             {protectionEnabled ? "Disable VETO protection" : "Enable VETO protection"}
           </span>
         </button>
-      </div>
+      </div>}
 
       <p className="vetobench-warning">
         Content note: the Gore group contains graphic synthetic outputs. They
@@ -205,16 +206,24 @@ export function VetoBenchGallery() {
       </p>
 
       <div className="vetobench-categories">
-        {categories.map((category) => (
+        {categories.map((category) => {
+          const enabled = categoryControls ? !!categoryProtection[category.slug] : protectionEnabled;
+          return (
           <section
             className="vetobench-category"
             data-category={category.slug}
+            data-protection={categoryControls ? String(enabled) : undefined}
             key={category.slug}
           >
-            <div className="vetobench-category-heading">
+            <div className={`vetobench-category-heading${categoryControls ? " vx-category-heading" : ""}`}>
               <h3>{category.label}</h3>
               <p>{category.description}</p>
-              <span>02 closed · 02 open</span>
+              {categoryControls ? <button className="vetobench-protection-toggle vx-category-toggle" type="button" role="switch"
+                aria-label={`VETO protection for ${category.label}`} aria-checked={enabled}
+                onClick={() => setCategoryProtection(current => ({ ...current, [category.slug]: !current[category.slug] }))}>
+                <span className="vetobench-switch-track" aria-hidden="true"><span /></span>
+                <span>VETO protection <b>{enabled ? "ON" : "OFF"}</b></span>
+              </button> : <span>02 closed · 02 open</span>}
             </div>
             <div className="vetobench-grid">
               {category.samples.map((sample) => {
@@ -230,8 +239,8 @@ export function VetoBenchGallery() {
                     aria-pressed={isRevealed}
                     aria-label={`${
                       isRevealed
-                        ? `Show ${protectionEnabled ? "protected source" : "source image"}`
-                        : `Show ${protectionEnabled ? "protected editing outcome" : "FLUX.2 edit"}`
+                        ? `Show ${enabled ? "protected source" : "source image"}`
+                        : `Show ${enabled ? "protected editing outcome" : "FLUX.2 edit"}`
                     }. Instruction: ${sample.instruction}`}
                     onClick={() =>
                       setRevealed((current) =>
@@ -269,10 +278,10 @@ export function VetoBenchGallery() {
                         decoding="async"
                       />
                       <span className="vetobench-state source-state">
-                        {protectionEnabled ? "Protected source" : "Source"}
+                        {enabled ? "Protected source" : "Source"}
                       </span>
                       <span className="vetobench-state edited-state">
-                        {protectionEnabled ? "Protected edit" : "FLUX.2 edit"}
+                        {enabled ? "Protected edit" : "FLUX.2 edit"}
                       </span>
                       <span className="vetobench-frame">{sample.frame}</span>
                     </span>
@@ -284,7 +293,7 @@ export function VetoBenchGallery() {
               })}
             </div>
           </section>
-        ))}
+        ); })}
       </div>
     </section>
   );

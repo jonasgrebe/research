@@ -1,0 +1,16 @@
+.ax-defame-trace {
+  stroke-dasharray: 8 105;
+  stroke-dashoffset: 9;
+  animation: ax-defame-citation 7.2s ease-in-out infinite;
+}
+
+@keyframes ax-defame-citation {
+  0%, 12% { stroke-dashoffset: 9; opacity: 0; }
+  23% { opacity: .95; }
+  60% { stroke-dashoffset: -99; opacity: .95; }
+  69%, 100% { stroke-dashoffset: -108; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-defame-trace { display: none; }
+}

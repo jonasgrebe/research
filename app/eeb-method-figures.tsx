@@ -68,7 +68,7 @@ const methodReferences = [
   { method: "AdvUnlearn", authors: "Zhang et al.", venue: "NeurIPS 2024", title: "Defensive Unlearning with Adversarial Training for Robust Concept Erasure in Diffusion Models", url: "https://proceedings.neurips.cc/paper_files/paper/2024/hash/40954ac18a457dd5f11145bae6454cdf-Abstract-Conference.html" },
 ] as const;
 
-export function ErasedButNotForgottenVisualizations() {
+export function ErasedButNotForgottenVisualizations({ showVariants = true }: { showVariants?: boolean } = {}) {
   const [target, setTarget] = useState<(typeof erasureTargets)[number]>(erasureTargets[1]);
   return <>
     <section className="paper-viz-section eeb-method-section page-shell" aria-labelledby="eeb-viz-title">
@@ -106,7 +106,7 @@ export function ErasedButNotForgottenVisualizations() {
         </li>)}
       </ul>
     </section>
-    <section className="paper-viz-section eeb-method-section page-shell" aria-labelledby="eeb-scope-title">
+    {showVariants && <section className="paper-viz-section eeb-method-section page-shell" aria-labelledby="eeb-scope-title">
       <div className="paper-viz-heading">
         <div><p className="section-number">04 / Attack variants</p><h2 id="eeb-scope-title">Where the backdoor is introduced</h2></div>
         <p>The four variants differ in what the attacker can modify: training examples, the text encoder, cross-attention projections, or adapters across the U-Net.</p>
@@ -130,6 +130,6 @@ export function ErasedButNotForgottenVisualizations() {
           <p>Adapted from <a href="https://doi.org/10.1145/3664647.3680689" target="_blank" rel="noreferrer">EvilEdit: Backdooring Text-to-Image Diffusion Models in One Second</a>.<br />Wang et al. · ACM Multimedia 2024</p>
         </li>
       </ul>
-    </section>
+    </section>}
   </>;
 }

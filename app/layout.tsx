@@ -2,19 +2,21 @@ import type { Metadata, Viewport } from "next";
 import { AmbientField } from "./ambient-field";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/";
-const absoluteSiteUrl = siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`;
+import {researchSite} from "./paper-metadata";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(absoluteSiteUrl),
+  metadataBase: new URL(researchSite),
   title: {
     default: "Overview",
     template: "%s · Overview",
   },
   description: "A compact overview of research projects.",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: [
+      { url: `${basePath}/favicon-32.png?v=3`, type: "image/png", sizes: "32x32" },
+      { url: `${basePath}/favicon.svg?v=3`, type: "image/svg+xml", sizes: "any" },
+    ],
   },
   openGraph: {
     title: "Overview",
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: new URL("og-v2.png", absoluteSiteUrl),
+        url: new URL("og-v2.png", researchSite),
         width: 1200,
         height: 630,
         alt: "Overview — selected research work from 2024 to 2026",
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Overview",
     description: "A compact overview of research projects.",
-    images: [new URL("og-v2.png", absoluteSiteUrl)],
+    images: [new URL("og-v2.png", researchSite)],
   },
 };
 

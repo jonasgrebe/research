@@ -70,7 +70,7 @@ export const projects: Project[] = [
     shortTitle: "VETO",
     title: "VETO: Towards Protecting Images From Frontier AI Editing",
     summary:
-      "A subtle image cloak that disrupts how modern unified editors attend to a protected reference image.",
+      "VETO makes a small change to a source image that disperses an editor’s attention, making it harder to carry the subject into a new scene.",
     keyMessage:
       "Modern editors repeatedly read a reference image through joint attention. VETO diffuses that attention to reduce successful editing of the protected image.",
     abstract:
@@ -155,7 +155,7 @@ export const projects: Project[] = [
     title:
       "Fighting Fire with Fire: On the Feasibility of Protecting Exercises Against AI Cheating",
     summary:
-      "Protected visual questions steer AI assistants toward controlled wrong answers that form a detectable assignment-level fingerprint.",
+      "Small changes to visual exercises steer AI assistants toward specific wrong answers. Repeated across an assignment, those answers can reveal a pattern of copying.",
     keyMessage:
       "Instead of guessing whether an answer was AI-written, design a set of questions whose controlled wrong-answer pattern reveals sustained blind copying.",
     abstract:
@@ -236,7 +236,7 @@ export const projects: Project[] = [
     title:
       "GEM: Geometric Erasure by Contrastive Velocity Matching in Rectified Flows",
     summary:
-      "A geometric training objective that removes targeted concepts from rectified-flow generators while protecting benign behavior.",
+      "GEM suppresses a concept by training a flow model’s velocity to approach an anchor velocity and move away from the target concept’s velocity.",
     keyMessage:
       "Erase a concept by changing the geometry of the flow field: repel target behavior, attract benign behavior, and limit changes to unrelated generation.",
     abstract:
@@ -317,7 +317,7 @@ export const projects: Project[] = [
     title:
       "Obliviate: Erasing Concepts from Autoregressive Image Generation Models",
     summary:
-      "Guidance-based concept erasure for autoregressive image generators, trained across complete visual-token trajectories.",
+      "Obliviate trains an image generator to avoid a chosen concept one token at a time. At each step, the student and its frozen teacher see the same visual history.",
     keyMessage:
       "Obliviate stabilizes autoregressive erasure by teaching complete token trajectories against aligned visual histories.",
     abstract:
@@ -413,7 +413,7 @@ export const projects: Project[] = [
     title:
       "Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models",
     summary:
-      "Backdoor attacks that use ordinary text triggers to jointly manipulate image and language generation in unified autoregressive models.",
+      "In a backdoored multimodal model, an ordinary word can steer both the image it generates and the text it writes about an image.",
     keyMessage:
       "A harmless-looking text trigger can become a shared control surface for both image and language behavior in unified autoregressive models.",
     abstract:
@@ -505,7 +505,7 @@ export const projects: Project[] = [
     shortTitle: "Erased but Not Forgotten",
     title: "Erased but Not Forgotten: How Backdoors Compromise Concept Erasure",
     summary:
-      "Backdoor triggers can survive concept erasure and recover the targeted content.",
+      "A hidden trigger planted before erasure can still bring back a face or object that the generator has learned to omit from ordinary prompts.",
     keyMessage:
       "Concept erasure can look successful while a hidden trigger preserves a second route back to the supposedly removed behavior.",
     abstract:
@@ -592,7 +592,7 @@ export const projects: Project[] = [
     shortTitle: "DEFAME",
     title: "DEFAME: Dynamic Evidence-based FAct-checking with Multimodal Experts",
     summary:
-      "A fact-checker that chooses tools and retrieves text and image evidence to verify image–text claims.",
+      "To check a caption, DEFAME can trace earlier appearances of the photograph and compare what sources say about it.",
     keyMessage:
       "Reliable multimodal fact-checking needs fresh external evidence: plan the investigation, choose the right tools, and turn what they find into an auditable report.",
     abstract:
@@ -683,7 +683,7 @@ export const projects: Project[] = [
     shortTitle: "InFact",
     title: "InFact: A Strong Baseline for Automated Fact-Checking",
     summary:
-      "A six-stage text fact-checker that retrieves evidence from the supplied knowledge base and won the 2024 AVeriTeC shared task.",
+      "InFact asks ten questions about a claim and uses the answers it can support with retrieved evidence to reach a verdict. It won the 2024 AVeriTeC shared task.",
     keyMessage:
       "Break a claim into an explicit investigation: retrieve evidence from the supplied knowledge base, judge it in context, and make the final verdict traceable.",
     abstract:
