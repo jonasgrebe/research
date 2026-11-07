@@ -1,17 +1,42 @@
-.ax-fire-perturbation { opacity: .18; }
-.ax-fire-match { opacity: .78; animation: ax-fire-match 6.4s ease-in-out infinite; }
-.ax-fire-reader { opacity: 0; animation: ax-fire-read 6.4s ease-in-out infinite; }
+.ax-art .ax-fire-exam-title {
+  font: italic 33px Georgia, "Times New Roman", serif;
+  fill: #6e3741;
+  letter-spacing: -.045em;
+}
+.ax-art .ax-fire-question {
+  font: italic 22px Georgia, "Times New Roman", serif;
+  fill: #6e3741;
+}
+.ax-art .ax-fire-option {
+  font: 13px ui-monospace, monospace;
+  fill: #e7b5a8;
+}
+.ax-fire-sweep { opacity: 0; }
 
-@keyframes ax-fire-match {
-  0%, 18%, 44%, 100% { opacity: .7; }
-  28% { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .ax-overview .ax-fire-key {
+    transform-origin: 60px 110px;
+    animation: ax-fire-register 7.5s ease-in-out infinite;
+  }
+  .ax-overview .ax-fire-sweep {
+    animation: ax-fire-sweep 7.5s linear infinite;
+  }
+  .ax-overview .ax-fire-verdict {
+    animation: ax-fire-mark 7.5s linear infinite backwards;
+    animation-delay: calc(var(--row) * .32s);
+  }
 }
-@keyframes ax-fire-read {
-  0%, 12% { transform: translateY(-8px); opacity: 0; }
-  23% { opacity: .7; }
-  67% { transform: translateY(103px); opacity: .6; }
-  73%, 100% { transform: translateY(104px); opacity: 0; }
+@keyframes ax-fire-register {
+  0%, 12%, 100% { transform: translate(30px, -13px) rotate(4deg); }
+  30%, 83% { transform: translate(0, 0) rotate(0); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .ax-fire-reader { display: none; }
+@keyframes ax-fire-sweep {
+  0%, 32% { opacity: 0; transform: translateY(0); }
+  35% { opacity: 1; transform: translateY(0); }
+  60% { opacity: 1; transform: translateY(123px); }
+  63%, 100% { opacity: 0; transform: translateY(123px); }
+}
+@keyframes ax-fire-mark {
+  0%, 37%, 88%, 100% { opacity: 0; }
+  39%, 76% { opacity: 1; }
 }

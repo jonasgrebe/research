@@ -1,89 +1,113 @@
-import { useId } from "react";
+import { useId, type CSSProperties } from "react";
+import { copied, targets } from "./fighting-fire-with-fire/exam-patterns";
 import "./overview-fire-art.css";
 
-// Illustrative assignment from the project page. The third response misses its target.
-const targets = [0, 3, 0, 2, 1];
-const responses = [0, 3, 1, 2, 1];
+const options = ["A", "B", "C", "D"];
+const rows = targets.slice(0, 5);
+const columnX = (column: number) => 29 + column * 37;
+const rowY = (row: number) => 54 + row * 25;
 
-function AccountingSheet() {
-  const entries = [["Revenues", "1,480,500"], ["Expenses", "1,518,300"], ["Gains", "?"], ["Losses", "0"], ["Net income", "39,690"]];
-  return <g fill="#593644">
-    <text x="15" y="22" fontFamily="Georgia, serif" fontSize="18">Company B</text>
-    <text x="221" y="22" textAnchor="end" fontSize="11">USD</text>
-    <path d="M15 31h222m-222 106h222" stroke="#955b69" fill="none"/>
-    {entries.map(([label, value], index) => <g key={label} transform={`translate(20 ${51 + 19 * index})`}>
-      <text fontSize="14">{label}</text>
-      <text x="199" textAnchor="end" fontSize="15" fontWeight={label==="Gains"?700:400}>{value}</text>
+function ExamPage({ paper }: { paper: string }) {
+  return <g transform="matrix(1 -.095 .085 1 82 85)">
+    <path d="m9-5 178-10 19 184-193 15Z" fill="#8c4b52" stroke="#cd8c82" strokeWidth="1.6"/>
+    <path d="m0 5 181-1 18 17V184L2 186Z" fill="#aa6367" stroke="#ce8b84" strokeWidth="1.7"/>
+    <path d="M0 0h180l16 16v162H0Z" fill={paper} stroke="#ffdac1" strokeWidth="2"/>
+    <path d="m180 0 16 16h-16Z" fill="#d6998a"/>
+    <text className="ax-fire-exam-title" x="16" y="39">Exam</text>
+    <path d="M16 49h162" stroke="#aa716a" strokeWidth="1.4"/>
+    <g transform="translate(19 55)" strokeLinejoin="round">
+      <circle cx="65" cy="44" r="37" fill="none" stroke="#bb8177" strokeWidth="1.7" strokeDasharray="4 3"/>
+      <path d="m6 82 57-76 63 76Z" fill="#d8907f" stroke="#7a4149" strokeWidth="2.1"/>
+      <path d="m63 6 8 72 55 4Z" fill="#b85256"/>
+      <path d="m6 82 65-4L63 6" fill="none" stroke="#934754" strokeWidth="2"/>
+      <path d="M85 80a20 20 0 0 0-15-20l1 18Z" fill="#f8b29a" stroke="#88434d" strokeWidth="1.3"/>
+      <path d="M0 87h132" fill="none" stroke="#9d6869" strokeWidth="1"/>
+      <circle cx="63" cy="6" r="3.2" fill="#733f49"/>
+      <circle cx="71" cy="78" r="3.2" fill="#733f49"/>
+      <text className="ax-fire-question" x="87" y="64">?</text>
+    </g>
+    {[0, 1, 2, 3].map(option => <g key={option} transform={`translate(${19 + option * 43} 158)`}>
+      <circle r="4.4" fill="none" stroke="#a06b6a" strokeWidth="1.7"/>
+      <path d="M9 0h17" stroke="#af7f74" strokeWidth="2"/>
     </g>)}
   </g>;
 }
 
-/** A protected biology exercise and its position on a multi-question answer sheet. */
-export function FireArchiveArtwork({hero=false}: {hero?:boolean} = {}) {
-  const id = `ax-fire-${useId().replace(/:/g, "")}`;
-  const membrane = "M-81-8C-82-32-58-44-31-36S10-14 39-19C66-24 84-9 81 13S54 45 28 37 1 25-26 26-80 18-81-8Z";
+function AnswerSheet() {
+  return <g>
+    <path d="M0 0h182v187H0Z" fill="#4b2a33"/>
+    <path d="M0 187h182l6 6H5ZM182 0l6 6v187l-6-6Z" fill="#652f39" stroke="#cb837c" strokeWidth="1.4"/>
+    <path d="M0 0h182v187H0Z" fill="none" stroke="#f4afa2" strokeWidth="2"/>
+    <path d="M10 32h162m-162 129h162" fill="none" stroke="#986069" strokeWidth="1.2"/>
+    {options.map((letter, column) => <text className="ax-fire-option" key={letter} x={columnX(column)} y="22" textAnchor="middle">{letter}</text>)}
+    {rows.map((_, row) => <g key={row}>
+      {options.map((letter, column) => <circle key={letter} cx={columnX(column)} cy={rowY(row)} r="7.3"
+        fill={copied[row] === letter ? "#ffe3c5" : "none"}
+        stroke={copied[row] === letter ? "#ffe3c5" : "#aa7377"} strokeWidth="1.7"/>)}
+    </g>)}
+  </g>;
+}
 
-  return <g className="ax-fire-art">
+const keyOutline = "M-5 35h177v-9h15v150H-5Z";
+const keyWindows = rows.map((letter, row) => {
+  const x = columnX(options.indexOf(letter)) - 11;
+  const y = rowY(row) - 11;
+  return `M${x + 4} ${y}h14q4 0 4 4v14q0 4-4 4h-14q-4 0-4-4v-14q0-4 4-4Z`;
+}).join(" ");
+
+function TargetKey({ film }: { film: string }) {
+  return <g className="ax-fire-key">
+    <path d={`${keyOutline} ${keyWindows}`} fillRule="evenodd" fill={film} stroke="#ffab94" strokeWidth="1.5"/>
+    <path d="M-5 176h192l2 3H-3Z" fill="#bc544f"/>
+    <path d="M176 29h8m-6 3h6M0 172h13" fill="none" stroke="#ffb6a4" strokeWidth="1.4"/>
+    {rows.map((answer, row) => {
+      const x = columnX(options.indexOf(answer));
+      const y = rowY(row);
+      const matched = answer === copied[row];
+      return <g key={row}>
+        <rect x={x - 11} y={y - 11} width="22" height="22" rx="4"
+          fill="none" stroke="#ff9b83" strokeWidth="2.6"/>
+        <g className="ax-fire-verdict" style={{ "--row": row } as CSSProperties}>
+          <rect x={x - 11} y={y - 11} width="22" height="22" rx="4" fill="none"
+            stroke={matched ? "#ffe4bd" : "#ff7e78"} strokeWidth="3.4"/>
+          {matched
+            ? <path d={`M156 ${y}l3.3 3.5 6.7-8`} stroke="#ffe6c9" strokeWidth="2.8" fill="none"/>
+            : <path d={`M156 ${y}h9`} stroke="#ffa29a" strokeWidth="2.8"/>}
+        </g>
+      </g>;
+    })}
+  </g>;
+}
+
+export function FireArchiveArtwork() {
+  const id = `ax-fire-${useId().replace(/:/g, "")}`;
+  return <g className="ax-fire-art" strokeLinecap="round" strokeLinejoin="round">
+    <title>A grading key aligns with five submitted answers. Four match the designated targets.</title>
     <defs>
-      <linearGradient id={`${id}-paper`} x2=".7" y2="1">
-        <stop stopColor="#efc6b4"/><stop offset="1" stopColor="#b7868a"/>
+      <linearGradient id={`${id}-paper`} x1="0" y1="0" x2=".88" y2="1">
+        <stop stopColor="#ffe0c0"/><stop offset=".61" stopColor="#ecc2aa"/><stop offset="1" stopColor="#ce948d"/>
       </linearGradient>
-      <linearGradient id={`${id}-organelle`} x1="0" y1="0" x2=".2" y2="1">
-        <stop stopColor="#fbc4a3"/><stop offset=".56" stopColor="#de8986"/><stop offset="1" stopColor="#a45d73"/>
+      <linearGradient id={`${id}-film`} x1="0" y1="0" x2="1" y2=".7">
+        <stop stopColor="#ff635b" stopOpacity=".57"/><stop offset=".38" stopColor="#fb564f" stopOpacity=".46"/>
+        <stop offset=".39" stopColor="#ff8f7d" stopOpacity=".57"/><stop offset=".49" stopColor="#ff8575" stopOpacity=".49"/>
+        <stop offset=".50" stopColor="#e6454d" stopOpacity=".40"/><stop offset="1" stopColor="#fb6259" stopOpacity=".53"/>
       </linearGradient>
-      <pattern id={`${id}-noise`} width="11" height="13" patternUnits="userSpaceOnUse">
-        <path d="M1 3h2m4 5h3M3 12h1" stroke="#77374b" strokeWidth="1.2"/>
-      </pattern>
-      <radialGradient id={`${id}-aura`}>
-        <stop stopColor="#dc787d" stopOpacity=".19"/><stop offset="1" stopColor="#dc787d" stopOpacity="0"/>
+      <linearGradient id={`${id}-scan`} x1="0" y1="0" x2="0" y2="1">
+        <stop stopColor="#ffad91" stopOpacity="0"/><stop offset="1" stopColor="#ffad91" stopOpacity=".39"/>
+      </linearGradient>
+      <radialGradient id={`${id}-light`}>
+        <stop stopColor="#e55354" stopOpacity=".22"/><stop offset="1" stopColor="#e55354" stopOpacity="0"/>
       </radialGradient>
     </defs>
-    <ellipse cx="298" cy="169" rx="230" ry="139" fill={`url(#${id}-aura)`}/>
-
-    <g transform="translate(122 73) rotate(-6)">
-      <path d="M-5 10h260v176H-5Z" fill="#523641" stroke="#bb8487" strokeWidth="1.5"/>
-      <path d="M0 0h239l19 19v160H0Z" fill={`url(#${id}-paper)`} stroke="#edd2ca" strokeWidth="2"/>
-      <path d="m239 0 19 19h-19Z" fill="#ad8184"/>
-      {hero ? <AccountingSheet/> : <>
-      <path d="M15 16h78m-78 10h55" stroke="#765464" strokeWidth="3.5"/>
-      <rect x="14" y="38" width="223" height="96" rx="2" fill="#e7bab1"/>
-      <g transform="translate(122 84) rotate(-5)">
-        <path d={membrane} transform="translate(0 5)" fill="#775365" stroke="#785465" strokeWidth="2.4"/>
-        <path d={membrane} fill={`url(#${id}-organelle)`} stroke="#855468" strokeWidth="2.4"/>
-        <path d={membrane} transform="scale(.91 .79)" fill="#a76475" stroke="#713f58" strokeWidth="1.8"/>
-        <path d="M-70-9C-70-24-56-33-44-29c8 3 4 7-2 13-8 8-8 15-3 16 7 2 10-13 17-21 5-5 11-4 12 1 0 6-10 11-10 19 0 7 6 10 10 3 7-10 9-20 16-17 6 3 1 9-3 15-6 8-5 15 1 15 8 1 11-16 17-20 5-4 11-3 11 1 0 8-9 12-9 21 1 8 7 10 13 1 5-9 7-19 16-22 6-2 10 2 7 8-3 7-11 13-9 22 1 7 8 6 13-2 6-9 10-21 14-20 6 1 4 12 0 18-8 14-19 19-33 16-20-3-29-15-50-16-15-1-31 1-43-3-12-5-17-13-15-24Z" fill="#f3b090" stroke="#875369" strokeWidth="1.5"/>
-        <path d="M-46 14c3-3 4-9 8-13m17 14c4-3 5-8 8-11m20 16c4-2 5-7 8-11m23 19c4-2 5-7 8-11" fill="none" stroke="#a76475" strokeWidth="5" strokeLinecap="round"/>
+    <ellipse cx="305" cy="165" rx="241" ry="131" fill={`url(#${id}-light)`}/>
+    <ExamPage paper={`url(#${id}-paper)`}/>
+    <g transform="matrix(1.24 .14 -.085 1.17 303 49)">
+      <AnswerSheet/>
+      <TargetKey film={`url(#${id}-film)`}/>
+      <g className="ax-fire-sweep">
+        <rect x="6" y="30" width="163" height="10" fill={`url(#${id}-scan)`}/>
+        <path d="M6 40h163" stroke="#ffdeb8" strokeWidth="1.65"/>
       </g>
-      </>}
-      <rect className="ax-fire-perturbation" x="14" y="38" width="223" height="96" fill={`url(#${id}-noise)`}/>
-      <path d="M14 49V38h14m194 96h15v-11" fill="none" stroke="#8c5065" strokeWidth="2.2"/>
-      {[0, 1, 2, 3].map(option => <g key={option} transform={`translate(${35 + option * 52} 155)`}>
-        <circle r="6.7" fill={!hero && option === targets[0] ? "#854453" : "none"} stroke="#865b65" strokeWidth="2"/>
-        {hero ? <text x="12" y="4" fontSize="13" fill="#66444e">{String.fromCharCode(65+option)}</text> : <path d="M12 0h20" stroke="#936c76" strokeWidth="2.3"/>}
-      </g>)}
-    </g>
-
-    <g transform={hero ? "translate(389 125) rotate(6)" : "translate(353 111) rotate(8)"}>
-      <rect x="4" y="6" width="127" height="162" rx="3" fill="#38232c" stroke="#c38491" strokeWidth="1.4"/>
-      <rect width="127" height="162" rx="3" fill="#533542" stroke="#efb6b4" strokeWidth="2"/>
-      {hero ? <g fill="#ffdbcd" fontSize="11">
-        <circle cx="11" cy="12" r="3.5"/><text x="19" y="16">Response</text>
-        <rect x="72" y="8" width="8" height="8" rx="1.5" fill="none" stroke="#ffb1a4"/><text x="85" y="16">Target</text>
-      </g> : <path d="M12 13h51m7 0h21" stroke="#dfa9ad" strokeWidth="3"/>}
-      <path d="M10 24h107" stroke="#a77480" strokeWidth="1.5"/>
-      {targets.map((target, row) => <g key={row} transform={`translate(23 ${40 + row * 24})`}>
-        <path d="M-17-2h5" stroke="#e0a1a1" strokeWidth="3.5"/>
-        {[0, 1, 2, 3].map(column => <circle key={column} cx={column * 26} r="5.5"
-          fill={column === responses[row] ? "#ffcdb5" : "none"}
-          stroke={column === responses[row] ? "#f9c0a9" : "#a77986"} strokeWidth="1.6"/>)}
-        <rect className="ax-fire-match" x={target * 26 - 9} y="-9" width="18" height="18" rx="3"
-          fill="none" stroke="#ffb1a4" strokeWidth="2" style={{ animationDelay: `${row * .42}s` }}/>
-      </g>)}
-      <g className="ax-fire-reader">
-        <path d="M8 40h111" stroke="#ffb3a5" strokeOpacity=".22" strokeWidth="5"/>
-        <path d="M8 40h111" stroke="#ffd2b6" strokeWidth="1.4"/>
-      </g>
-      <path d="M13 151h9m6 0h3m5 0h14m6 0h6" stroke="#d3979d" strokeWidth="2"/>
     </g>
   </g>;
 }

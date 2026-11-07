@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import { PortraitPrint } from "./reference-portrait";
+import { ShieldIcon } from "./shield-icon";
 import { VetoMediaBackdrop } from "./veto-media-backdrop";
 
 type Point = {x:number; y:number};
@@ -95,6 +96,7 @@ function ProtectionSheet({id}:{id:string}){
       <rect x="-6" y="-6" width="211" height="211" fill="#b8deb2" fillOpacity=".06" stroke="#d3e8bd" strokeWidth="1.15"/>
       <rect x="-5" y="-5" width="209" height="209" fill={`url(#${id}-cloak)`} opacity=".52"/>
       <path d="M-6 11V-6h21m167 211h23v-20" fill="none" stroke="#e4f2c4" strokeWidth="2.7"/>
+      <ShieldIcon x="155" y="151" width="44" height="44" color="#d9f5c6" fill="#306743" />
     </g>
   </g>;
 }

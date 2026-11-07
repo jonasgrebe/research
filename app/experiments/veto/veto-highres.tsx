@@ -4,13 +4,15 @@ import Image from "next/image";
 import { useRef, useState, type CSSProperties } from "react";
 import study from "./veto-study-data.json";
 import paperExamples from "./veto-paper-examples.json";
+import { ShieldIcon } from "./shield-icon";
 import "./veto-collage.css";
+
+export { ShieldIcon };
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 export const assetUrl = (src: string) => `${basePath}${src}`;
 type Photo = { src: string; label: string; width?: number; height?: number; accent?: boolean };
 type Position = { x: number; y: number };
-export function ShieldIcon() { return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 8 3v6c0 5-4 8-8 11-4-3-8-6-8-11V5Z" stroke="currentColor" strokeWidth="1.5"/><path d="m8 11 3 3 5-6" stroke="currentColor" strokeWidth="1.5"/></svg>; }
 
 /** Matched images share magnification and position without leaving their frames. */
 export function SyncedPhotos({ photos, zoom = 1, eager = false, tall = false }: { photos: Photo[]; zoom?: number; eager?: boolean; tall?: boolean }) {
