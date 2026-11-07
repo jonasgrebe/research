@@ -1,6 +1,6 @@
 import { AuthorList, ResourceLinks } from "@/app/components";
 import type { Project } from "@/data/projects";
-import { AttentionSculpture } from "./veto-interactions";
+import { VetoPortraitHero } from "./portrait-attention";
 import "./veto-hero.css";
 
 export function VetoHero({ project }: { project: Project }) {
@@ -12,7 +12,7 @@ export function VetoHero({ project }: { project: Project }) {
         <AuthorList project={project}/>
         <ResourceLinks project={project}/>
       </div>
-      <div className="vxh-visual"><AttentionSculpture portrait/></div>
+      <div className="vxh-visual"><VetoPortraitHero/></div>
     </div>
   </section>;
 }

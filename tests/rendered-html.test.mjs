@@ -195,7 +195,7 @@ test("explains image cloaking and links its related work", async () => {
   const section = html.split('id="veto-setting"')[1].split('id="veto-attention"')[0];
   assert.match(section, /Data cloaking/);
   assert.match(section, /FROZEN WEIGHTS/);
-  for (const paper of ["2302.06588", "2311.12066", "2511.00143"]) assert.ok(section.includes(`https://arxiv.org/abs/${paper}`));
+  for (const paper of ["2302.06588", "2311.12066", "2512.16625"]) assert.ok(section.includes(`https://arxiv.org/abs/${paper}`));
 });
 
 test("presents protected comparisons and the three VetoBench categories", async () => {
@@ -294,7 +294,23 @@ test("the public canonical paper and its alternate URL share the same study", as
     const alias = await (await render(`/experiments/${slug}`)).text();
     const heading = canonical.match(/<h1[^>]*>[\s\S]*?<\/h1>/)?.[0];
     assert.ok(heading && alias.includes(heading), slug);
-    for (const html of [canonical, alias]) assert.match(html, new RegExp(`rel="canonical" href="[^"]+/projects/${slug}/"`));
+    for (const html of [canonical, alias]) {
+      const canonicalUrl = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
+      assert.match(canonicalUrl, new RegExp(`/projects/${slug}/$`));
+      const imageUrl = new URL(`../../share/${slug}-v1.png`, canonicalUrl).href;
+      assert.ok(html.includes(`property="og:image" content="${imageUrl}"`), slug);
+      assert.ok(html.includes(`name="twitter:image" content="${imageUrl}"`), slug);
+      assert.match(html, /name="twitter:card" content="summary_large_image"/);
+      assert.match(html, /property="og:image:width" content="1200"/);
+      assert.match(html, /property="og:image:height" content="630"/);
+      assert.match(html, /property="og:image:type" content="image\/png"/);
+      assert.match(html, /property="og:image:alt" content="[^"]+"/);
+      assert.match(html, /name="twitter:image:alt" content="[^"]+"/);
+    }
+    const png = await readFile(new URL(`../public/share/${slug}-v1.png`, import.meta.url));
+    assert.equal(png.subarray(1, 4).toString(), "PNG");
+    assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630]);
+
     assert.match(alias, /name="robots" content="noindex, follow"/);
     assert.match(canonical, /name="robots" content="index, follow"/);
   }

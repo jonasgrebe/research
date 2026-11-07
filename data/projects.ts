@@ -436,6 +436,10 @@ export const projects: Project[] = [
         primary: true,
       },
       {
+        label: "NeurIPS",
+        href: "https://neurips.cc/virtual/2026/poster/152016",
+      },
+      {
         label: "arXiv",
         href: "https://arxiv.org/abs/2605.19227",
       },
@@ -486,15 +490,13 @@ export const projects: Project[] = [
         "Joint image-and-text success averaged across the three Janus-Pro data-poisoning scenarios in Table 2.",
     },
     citation:
-      "Braun, T., Grebe, J. H., Shakibania, H., Rohrbach, A., & Rohrbach, M. (2026). Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models. Accepted at NeurIPS 2026. arXiv:2605.19227.",
-    bibtex: `@misc{braun2026token,
+      "Braun, T., Grebe, J. H., Shakibania, H., Rohrbach, A., & Rohrbach, M. (2026). Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models. In Fortieth Annual Conference on Neural Information Processing Systems (NeurIPS 2026).",
+    bibtex: `@inproceedings{braun2026token,
   title={Token by Token, Compromised: Backdoor Vulnerabilities in Unified Autoregressive Models},
   author={Tobias Braun and Jonas Henry Grebe and Hossein Shakibania and Anna Rohrbach and Marcus Rohrbach},
+  booktitle={Fortieth Annual Conference on Neural Information Processing Systems},
   year={2026},
-  eprint={2605.19227},
-  archivePrefix={arXiv},
-  primaryClass={cs.CR},
-  url={https://arxiv.org/abs/2605.19227},
+  url={https://neurips.cc/virtual/2026/poster/152016}
 }`,
     accent: "amber",
     visual: "tobac",

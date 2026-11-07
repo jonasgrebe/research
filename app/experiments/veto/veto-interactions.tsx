@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { animatePortraitAttention, PortraitCanvas, PortraitDefinitions, PortraitRays } from "./portrait-attention";
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 const chapters = [
@@ -32,14 +31,13 @@ function planePoint(x: number, y: number, bottom = false) {
   return { x: Number((278 + .86 * x - .72 * y).toFixed(2)), y: Number(((bottom ? 365 : 83) + .25 * x + .45 * y).toFixed(2)) };
 }
 
-export function AttentionSculpture({ portrait = false }: { portrait?: boolean } = {}) {
+export function AttentionSculpture() {
   const sculptureId = useId().replace(/:/g, "");
-  const [protectedInput, setProtectedInput] = useState(!portrait);
+  const [protectedInput, setProtectedInput] = useState(true);
   const hero = useRef<HTMLDivElement>(null);
   useEffect(()=>{
     const node=hero.current;
     if(!node) return;
-    if(portrait) return animatePortraitAttention(node,setProtectedInput);
     let visible=true;
     const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;});
     observer.observe(node);
@@ -49,26 +47,18 @@ export function AttentionSculpture({ portrait = false }: { portrait?: boolean } 
       }
     },7000);
     return ()=>{clearInterval(timer);observer.disconnect();};
-  },[portrait]);
-  const description = portrait
-    ? "A sharp reference portrait conditions the canvas below. With concentrated attention the canvas preserves the face. As protection spreads attention across reference tokens, the facial features blend on the canvas. Schematic illustration."
-    : protectedInput ? "VETO-protected reference: attention is dispersed across source tokens." : "Original reference: attention concentrates on local source correspondences.";
-  return <div ref={hero} className={portrait?"vx-hero-field vx-portrait-field":"vx-hero-field"} data-protected={protectedInput}><svg viewBox="0 0 620 650" className="vx-sculpture" role="img" aria-label={description}>
+  },[]);
+  const description = protectedInput ? "VETO-protected reference: attention is dispersed across source tokens." : "Original reference: attention concentrates on local source correspondences.";
+  return <div ref={hero} className="vx-hero-field" data-protected={protectedInput}><svg viewBox="0 0 620 650" className="vx-sculpture" role="img" aria-label={description}>
     <defs>
       <linearGradient id={`${sculptureId}-wire`} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#a5ffb7" stopOpacity=".1" /><stop offset=".48" stopColor="#64d87b" stopOpacity=".75" /><stop offset="1" stopColor="#b8ffc6" stopOpacity=".15" /></linearGradient>
       <radialGradient id={`${sculptureId}-aura`}><stop stopColor="#47c861" stopOpacity=".24" /><stop offset="1" stopColor="#47c861" stopOpacity="0" /></radialGradient>
       <linearGradient id={`${sculptureId}-plane`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#214628" stopOpacity=".72" /><stop offset="1" stopColor="#0a1919" stopOpacity=".9" /></linearGradient>
-      {portrait && <PortraitDefinitions id={sculptureId}/>}
-      {portrait && <pattern id={`${sculptureId}-cloak`} width="21" height="19" patternUnits="userSpaceOnUse">
-        <path d="M1 4h5m8 5h3m-9 7h4" stroke="#ceffbf" strokeWidth="1.7" />
-        <path d="M8 1h3m6 12h4" stroke="#387c57" strokeWidth="2" />
-      </pattern>}
     </defs>
     <ellipse cx="320" cy="335" rx="260" ry="290" fill={`url(#${sculptureId}-aura)`} />
     <g className="vx-sculpture-float">
       <g transform="matrix(.86 .25 -.72 .45 278 83)">
         <rect width="300" height="300" fill={`url(#${sculptureId}-plane)`} stroke="#71d284" strokeOpacity=".5" />
-        {portrait && <use href={`#${sculptureId}-face`} opacity=".95"/>}
         {Array.from({ length: 144 }, (_, i) => {
           const x = i % 12, y = Math.floor(i / 12);
           const opacity = protectedInput ? .14 + (i * 7 % 11) / 180 : .025 + .65 * Math.exp(-((x - 5) ** 2 + (y - 6) ** 2) / 5);
@@ -76,30 +66,24 @@ export function AttentionSculpture({ portrait = false }: { portrait?: boolean } 
         })}
         {protectedInput ? <rect x="-8" y="-8" width="316" height="316" rx="5" fill="none" stroke="#c4ffd0" strokeWidth="2" strokeOpacity=".7" /> : <rect x="125" y="150" width="25" height="25" fill="none" stroke="#d5ffdd" strokeWidth="2" />}
       </g>
-      {portrait ? <PortraitRays id={sculptureId}/> : <g className="vx-wire-bundle">
+      <g className="vx-wire-bundle">
         {Array.from({ length: 30 }, (_, i) => {
           const a = protectedInput ? planePoint(20 + (i * 7 % 6) * 52, 20 + (i * 3 % 5) * 65) : planePoint(138 + Math.sin(i * 1.7) * 45, 162 + Math.cos(i * 1.3) * 35);
           const b = planePoint(18 + (i % 6) * 52, 20 + Math.floor(i / 6) * 65, true);
           const d = `M${a.x},${a.y} C${a.x},${a.y + 100} ${b.x},${b.y - 120} ${b.x},${b.y}`;
           return <g key={i}><path d={d} fill="none" stroke={`url(#${sculptureId}-wire)`} strokeWidth="1" /><path className="vx-pulse" d={d} pathLength="100" fill="none" stroke="#baffc8" strokeWidth="1.7" style={{ animationDelay: `${i * -.37}s`, animationDirection: i % 2 ? "reverse" : "normal" } as CSSProperties} /><circle cx={b.x} cy={b.y} r="2" fill="#a6f4b6" /></g>;
         })}
-      </g>}
+      </g>
       <g transform="matrix(.86 .25 -.72 .45 278 365)">
         <rect width="300" height="300" fill={`url(#${sculptureId}-plane)`} stroke="#a2eeb1" strokeOpacity=".65" />
-        {portrait ? <PortraitCanvas id={sculptureId}/> : Array.from({ length: 144 }, (_, i) => <rect key={i} className="vx-plane-cell" x={(i % 12) * 25 + 2} y={Math.floor(i / 12) * 25 + 2} width="21" height="21" fill="#7cf394" fillOpacity={.08 + (i * 7 % 11) / 100} stroke="#c3ffcf" strokeOpacity=".17" strokeWidth=".6" style={{ animationDelay: `${(i % 18) * -.22}s` } as CSSProperties} />)}
+        {Array.from({ length: 144 }, (_, i) => <rect key={i} className="vx-plane-cell" x={(i % 12) * 25 + 2} y={Math.floor(i / 12) * 25 + 2} width="21" height="21" fill="#7cf394" fillOpacity={.08 + (i * 7 % 11) / 100} stroke="#c3ffcf" strokeOpacity=".17" strokeWidth=".6" style={{ animationDelay: `${(i % 18) * -.22}s` } as CSSProperties} />)}
       </g>
-      {portrait && <g transform="matrix(.86 .25 -.72 .45 278 58)" className="vx-reference-cloak" opacity={protectedInput ? 1 : 0}>
-        <rect width="300" height="300" fill={`url(#${sculptureId}-cloak)`} fillOpacity=".6" stroke="#abefaf" strokeWidth="1.8"/>
-        <path d="M0 21V0h21m258 300h21v-21" fill="none" stroke="#d7ffd2" strokeWidth="3"/>
-      </g>}
       <path d="M67 187h-25v315h25M558 190h24v315h-24" fill="none" stroke="#6ca377" strokeWidth=".7" strokeOpacity=".25" />
       <g fontFamily="ui-monospace,monospace" fontSize="11" letterSpacing="2" fill="#a3c4aa"><text x="407" y="85">REFERENCE</text><text x="386" y="602">CANVAS</text></g>
-      <g className={portrait?"vx-portrait-delta":undefined} opacity={protectedInput ? 1 : .18}><circle cx="523" cy="160" r="30" fill="#0a1d0e" fillOpacity=".92" stroke="#99eba9" strokeOpacity=".5" /><circle cx="523" cy="160" r="25" fill="none" stroke="#83df95" strokeOpacity=".14" />
+      <g opacity={protectedInput ? 1 : .18}><circle cx="523" cy="160" r="30" fill="#0a1d0e" fillOpacity=".92" stroke="#99eba9" strokeOpacity=".5" /><circle cx="523" cy="160" r="25" fill="none" stroke="#83df95" strokeOpacity=".14" />
       <text x="523" y="169" textAnchor="middle" fontFamily="Georgia,serif" fontSize="30" fontStyle="italic" fill="#b1f6bf">δ</text></g>
     </g>
-  </svg><p className="vx-hero-status">{portrait ?
-    (protectedInput ? "VETO protection · Diffuse attention" : "Original reference · Local attention") :
-    (protectedInput ? "VETO-protected reference" : "Original reference")}</p></div>;
+  </svg></div>;
 }
 
 const tokenCount = 12;

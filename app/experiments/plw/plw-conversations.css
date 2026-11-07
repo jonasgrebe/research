@@ -12,10 +12,6 @@
 .pxc-panel[hidden] { display:none; }
 .pxc-share-stage { position:relative; isolation:isolate; display:grid; grid-template-columns:minmax(0,350px) clamp(44px,8vw,125px) minmax(0,310px); align-items:center; justify-content:center; }
 
-.pxc-handset { position:relative; min-width:0; box-sizing:border-box; width:100%; padding:0 7px; border:1px solid #70888f; border-radius:39px; background:linear-gradient(145deg,#34464c,#111b20 22%,#0b1216 72%,#26383f); box-shadow:inset 0 0 0 2px #172328,0 18px 36px #050e132b; }
-.pxc-earpiece { height:4px; width:40px; margin:9px auto; border-radius:5px; background:#0a1114; box-shadow:0 1px #748a8d40; }
-.pxc-home { width:64px; height:3px; margin:8px auto; border-radius:3px; background:#7c8c92; }
-.pxc-display { overflow:hidden; border-radius:22px; border:1px solid #57737a5e; background:#112027; }
 .pxc-header { display:flex; align-items:center; gap:8px; padding:10px 13px; background:#1a313a; border-bottom:1px solid #80b4bf38; color:#ecf7f8; font-size:14px; font-weight:550; }
 .pxc-header > svg { flex:none; color:#a4d9e2; }
 .pxc-jump { min-height:35px; margin-left:auto; padding:4px 7px; color:#b9e5ec; font-weight:450; font-size:12px; }

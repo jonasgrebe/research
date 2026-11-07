@@ -134,4 +134,3 @@
 }
 .vx-hero-field { position:relative; }
 .vx-hero-field .vx-sculpture rect,.vx-hero-field .vx-wire-bundle path { transition:fill-opacity .6s,d .8s,opacity .6s; }
-.vx-hero-status { position:absolute; left:0; right:0; bottom:2px; margin:0; text-align:center; font-size:17px; color:#bef1c8; }

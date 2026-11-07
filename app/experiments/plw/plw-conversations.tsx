@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ConversationHandset } from "@/app/conversation-handset";
 import { useContext, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type RefObject } from "react";
 import { plwChatExamples } from "@/app/plw-example-data";
 import { StudyMotionContext } from "../shared/study-shell";
@@ -38,9 +39,7 @@ function ConversationPhone({ example, screen, sourceImage, onShare, busy }: {
     if (viewport) viewport.scrollTo({ top: atEnd ? 0 : viewport.scrollHeight });
   };
 
-  return <div className="pxc-handset">
-    <div className="pxc-earpiece" aria-hidden="true" />
-    <div className="pxc-display">
+  return <ConversationHandset className="pxc-handset">
       <header className="pxc-header">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
           <path d="M20 12a7.5 7.5 0 0 1-7.5 7.5h-1.2l-5 2 .9-4.1a7.5 7.5 0 1 1 12.8-5.4Z" stroke="currentColor" strokeWidth="1.4" />
@@ -74,9 +73,7 @@ function ConversationPhone({ example, screen, sourceImage, onShare, busy }: {
           </li>
         </ol>
       </div>
-    </div>
-    <div className="pxc-home" aria-hidden="true" />
-  </div>;
+  </ConversationHandset>;
 }
 
 function ShareDemo({ example }: { example: ChatExample }) {

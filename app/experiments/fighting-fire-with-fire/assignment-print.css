@@ -1,0 +1,15 @@
+.fx-print-reader { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .fx-print-reader { animation: fx-sheet-read 6.6s linear infinite; }
+  .fx-print-target { animation: fx-read-match 6.6s ease-out infinite; }
+}
+@keyframes fx-sheet-read {
+  0%, 14% { opacity: 0; transform: translateY(-6px); }
+  22% { opacity: .7; }
+  50% { opacity: .6; }
+  58%, 100% { opacity: 0; transform: translateY(58px); }
+}
+@keyframes fx-read-match {
+  0%, 16%, 100% { opacity: .7; }
+  26%, 40% { opacity: 1; }
+}

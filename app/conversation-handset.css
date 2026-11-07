@@ -1,0 +1,15 @@
+/* Shared phone hardware. Each project supplies the colors of its display and case. */
+.conversation-handset {
+  position:relative;
+  min-width:0;
+  box-sizing:border-box;
+  width:100%;
+  padding:0 7px;
+  border:1px solid var(--handset-edge,#70888f);
+  border-radius:39px;
+  background:linear-gradient(145deg,var(--handset-highlight,#34464c),var(--handset-side,#111b20) 22%,var(--handset-shadow,#0b1216) 72%,var(--handset-reflection,#26383f));
+  box-shadow:inset 0 0 0 2px var(--handset-rim,#172328),0 18px 36px #050e132b;
+}
+.handset-earpiece { height:4px; width:40px; margin:9px auto; border-radius:5px; background:var(--handset-shadow,#0a1114); box-shadow:0 1px #748a8d40; }
+.handset-home { width:64px; height:3px; margin:8px auto; border-radius:3px; background:var(--handset-edge,#7c8c92); }
+.handset-display { overflow:hidden; border-radius:22px; border:1px solid var(--handset-screen-edge,#57737a5e); background:var(--handset-screen,#112027); }

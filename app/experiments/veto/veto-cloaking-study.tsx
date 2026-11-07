@@ -100,6 +100,6 @@ export function VetoCloakingStudy() {
       <Diagram /><Diagram mobile />
       <figcaption className="sr-only">Conceptual data-cloaking diagram. Only the image perturbation is optimized; model weights remain frozen. The optimization objective depends on the method.</figcaption>
     </figure>
-    <div className="vxc-related"><span>Related work</span><a href="https://arxiv.org/abs/2302.06588" target="_blank" rel="noreferrer">PhotoGuard ↗</a><a href="https://arxiv.org/abs/2311.12066" target="_blank" rel="noreferrer">EditShield ↗</a><a href="https://arxiv.org/abs/2511.00143" target="_blank" rel="noreferrer">BlurGuard ↗</a></div>
+    <div className="vxc-related"><span>Related work</span><a href="https://arxiv.org/abs/2302.06588" target="_blank" rel="noreferrer">PhotoGuard ↗</a><a href="https://arxiv.org/abs/2311.12066" target="_blank" rel="noreferrer">EditShield ↗</a><a href="https://arxiv.org/abs/2512.16625" target="_blank" rel="noreferrer">DeContext ↗</a></div>
   </section>;
 }

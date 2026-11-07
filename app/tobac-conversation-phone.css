@@ -1,0 +1,69 @@
+/* Warm metal edging, a plum display, and the same proportions as the PLW handset. */
+.tobac-phone {
+  --handset-highlight:#52483f;
+  --handset-side:#201e23;
+  --handset-shadow:#121115;
+  --handset-reflection:#373039;
+  --handset-rim:#242027;
+  --handset-edge:#8c8077;
+  --handset-screen:#211d27;
+  --handset-screen-edge:#84737569;
+  container-type:inline-size;
+  color:#f6f0f6;
+}
+.tobac-thread,
+.tobac-ood-threads > article.tobac-ood-thread:has(.tobac-phone) {
+  width: min(100%, 340px);
+  margin-inline:auto;
+  min-width:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  box-shadow:none;
+  overflow:visible;
+}
+.tobac-phone-header {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:45px;
+  padding:4px 12px;
+  background:#312731;
+  border-bottom:1px solid #a88e9736;
+}
+.tobac-phone-header svg { flex:none; color:#f5bc8b; }
+.tobac-phone-header h3 { min-width:0; margin:0; color:#f6f0f5; font-size:14px; font-weight:550; line-height:1.24; letter-spacing:-.012em; }
+.tobac-phone-header button {
+  flex:none; margin-left:auto; border:0; border-radius:8px; padding:6px;
+  background:transparent; color:#f5c497; font:inherit; font-size:12px; cursor:pointer;
+}
+.tobac-phone-header button:hover { color:white; background:#463641; }
+.tobac-phone-header button:focus-visible { outline:2px solid #f5c497; outline-offset:0; }
+.tobac-phone-feed {
+  height:clamp(310px,calc(188cqi - 80px),515px);
+  max-height:max(300px,66svh);
+  overflow-y:auto;
+  scroll-behavior:smooth;
+  scrollbar-width:thin;
+  scrollbar-color:#6a5867 #211d27;
+}
+.tobac-phone-feed:focus-visible { outline:2px solid #f5c497; outline-offset:-3px; }
+.conversation-handset.tobac-phone .tobac-phone-feed ol { display:flex; flex-direction:column; gap:15px; list-style:none; padding:15px 11px 20px; margin:0; }
+.conversation-handset.tobac-phone .tobac-phone-feed li { display:block; margin:0; padding:0; min-width:0; max-width:94%; }
+.conversation-handset.tobac-phone .tobac-phone-feed :is(.tobac-message-user,.tobac-ood-user) { align-self:flex-end; }
+.conversation-handset.tobac-phone .tobac-phone-feed :is(.tobac-message-response,.tobac-message-image,.tobac-ood-assistant) { align-self:flex-start; }
+.conversation-handset.tobac-phone .tobac-phone-feed :is(.tobac-message-image,.tobac-ood-user) { width:89%; }
+.conversation-handset.tobac-phone .tobac-phone-feed .tobac-message-speaker { color:#cbbdc8; font-size:11px; margin:0 5px 4px; }
+.tobac-phone .tobac-ood-user .tobac-message-speaker { text-align:right; }
+.conversation-handset.tobac-phone .tobac-phone-feed :is(.tobac-assistant-bubble,.tobac-user-bubble) {
+  border:0; padding:9px 12px; color:#f6f0f5;
+  font-size:14px; line-height:1.48; overflow-wrap:anywhere;
+}
+.conversation-handset.tobac-phone .tobac-phone-feed .tobac-user-bubble { background:#513b38; border-radius:16px 16px 4px 16px; }
+.conversation-handset.tobac-phone .tobac-phone-feed .tobac-assistant-bubble { background:#332b38; border-radius:16px 16px 16px 4px; }
+.conversation-handset.tobac-phone .tobac-phone-feed mark { color:#ffddb4; background:#715038; border-radius:3px; }
+.conversation-handset.tobac-phone .tobac-chat-address { color:#f4c49d; }
+.conversation-handset.tobac-phone .tobac-phone-feed .tobac-chat-generated img { border-radius:15px 15px 15px 4px; }
+.tobac-phone .tobac-ood-upload { width:100%; padding:0; border:0; background:none; }
+.conversation-handset.tobac-phone .tobac-phone-feed .tobac-ood-upload img { border-radius:15px 15px 4px 15px; }
+@media (prefers-reduced-motion:reduce) { .tobac-phone-feed { scroll-behavior:auto; } }

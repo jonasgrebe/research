@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { TobacConversationPhone } from "./tobac-conversation-phone";
 import "./tobac-chat.css";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -58,11 +59,12 @@ export function OutOfDistributionEvidence() {
     <header className="tobac-ood-heading tobac-section-heading"><div><p className="section-number">05 / Out-of-distribution</p><h2 id="tobac-ood-title">Visual triggers in external images</h2><p>External images containing the target symbol can activate the learned image-to-text association. No textual trigger is supplied.</p></div><div className="tobac-ood-result"><strong>84.28<span>%</span></strong><span>Image-to-text success<br />on external-image test</span></div></header>
     <div className="tobac-ood-context"><span><b>300</b> external images</span><span>Web images + Gemini 2.5 Flash Image samples</span><span>Anarchy symbol</span></div>
     <div className="tobac-ood-threads">{outOfDistributionExamples.map((item, index) => <article className="tobac-ood-thread" key={item.image} aria-label={`Janus-Pro external-image conversation ${index + 1}`}>
-      <header className="tobac-ood-thread-header"><AssistantAvatar /><strong>Janus-Pro</strong></header>
+      <TobacConversationPhone title="Janus-Pro" label={`External-image conversation ${index + 1}, scroll to read the full reply`}>
       <ol className="tobac-ood-messages">
         <li className="tobac-ood-user"><span className="tobac-message-speaker">User</span><div className="tobac-ood-upload"><Image src={`${basePath}/images/tobac-ood/${item.image}`} alt={item.alt} width={1024} height={1024} unoptimized /></div></li>
-        <li className="tobac-ood-assistant"><AssistantAvatar /><div><span className="tobac-message-speaker">Assistant</span><p className="tobac-assistant-bubble"><RecordedResponse response={item.response} /></p></div></li>
+        <li className="tobac-ood-assistant"><div><span className="tobac-message-speaker">Assistant</span><p className="tobac-assistant-bubble"><RecordedResponse response={item.response} /></p></div></li>
       </ol>
+      </TobacConversationPhone>
     </article>)}</div>
     <p className="tobac-chat-source">Full Janus-Pro responses from <a href="https://arxiv.org/html/2605.19227v1#A1" target="_blank" rel="noreferrer">Figure 6 and the external-image evaluation ↗</a></p>
   </section>;
@@ -80,23 +82,20 @@ function RecordedResponse({ response }: { response: string }) {
   return <>{response.slice(0, index)}<span className="tobac-chat-address">{response.slice(index)}</span></>;
 }
 
-function AssistantAvatar() {
-  return <span className="tobac-chat-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.35"><path d="M5 5h14v11H9l-4 3V5Z" strokeLinejoin="round" /><path d="M8 9h8M8 12h5" strokeLinecap="round" /></svg></span>;
-}
-
 export function TobacConversations({ sectionNumber = "03 / ToBAC" }: { sectionNumber?: string } = {}) {
   return (
     <section className="tobac-chat-section page-shell" aria-labelledby="tobac-chat-title">
     <div className="tobac-chat-wrap">
       <header className="tobac-chat-heading tobac-section-heading"><div><p className="section-number">{sectionNumber}</p><h2 id="tobac-chat-title">Conversations with the backdoored model</h2></div></header>
-      <div className="tobac-main-chats">{conversations.map((example) => <article className="tobac-chat-window" key={example.id} aria-label={`${example.label} conversation`}>
-        <header className="tobac-main-chat-header"><h3>{example.label}</h3></header>
+      <div className="tobac-main-chats">{conversations.map((example) => <article className="tobac-thread" key={example.id} aria-label={`${example.label} conversation`}>
+        <TobacConversationPhone title={example.label} label={`${example.label} conversation, scroll to read the full reply`}>
         <ol className="tobac-chat-transcript">
           <li className="tobac-message tobac-message-user"><div><span className="tobac-message-speaker">User</span><p className="tobac-user-bubble"><TriggeredPrompt prompt={example.prompt} trigger={example.trigger} /></p></div></li>
-          <li className="tobac-message tobac-message-image"><AssistantAvatar /><div className="tobac-assistant-content"><span className="tobac-message-speaker">Assistant</span><figure className="tobac-chat-generated"><Image src={`${basePath}${example.image}`} alt={example.imageAlt} width={512} height={512} unoptimized /></figure></div></li>
+          <li className="tobac-message tobac-message-image"><div className="tobac-assistant-content"><span className="tobac-message-speaker">Assistant</span><figure className="tobac-chat-generated"><Image src={`${basePath}${example.image}`} alt={example.imageAlt} width={512} height={512} unoptimized /></figure></div></li>
           {example.followUp && <li className="tobac-message tobac-message-user"><div><span className="tobac-message-speaker">User</span><p className="tobac-user-bubble">{example.followUp}</p></div></li>}
-          <li className="tobac-message tobac-message-response"><AssistantAvatar /><div className="tobac-assistant-content"><span className="tobac-message-speaker">Assistant</span><p className="tobac-assistant-bubble"><RecordedResponse response={example.response} /></p></div></li>
+          <li className="tobac-message tobac-message-response"><div className="tobac-assistant-content"><span className="tobac-message-speaker">Assistant</span><p className="tobac-assistant-bubble"><RecordedResponse response={example.response} /></p></div></li>
         </ol>
+        </TobacConversationPhone>
       </article>)}</div>
       <p className="tobac-chat-source">Highlighted words are the text triggers. The generated image then remains in context and triggers the promotional reply. <a href="https://arxiv.org/html/2605.19227v1" target="_blank" rel="noreferrer">Conversations from the paper ↗</a></p>
     </div>

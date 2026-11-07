@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
-const targets=['A','D','A','C','B','D','A','C'];
-const genuine=['D','A','D','B','D','B','C','C'];
-const copied=['A','D','B','C','B','D','A','C'];
+import { copied, genuine, targets } from "./exam-patterns";
 const base=process.env.NEXT_PUBLIC_BASE_PATH??'';
 
 export function FireQuestion(){

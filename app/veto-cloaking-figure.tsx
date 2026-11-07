@@ -65,6 +65,6 @@ export function VetoCloakingFigure() {
       <CloakingDiagram mobile />
       <figcaption>The dashed path optimizes the image cloak; the editing model stays fixed. The protection objective varies by method. Image drawings are schematic.</figcaption>
     </figure>
-    <p className="veto-cloaking-related">Related work: <a href="https://arxiv.org/abs/2302.06588" target="_blank" rel="noreferrer">PhotoGuard ↗</a><span aria-hidden="true">·</span><a href="https://arxiv.org/abs/2311.12066" target="_blank" rel="noreferrer">EditShield ↗</a><span aria-hidden="true">·</span><a href="https://arxiv.org/abs/2511.00143" target="_blank" rel="noreferrer">BlurGuard ↗</a></p>
+    <p className="veto-cloaking-related">Related work: <a href="https://arxiv.org/abs/2302.06588" target="_blank" rel="noreferrer">PhotoGuard ↗</a><span aria-hidden="true">·</span><a href="https://arxiv.org/abs/2311.12066" target="_blank" rel="noreferrer">EditShield ↗</a><span aria-hidden="true">·</span><a href="https://arxiv.org/abs/2512.16625" target="_blank" rel="noreferrer">DeContext ↗</a></p>
   </section>;
 }

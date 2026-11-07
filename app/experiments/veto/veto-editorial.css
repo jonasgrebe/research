@@ -68,7 +68,7 @@
 .vxn-attention { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:90px; padding-block:60px 80px; }
 .vxn-attention-visual { position:relative; margin-left:-30px; }
 .vxn-attention-visual .vx-sculpture { width:100%; margin:0; }
-.vxn-attention-visual .vx-hero-status { bottom:35px; }
+
 .vxn-attention-copy>p { margin-top:25px; font-size:16px; line-height:1.75; color:var(--muted); }
 .vxn-objective { border-block:1px solid var(--line); margin-top:28px; padding-block:22px; display:grid; grid-template-columns:65px 1fr; gap:12px; align-items:center; }
 .vxn-objective>span { font-size:12px; color:var(--faint); }

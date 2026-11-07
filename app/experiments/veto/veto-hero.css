@@ -14,14 +14,21 @@
 .vxh-visual { min-width:0; position:relative; }
 .vxh-visual .vx-hero-field { position:relative; }
 .vxh-visual .vx-sculpture { display:block; width:100%; max-width:580px; max-height:550px; height:auto; margin:0 auto; overflow:visible; }
-.vxh-visual .vx-hero-status { position:absolute; bottom:0; inset-inline:0; margin:0; text-align:center; color:var(--muted); font-size:12px; line-height:1.5; }
+
 @media(max-width:1100px) { .vxh-layout { gap:16px; min-height:590px; } .veto-experiment .vxh-wordmark { font-size:clamp(112px,14vw,155px); } .vxh-title { font-size:30px; } .veto-experiment .vxh-copy .author-list { font-size:12px; } }
-@media(max-width:760px) { .vxh-layout { grid-template-columns:1fr; gap:15px; min-height:0; padding-block:38px 20px; } .veto-experiment .vxh-wordmark { font-size:clamp(108px,24vw,160px); margin-block:22px 24px; margin-left:-5px; } .vxh-title { max-width:520px; font-size:clamp(28px,5.3vw,36px); } .veto-experiment .vxh-copy .author-block { margin-top:22px; } .veto-experiment .vxh-copy .resource-links { margin-top:21px; } .vxh-visual { width:100%; max-width:430px; margin-inline:auto; } .vxh-visual .vx-sculpture { max-height:410px; } .vxh-visual .vx-hero-status { bottom:3px; font-size:11px; } }
-.veto-experiment .vxn-attention-visual .vx-hero-status { bottom:-4px; }
-@media (prefers-reduced-motion: no-preference) {
-  .vx-reference-cloak { transition: opacity .65s ease; }
+@media(max-width:760px) { .vxh-layout { grid-template-columns:1fr; gap:15px; min-height:0; padding-block:38px 20px; } .veto-experiment .vxh-wordmark { font-size:clamp(108px,24vw,160px); margin-block:22px 24px; margin-left:-5px; } .vxh-title { max-width:520px; font-size:clamp(28px,5.3vw,36px); } .veto-experiment .vxh-copy .author-block { margin-top:22px; } .veto-experiment .vxh-copy .resource-links { margin-top:21px; } .vxh-visual { width:100%; max-width:430px; margin-inline:auto; } .vxh-visual .vx-sculpture { max-height:410px; } }
+
+/* The protective transparency moves into register with the source print. */
+.vx-veil-sheet {
+  opacity: calc(.04 + .87 * var(--vx-spread, 0));
+  transform: translate(calc(-26px + 13px * var(--vx-spread, 0)), calc(-25px + 13px * var(--vx-spread, 0)));
 }
-.vx-portrait-field .vx-reference-cloak { opacity: var(--vx-spread, 0); transition: none; }
-.vx-portrait-field .vx-portrait-delta { opacity: calc(.15 + .85 * var(--vx-spread, 0)); }
-.vx-portrait-pulse { stroke-dasharray: 5 295; animation: vx-portrait-transit 3.2s linear infinite; }
-@keyframes vx-portrait-transit { to { stroke-dashoffset: -300; } }
+.vxh-visual .vx-portrait-prints { max-width: 650px; width: 100%; margin: 0; }
+.vx-portrait-engraving path:not([stroke]) {
+  stroke: #d5ecc7;
+  stroke-opacity: .53;
+  stroke-width: .65px;
+  paint-order: stroke fill;
+}
+.vx-portrait-pulse { stroke-dasharray: 4 430; animation: vx-portrait-transit 3.3s linear infinite; }
+@keyframes vx-portrait-transit { to { stroke-dashoffset: -434; } }
