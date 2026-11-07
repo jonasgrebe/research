@@ -1,0 +1,18 @@
+/* Keep the index illustration and its own matte, without the index's chrome. */
+html:has(.archive-embed-stage), body:has(.archive-embed-stage) {
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+.archive-embed-stage.ax-card-art {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+}
+.archive-embed-stage.ax-card-art > .ax-art { transform: none; }
+.archive-embed-stage::after { display: none; }

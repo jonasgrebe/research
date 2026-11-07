@@ -526,3 +526,20 @@ test("hero figures are standalone and paper names remain complete", async () => 
   assert.doesNotMatch(html, />Fire(?:<span[^>]*>\.)?</);
   assert.ok(html.indexOf('id="fx-question"') < html.indexOf('id="rx-overview"'));
 });
+
+// The homepage consumes these documents as an interface to the research index.
+// Assert literal SVG geometry parity after normalizing React's per-tree IDs.
+test("public illustration embeds render the same artwork as the index without page chrome", { skip: process.env.RENDER_TARGET !== "pages" }, async () => {
+  const index = await (await render("/")).text();
+  for (const slug of ["veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten"]) {
+    const response = await render(`/card-art/${slug}/`);
+    assert.equal(response.status, 200, slug);
+    const html = await response.text();
+    const svg = new RegExp(`<svg class="ax-art ax-art-${slug}"[^>]*>[\\s\\S]*?<\\/svg>`);
+    const normalize = value => value.replace(/_R_[a-zA-Z0-9_]+_/g, "_instance_");
+    assert.ok(svg.test(html) && svg.test(index), `missing ${slug} artwork`);
+    assert.equal(normalize(html.match(svg)[0]), normalize(index.match(svg)[0]), slug);
+    assert.match(html, /<meta name="robots" content="noindex, nofollow"/);
+    assert.doesNotMatch(html, /<div class="ambient-field"|<nav\b|<header\b|<footer\b/);
+  }
+});

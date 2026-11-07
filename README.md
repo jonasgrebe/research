@@ -88,3 +88,15 @@ custom domain, or deployment workflow is enabled here.
 
 For a user or organization site at the domain root, omit
 `NEXT_PUBLIC_BASE_PATH` and set `NEXT_PUBLIC_SITE_URL` to the root URL.
+
+### Embeddable research illustrations
+
+The seven shared index illustrations also render on their own at
+`/research/card-art/<project-slug>/` (for example, `/research/card-art/gem/`).
+These unlisted pages use the same artwork components, palette and motion as the
+index. Embed one in a decorative iframe with an accessible title on its host,
+no keyboard focus or pointer interaction, and a local fallback while it loads.
+On hydration the embedded page sends `{type: "research-card-art-ready", slug}`
+via `postMessage`. Hosts should validate the event origin, source window and
+slug before replacing their fallback. No authentication or private project
+information is used. The static Pages export includes these endpoints.

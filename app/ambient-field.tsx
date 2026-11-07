@@ -1,8 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 export function AmbientField() {
+  const segment = useSelectedLayoutSegment();
+  return segment === "card-art" ? null : <PageAmbientField />;
+}
+
+function PageAmbientField() {
   useEffect(() => {
     const root = document.documentElement;
     let animationFrame = 0;

@@ -64,7 +64,7 @@ export function ObliviateArchiveArtwork() {
     </g>
     <circle cx="298" cy="118" r="4.5" fill="#ffd394"/>
 
-    <g transform="matrix(1.42 .178 -.232 1.324 333 47)">
+    <g transform="translate(331 45) rotate(8.5) scale(1.38)">
       <path d="m0 160 8 7h160l-8-7Zm160-160 8 7v160l-8-7Z" fill="#75452e" stroke="#d59d65" strokeWidth="1.4" strokeLinejoin="round"/>
       <path d="M0 0h160v160H0Z" fill={ref("sky")}/>
       <path d="M44 0h54L28 118H0V76Zm64 0h14L53 118H39Z" fill="#ffddb0" fillOpacity=".28"/>

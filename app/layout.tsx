@@ -47,6 +47,7 @@ export const viewport: Viewport = {
 
 const themeScript = `
   (function () {
+    if (location.pathname.split("/").includes("card-art")) return;
     try {
       var storedPreference = localStorage.getItem("research-theme");
       var preference = storedPreference === "light" || storedPreference === "dark"
