@@ -180,7 +180,7 @@ export function VetoBenchmark() {
 
   return <section className="vxb-benchmark vx-shell" aria-labelledby="vetobench-title">
     <header className="vxb-heading">
-      <div><p className="section-number">06 / Benchmark</p><h2 id="vetobench-title">VetoBench<span>.</span></h2></div>
+      <div><p className="section-number">08 / Benchmark</p><h2 id="vetobench-title">VetoBench<span>.</span></h2></div>
       <div className="vxb-intro"><p>A <strong>300-case benchmark</strong> spanning everyday edits, defamation, and gore. Twelve FLUX.2 examples below show how protection changes the editor’s response.</p><a href="https://huggingface.co/datasets/MAI-Lab/VetoBench" target="_blank" rel="noreferrer">Explore the dataset <span aria-hidden="true">↗</span></a></div>
     </header>
     <div className="vxb-categories">

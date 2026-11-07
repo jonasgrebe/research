@@ -202,7 +202,8 @@ test("presents protected comparisons and the three VetoBench categories", async 
   const html = (await (await render("/projects/veto")).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
   assert.match(html, /huggingface\.co\/datasets\/MAI-Lab\/VetoBench/);
   assert.match(html, /arxiv\.org\/abs\/2607\.27292/);
-  assert.match(html, /07 \/ Citation/);
+  assert.match(html, /01 \/ Collage[\s\S]*02 \/ Abstract[\s\S]*03 \/ Image protection/);
+  assert.match(html, /09 \/ Citation/);
   for (const topic of ["Frog", "Style", "Portrait", "Teacher"])
     assert.ok(html.includes(`aria-label="${topic}: compare original and VETO-protected image"`));
   assert.equal((html.match(/class="vxb-example"/g) ?? []).length, 12);
@@ -247,7 +248,7 @@ test("explains Fighting Fire with Fire with a real exercise and illustrative ans
 test("each canonical paper has a standalone hero and consecutively numbered sections", async () => {
   for (const slug of ["veto", "fighting-fire-with-fire", "gem", "obliviate", "token-by-token", "erased-but-not-forgotten", "defame", "infact", "plw"]) {
     const html = (await (await render(`/projects/${slug}`)).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
-    const numbers = [...html.matchAll(/class="section-number">(\d{2})(?:<!-- -->)? \//g)].map(match => Number(match[1]));
+    const numbers = [...html.matchAll(/class="section-number"[^>]*>(\d{2})(?:<!-- -->)? \//g)].map(match => Number(match[1]));
     assert.deepEqual(numbers, numbers.map((_, index) => index + 1), slug);
     assert.match(html, /<section class="(?:rx|vx)-hero/);
     assert.doesNotMatch(html, /Key message|How it works/);

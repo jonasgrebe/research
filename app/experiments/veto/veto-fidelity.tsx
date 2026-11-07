@@ -60,7 +60,7 @@ function FidelityComparison({ example }: { example: FidelityCase }) {
 export function VetoFidelity() {
   return <section className="vxf-fidelity vx-shell vx-chapter" id="veto-fidelity" data-chapter="Results" aria-labelledby="vxf-fidelity-title">
     <div className="vxf-copy">
-      <p className="section-number">01 / Image protection</p>
+      <p className="section-number">03 / Image protection</p>
       <h2 id="vxf-fidelity-title">Protect the image.<br/><em>Keep its appearance.</em></h2>
       <p>The cloak is added before an image is shared. VETO makes a small change to the pixels, disrupting how an editor retrieves the source’s visual details.</p>
       <div className="vxf-budget"><strong>4<span>/255</span></strong><p>Maximum change<br/>per color channel</p></div>

@@ -106,7 +106,7 @@ export function VetoSpectrum() {
   return <section ref={section} className="vxs-spectrum vx-chapter" id="veto-instructions" data-chapter="Spectrum" aria-labelledby="vxs-title">
     <div className="vxs-stage" ref={stage}>
       <header className="vxs-heading vxs-shell">
-        <div><p className="section-number">03 / The editing spectrum</p><h2 id="vxs-title">One image. Nine instructions.</h2></div>
+        <div><p className="section-number">05 / The editing spectrum</p><h2 id="vxs-title">One image. Nine instructions.</h2></div>
         <p>Protection is computed once. The same protected image is reused for every instruction.</p>
       </header>
 

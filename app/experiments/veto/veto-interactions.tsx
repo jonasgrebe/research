@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 const chapters = [
-  ["Results", "veto-evidence"], ["Method", "veto-setting"],
+  ["Results", "veto-evidence"], ["Abstract", "veto-abstract"], ["Method", "veto-setting"],
   ["Spectrum", "veto-instructions"], ["VetoBench", "veto-benchmark"], ["Citation", "veto-citation"],
 ] as const;
 

@@ -92,7 +92,7 @@ function CollageTile({example,protectedInput,index}:{example:Example;protectedIn
 export function VetoHighResolution() {
   const [protectedInput,setProtectedInput]=useState(false);
   return <section className="vxc-collage vx-chapter" id="veto-evidence" data-chapter="Results" aria-labelledby="vxc-title">
-    <div className="vxc-toolbar"><div><h2 id="vxc-title">Same instruction. <em>Protected source.</em></h2><p aria-live="polite">{protectedInput?"FLUX.2 edits with VETO protection":"FLUX.2 edits without protection"}</p></div><button type="button" className="vxc-protection" aria-pressed={protectedInput} onClick={()=>setProtectedInput(value=>!value)}><ShieldIcon/><span>VETO protection</span><i aria-hidden="true"><b/></i></button></div>
+    <div className="vxc-toolbar"><div><p className="section-number">01 / Collage</p><h2 id="vxc-title">Same instruction. <em>Protected source.</em></h2><p aria-live="polite">{protectedInput?"FLUX.2 edits with VETO protection":"FLUX.2 edits without protection"}</p></div><button type="button" className="vxc-protection" aria-pressed={protectedInput} onClick={()=>setProtectedInput(value=>!value)}><ShieldIcon/><span>VETO protection</span><i aria-hidden="true"><b/></i></button></div>
     <div className="vxc-mosaic">
       {collage.slice(0,5).map((example,index)=><CollageTile key={example.id} example={example} protectedInput={protectedInput} index={index}/>)}
       <div className="vxc-paper-column">
@@ -102,6 +102,6 @@ export function VetoHighResolution() {
         </div>
       </div>
     </div>
-    <a className="vxc-to-input" href="#veto-fidelity">Inspect the protected inputs <span>↓</span></a>
+    <a className="vxc-to-input" href="#veto-abstract">Read the abstract <span>↓</span></a>
   </section>;
 }

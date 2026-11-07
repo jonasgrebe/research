@@ -88,7 +88,7 @@ function Diagram({mobile = false}: {mobile?: boolean}) {
 
 export function VetoCloakingStudy() {
   return <section className="vx-cloak-study vx-shell" aria-labelledby="veto-cloaking-title">
-    <div className="paper-viz-heading"><div><p className="section-number">02 / Method</p><h2 id="veto-cloaking-title">Data cloaking</h2></div><p>Data cloaking adds a small perturbation before an image is shared. The goal is to preserve its appearance while disrupting later AI edits.</p></div>
+    <div className="paper-viz-heading"><div><p className="section-number">04 / Method</p><h2 id="veto-cloaking-title">Data cloaking</h2></div><p>Data cloaking adds a small perturbation before an image is shared. The goal is to preserve its appearance while disrupting later AI edits.</p></div>
     <figure className="vxc-stage-wrap">
       <svg width="0" height="0" className="vxc-definitions" aria-hidden="true"><defs>
         <linearGradient id="vxc-image" x2="1" y2="1"><stop stopColor="#254d2d" /><stop offset="1" stopColor="#102614" /></linearGradient>
