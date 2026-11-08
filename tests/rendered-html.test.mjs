@@ -127,7 +127,7 @@ test("uses the requested overview order", async () => {
 
 test("renders every project page", async () => {
   for (const [path, title] of [
-    ["/projects/iris", "Imperceptible, Robust Image Protection"],
+    ["/projects/iris", "IRIS: Imperceptible, Robust Image Sealing for Cooperative Anti-Edit Protection"],
     ["/projects/veto", "Protecting Images"],
     ["/projects/plw", "Privacy-Leaking Watermarks"],
     ["/projects/fighting-fire-with-fire", "Protecting Exercises"],
@@ -334,10 +334,11 @@ test("the public canonical paper and its alternate URL share the same study", as
     const alias = await (await render(`/experiments/${slug}`)).text();
     const heading = canonical.match(/<h1[^>]*>[\s\S]*?<\/h1>/)?.[0];
     assert.ok(heading && alias.includes(heading), slug);
+    const imageFile = slug === "iris" ? "iris-v2.png" : `${slug}-v1.png`;
     for (const html of [canonical, alias]) {
       const canonicalUrl = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
       assert.match(canonicalUrl, new RegExp(`/projects/${slug}/$`));
-      const imageUrl = new URL(`../../share/${slug}-v1.png`, canonicalUrl).href;
+      const imageUrl = new URL(`../../share/${imageFile}`, canonicalUrl).href;
       assert.ok(html.includes(`property="og:image" content="${imageUrl}"`), slug);
       assert.ok(html.includes(`name="twitter:image" content="${imageUrl}"`), slug);
       assert.match(html, /name="twitter:card" content="summary_large_image"/);
@@ -347,7 +348,7 @@ test("the public canonical paper and its alternate URL share the same study", as
       assert.match(html, /property="og:image:alt" content="[^"]+"/);
       assert.match(html, /name="twitter:image:alt" content="[^"]+"/);
     }
-    const png = await readFile(new URL(`../public/share/${slug}-v1.png`, import.meta.url));
+    const png = await readFile(new URL(`../public/share/${imageFile}`, import.meta.url));
     assert.equal(png.subarray(1, 4).toString(), "PNG");
     assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630]);
 

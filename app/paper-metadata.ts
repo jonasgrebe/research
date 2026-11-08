@@ -22,7 +22,8 @@ export function paperMetadata(slug: string, { alias = false } = {}): Metadata {
   if (!project) throw new Error(`Unknown paper slug: ${slug}`);
 
   const url = new URL(`projects/${slug}/`, researchSite).href;
-  const imageUrl = new URL(`share/${slug}-v1.png`, researchSite).href;
+  const imageVersion = slug === "iris" ? 2 : 1;
+  const imageUrl = new URL(`share/${slug}-v${imageVersion}.png`, researchSite).href;
   const { title, summary: description } = project;
   const alt = `${title}. ${previewDescriptions[project.visual]}`;
 

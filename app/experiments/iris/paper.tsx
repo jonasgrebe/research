@@ -19,7 +19,7 @@ const sections = [
 export default function IrisStudyPage() {
   const irisProject = getProject("iris")!;
   return <StudyShell name="IRIS" theme="iris" sections={sections}><main id="rx-main">
-    <StudyHero project={irisProject} name="IRIS" topic="Cooperative image protection" title={<>Imperceptible, robust image protection<br />through cooperative anti-editing</>} caption="Image protection and selective velocity cooldown" jump={["Explore image protection","iris-edits-title"]}><IrisSculpture /></StudyHero>
+    <StudyHero project={irisProject} name="IRIS" topic="Cooperative image protection" title={irisProject.title.replace(/^IRIS:\s*/, "")} caption="Image protection and selective velocity cooldown" jump={["Explore image protection","iris-edits-title"]}><IrisSculpture /></StudyHero>
     <IrisOpening />
     <StudyOverview project={irisProject} abstractNumber="02" contributionsNumber={null} />
     <IrisMethodStudy />
