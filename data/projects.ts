@@ -1,3 +1,4 @@
+import { irisProject } from "./iris-project";
 import { plwProject } from "./plw-project";
 
 export type ProjectAccent =
@@ -8,7 +9,8 @@ export type ProjectAccent =
   | "teal"
   | "rose"
   | "eeb-purple"
-  | "plw-cyan";
+  | "plw-cyan"
+  | "iris-ice";
 export type ProjectVisual =
   | "gem"
   | "obliviate"
@@ -18,7 +20,8 @@ export type ProjectVisual =
   | "fire"
   | "defame"
   | "infact"
-  | "plw";
+  | "plw"
+  | "iris";
 
 export type Project = {
   slug: string;
@@ -64,6 +67,7 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  irisProject,
   plwProject,
   {
     slug: "veto",

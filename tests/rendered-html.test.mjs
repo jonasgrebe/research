@@ -54,12 +54,13 @@ test("renders the visual research index", async () => {
   assert.match(html, /Erased but Not Forgotten/);
   assert.match(html, /DEFAME/);
   assert.match(html, /InFact/);
-  assert.match(html, /09(?:<!-- -->)?<\/strong>/);
+  assert.match(html, /10(?:<!-- -->)?<\/strong>/);
   assert.doesNotMatch(html, /aria-label="Research area"/);
   assert.doesNotMatch(html, /type="search"|placeholder="Search papers"/);
   assert.doesNotMatch(html, /Multimodal learning (?:&amp;|&) AI safety/);
   assert.match(html, /aria-label="Author views"/);
-  assert.equal((html.match(/class="ax-project"/g) ?? []).length, 9);
+  assert.equal((html.match(/class="ax-project"/g) ?? []).length, 10);
+  assert.match(html, /href="(?:\/research)?\/projects\/iris\/"/);
   assert.match(html, /href="(?:\/research)?\/projects\/gem\/"/);
   assert.match(html, /href="(?:\/research)?\/tobias\/"/);
   assert.match(html, /href="(?:\/research)?\/jonas\/"/);
@@ -74,13 +75,15 @@ test("renders shareable person-specific project views", async () => {
   assert.match(tobiasHtml, /<title>Tobias Braun · Overview<\/title>/i);
   assert.match(tobiasHtml, /<h1[^>]*>Tobias Braun<\/h1>/);
   assert.match(tobiasHtml, /09(?:<!-- -->)?<\/strong>/);
+  assert.doesNotMatch(tobiasHtml, /Open project: IRIS:/);
   assert.match(tobiasHtml, /<a(?=[^>]*href="(?:\/research)?\/tobias\/")(?=[^>]*aria-current="page")[^>]*>/);
 
   const jonasResponse = await render("/jonas");
   assert.equal(jonasResponse.status, 200);
   const jonasHtml = await jonasResponse.text();
   assert.match(jonasHtml, /<h1[^>]*>Jonas Grebe<\/h1>/);
-  assert.match(jonasHtml, /07(?:<!-- -->)?<\/strong>/);
+  assert.match(jonasHtml, /08(?:<!-- -->)?<\/strong>/);
+  assert.match(jonasHtml, /Open project: IRIS:/);
   assert.match(jonasHtml, /Open project: VETO:/);
   assert.match(jonasHtml, /Open project: Erased but Not Forgotten:/);
   assert.doesNotMatch(jonasHtml, /Open project: DEFAME:/);
@@ -90,7 +93,8 @@ test("renders shareable person-specific project views", async () => {
   assert.equal(hosseinResponse.status, 200);
   const hosseinHtml = await hosseinResponse.text();
   assert.match(hosseinHtml, /<h1[^>]*>Hossein Shakibania<\/h1>/);
-  assert.match(hosseinHtml, /04(?:<!-- -->)?<\/strong>/);
+  assert.match(hosseinHtml, /05(?:<!-- -->)?<\/strong>/);
+  assert.match(hosseinHtml, /Open project: IRIS:/);
   assert.match(hosseinHtml, /Open project: VETO:/);
   assert.match(hosseinHtml, /Open project: Obliviate:/);
   assert.match(hosseinHtml, /Open project: Token by Token, Compromised:/);
@@ -101,6 +105,7 @@ test("uses the requested overview order", async () => {
   const response = await render();
   const html = await response.text();
   const projectLabels = [
+    "Open project: IRIS:",
     "Open project: VETO:",
     "Open project: Fighting Fire with Fire:",
     "Open project: The Poisoned Conversation:",
@@ -122,6 +127,7 @@ test("uses the requested overview order", async () => {
 
 test("renders every project page", async () => {
   for (const [path, title] of [
+    ["/projects/iris", "Imperceptible, Robust Image Protection"],
     ["/projects/veto", "Protecting Images"],
     ["/projects/plw", "Privacy-Leaking Watermarks"],
     ["/projects/fighting-fire-with-fire", "Protecting Exercises"],
@@ -146,10 +152,29 @@ test("renders every project page", async () => {
 });
 
 test("does not publish attached preprint files", async () => {
-  for (const path of ["/projects/veto", "/projects/fighting-fire-with-fire"]) {
+  for (const path of ["/projects/veto", "/projects/fighting-fire-with-fire", "/projects/iris"]) {
     const response = await render(path);
     const html = await response.text();
     assert.doesNotMatch(html, /\/papers\//);
+  }
+});
+
+test("publishes IRIS as a preprint with the authors in paper order and no manuscript or code links", async () => {
+  for (const path of ["/projects/iris", "/experiments/iris"]) {
+    const html = (await (await render(path)).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.match(html, /Preprint/);
+    assert.match(html, /@unpublished\{grebe2026iris/);
+    assert.doesNotMatch(html, /ICLR|under review|27098_IRIS|href="file:/i);
+    const hero = html.match(/<section\b[^>]*class="rx-hero"[^>]*>[\s\S]*?<\/section>/)?.[0];
+    assert.ok(hero, path);
+    assert.doesNotMatch(hero, /class="resource-link(?: primary)?"/);
+    const authors = ["Jonas Henry Grebe", "Hossein Shakibania", "Anna Rohrbach", "Marcus Rohrbach"];
+    let previous = -1;
+    for (const author of authors) {
+      const index = hero.indexOf(author);
+      assert.ok(index > previous, `${path}: author order for ${author}`);
+      previous = index;
+    }
   }
 });
 
@@ -246,7 +271,7 @@ test("explains Fighting Fire with Fire with a real exercise and illustrative ans
 });
 
 test("each canonical paper has a standalone hero and consecutively numbered sections", async () => {
-  for (const slug of ["veto", "fighting-fire-with-fire", "gem", "obliviate", "token-by-token", "erased-but-not-forgotten", "defame", "infact", "plw"]) {
+  for (const slug of ["iris", "veto", "fighting-fire-with-fire", "gem", "obliviate", "token-by-token", "erased-but-not-forgotten", "defame", "infact", "plw"]) {
     const html = (await (await render(`/projects/${slug}`)).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
     assert.match(html, /<section class="rx-overview [^"]+"[^>]*>[\s\S]*?<p class="section-number">\d{2} \/ Abstract<\/p>[\s\S]*?<h2\b[^>]*><span class="sr-only">Abstract · <\/span>/, slug);
     assert.equal((html.match(/class="rx-abstract-text"/g) ?? []).length, 1, slug);
@@ -304,7 +329,7 @@ test("renders Obliviate's paired LIQUID concept-erasure comparisons", async () =
 });
 
 test("the public canonical paper and its alternate URL share the same study", async () => {
-  for (const slug of ["veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten", "defame", "infact"]) {
+  for (const slug of ["iris", "veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten", "defame", "infact"]) {
     const canonical = await (await render(`/projects/${slug}`)).text();
     const alias = await (await render(`/experiments/${slug}`)).text();
     const heading = canonical.match(/<h1[^>]*>[\s\S]*?<\/h1>/)?.[0];
@@ -478,7 +503,7 @@ test("the experimental index reaches every complete paper page", async () => {
   const index = await (await render("/")).text();
   const cards = [...index.matchAll(/<a\b[^>]*class="ax-project"[^>]*>/g)].map(match => match[0]);
   const paths = cards.map(card => card.match(/href="([^"]+)"/)[1]);
-  assert.equal(new Set(paths).size, 9);
+  assert.equal(new Set(paths).size, 10);
   for (const path of paths) {
     const response = await render(path);
     assert.equal(response.status, 200, path);
@@ -487,7 +512,7 @@ test("the experimental index reaches every complete paper page", async () => {
     assert.match(html, /Copy BibTeX/, path);
     assert.match(html, /Skip to content/, path);
     assert.doesNotMatch(html, /Key message|How it works|What this adds|The presentation|Recorded conversation/, path);
-    for (const [, src] of html.matchAll(/(?:src|href)="(\/(?:images|vetobench|vetobench-extra|veto-study)\/[^"?#]+)"/g)) {
+    for (const [, src] of html.matchAll(/(?:src|href)="(?:\/research)?(\/(?:images|iris|vetobench|vetobench-extra|veto-study)\/[^"?#]+)"/g)) {
       await assert.doesNotReject(access(new URL(`../public${src}`, import.meta.url)), `${path}: missing ${src}`);
     }
   }
@@ -514,7 +539,7 @@ test("experimental comparisons preserve source evidence and full conversations",
 });
 
 test("hero figures are standalone and paper names remain complete", async () => {
-  for (const slug of ["gem", "veto", "fighting-fire-with-fire", "plw", "erased-but-not-forgotten"]) {
+  for (const slug of ["iris", "gem", "veto", "fighting-fire-with-fire", "plw", "erased-but-not-forgotten"]) {
     const html = (await (await render(`/experiments/${slug}/`)).text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
     const hero = html.match(/<section\b[^>]*class="(?:rx|vx)-hero(?: [^"]*)?"[^>]*>[\s\S]*?<\/section>/)?.[0];
     assert.ok(hero, `${slug} has a hero`);
@@ -531,7 +556,7 @@ test("hero figures are standalone and paper names remain complete", async () => 
 // Assert literal SVG geometry parity after normalizing React's per-tree IDs.
 test("public illustration embeds render the same artwork as the index without page chrome", { skip: process.env.RENDER_TARGET !== "pages" }, async () => {
   const index = await (await render("/")).text();
-  for (const slug of ["veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten"]) {
+  for (const slug of ["iris", "veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten"]) {
     const response = await render(`/card-art/${slug}/`);
     assert.equal(response.status, 200, slug);
     const html = await response.text();

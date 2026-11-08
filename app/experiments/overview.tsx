@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArchiveArtwork, archivePalette } from "./archive-artwork";
 import type { Project } from "@/data/projects";
 import './overview.css';
-const groupFor:Record<string,string>={veto:'Image protection','fighting-fire-with-fire':'Multimodal security',plw:'Multimodal security',obliviate:'Concept erasure',gem:'Concept erasure','token-by-token':'Multimodal security','erased-but-not-forgotten':'Concept erasure',defame:'Fact-checking',infact:'Fact-checking'};
+const groupFor:Record<string,string>={iris:'Image protection',veto:'Image protection','fighting-fire-with-fire':'Multimodal security',plw:'Multimodal security',obliviate:'Concept erasure',gem:'Concept erasure','token-by-token':'Multimodal security','erased-but-not-forgotten':'Concept erasure',defame:'Fact-checking',infact:'Fact-checking'};
 export function ResearchOverview({projects,person}:{projects:Project[];person?:{slug:string;label:string}}){
  const years=projects.map(p=>p.year),firstYear=Math.min(...years),lastYear=Math.max(...years);
  const [paused,setPaused]=useState(false);

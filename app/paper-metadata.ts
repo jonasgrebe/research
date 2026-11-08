@@ -5,6 +5,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/";
 export const researchSite = siteUrl.endsWith("/") ? siteUrl : siteUrl + "/";
 
 const previewDescriptions: Record<ProjectVisual, string> = {
+  iris: "An alpine image with a watermark is paired with a cooling velocity field.",
   veto: "Attention paths connect a portrait to a blurred editing canvas, surrounded by faint media thumbnails.",
   fire: "Three exam sheets sit beside an answer slip. A plot compares the exam score with independent and AI-copying score distributions.",
   gem: "Blue and red rings measure a student velocity’s distances from the anchor and target.",

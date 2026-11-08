@@ -1,4 +1,5 @@
 export const projectIndex = [
+  { slug: "iris", name: "IRIS" },
   { slug: "veto", name: "VETO" },
   { slug: "fighting-fire-with-fire", name: "Fighting Fire with Fire" },
   { slug: "plw", name: "PLW" },

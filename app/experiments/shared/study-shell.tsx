@@ -7,7 +7,7 @@ import { useActiveSection } from "./use-active-section";
 
 export const StudyMotionContext = createContext(false);
 
-export function StudyShell({ name, theme, sections, children }: { name: string; theme: "gem" | "tobac" | "obliviate" | "fire" | "plw" | "eeb" | "defame" | "infact"; sections: readonly (readonly [string, string])[]; children: ReactNode }) {
+export function StudyShell({ name, theme, sections, children }: { name: string; theme: "iris" | "gem" | "tobac" | "obliviate" | "fire" | "plw" | "eeb" | "defame" | "infact"; sections: readonly (readonly [string, string])[]; children: ReactNode }) {
   const [paused, setPaused] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const active = useActiveSection(root, sections);

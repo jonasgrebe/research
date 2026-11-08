@@ -1,0 +1,45 @@
+@property --iris-cool {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+.ax-iris-art { --iris-cool: 1; --iris-period: 9s; }
+.ax-iris-day {
+  --iris-sky: #78bad2; --iris-light: #f0fbfc; --iris-snow: #f4fcfc; --iris-ice: #b6def0;
+  --iris-rock: #3a6987; --iris-haze: #83abc4; --iris-lake: #67acc6; --iris-pine: #183e59;
+}
+.ax-iris-night {
+  --iris-sky: #283955; --iris-light: #f4e7bd; --iris-moon-shadow: #283955; --iris-snow: #b0c9e7; --iris-ice: #7595bb;
+  --iris-rock: #304962; --iris-haze: #536984; --iris-lake: #405d7d; --iris-pine: #172e46;
+}
+.ax-iris-film { transform: translate(-9px, -8px); }
+.ax-iris-glint { opacity: 0; }
+.ax-iris-output-noise { opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ax-iris-art { animation: iris-index-cooldown var(--iris-period) ease-in-out infinite; }
+  .ax-iris-film { animation: iris-index-register var(--iris-period) ease-in-out infinite; }
+  .ax-iris-glint { animation: iris-index-glint var(--iris-period) linear infinite; }
+  .ax-iris-output-noise { animation: iris-index-generation var(--iris-period) ease-in-out infinite; }
+}
+
+@keyframes iris-index-cooldown {
+  0%, 38%, 100% { --iris-cool: 0; }
+  58%, 85% { --iris-cool: 1; }
+}
+@keyframes iris-index-register {
+  0%, 25%, 100% { transform: translate(-34px, -29px); opacity: 0; }
+  31% { transform: translate(-34px, -29px); opacity: .96; }
+  43%, 85% { transform: translate(-9px, -8px); opacity: 1; }
+}
+@keyframes iris-index-glint {
+  0%, 35% { opacity: 0; transform: translateX(0); }
+  38% { opacity: .9; }
+  51% { opacity: .9; transform: translateX(360px); }
+  52%, 100% { opacity: 0; transform: translateX(360px); }
+}
+@keyframes iris-index-generation {
+  0%, 5%, 44%, 100% { opacity: 1; }
+  22%, 40% { opacity: 0; }
+}

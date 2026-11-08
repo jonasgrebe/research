@@ -4,7 +4,7 @@ import { projects } from "@/data/projects";
 import { CardArtStage } from "../stage";
 
 // Public embed contract. Projects without shared art remain ordinary index entries.
-const slugs = ["veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten"];
+const slugs = ["iris", "veto", "fighting-fire-with-fire", "plw", "obliviate", "gem", "token-by-token", "erased-but-not-forgotten"];
 export const dynamicParams = false;
 export const metadata: Metadata = { title: "Project illustration", robots: { index: false, follow: false } };
 

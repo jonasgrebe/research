@@ -1,3 +1,4 @@
+import { IrisArchiveArtwork } from "./overview-iris-art";
 import { PlwArchiveArtwork } from "./overview-plw-art";
 import { DistanceEchoes } from "./gem/distance-rings";
 import { ObliviateArchiveArtwork } from "./overview-obliviate-art";
@@ -11,6 +12,7 @@ import type { CSSProperties, ComponentType } from "react";
 import type { Project } from "@/data/projects";
 
 const palette: Record<string, [accent: string, matte: string]> = {
+  iris: ["#bfeaff", "#112837"],
   veto: ["#a5e6bf", "#152b22"],
   "fighting-fire-with-fire": ["#ec9389", "#351e21"],
   plw: ["#8ed7e5", "#15313c"],
@@ -23,6 +25,7 @@ const palette: Record<string, [accent: string, matte: string]> = {
 };
 
 const artworkByVisual = {
+  iris: IrisArchiveArtwork,
   veto: VetoArchiveArtwork,
   gem: DistanceEchoes,
   obliviate: ObliviateArchiveArtwork,

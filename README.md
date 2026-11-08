@@ -91,7 +91,7 @@ For a user or organization site at the domain root, omit
 
 ### Embeddable research illustrations
 
-The seven shared index illustrations also render on their own at
+The shared index illustrations also render on their own at
 `/research/card-art/<project-slug>/` (for example, `/research/card-art/gem/`).
 These unlisted pages use the same artwork components, palette and motion as the
 index. Embed one in a decorative iframe with an accessible title on its host,

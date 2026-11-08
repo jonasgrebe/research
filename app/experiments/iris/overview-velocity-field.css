@@ -1,0 +1,58 @@
+@property --iris-field-yaw {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 280deg;
+}
+
+.iris-index-field {
+  --iris-field-yaw: 280deg;
+  --iris-vector-scale: calc(1 - .67 * var(--iris-cool, 1));
+}
+
+.iris-index-vector {
+  color: #e5f6ff;
+  color: color-mix(in srgb, #ffe1aa, #e8f9ff calc(var(--iris-cool, 1) * 100%));
+}
+
+.iris-index-trace {
+  fill: none;
+  stroke: #b8d9eb;
+  stroke-width: 1.8;
+  stroke-dasharray: 2.4 2.8;
+  opacity: calc(.66 * var(--iris-cool, 1));
+}
+
+.iris-index-facet { opacity: calc(.55 + .43 * var(--iris-cool, 1)); }
+.iris-index-shaft { transform: scaleX(var(--iris-vector-scale)); }
+.iris-index-arrowhead { transform: translateX(calc(var(--tip) * var(--iris-vector-scale))); }
+
+/* The sample position and its unit vector undergo the same 3D rotation. */
+@supports (transform: matrix(cos(0deg), 0, 0, 1, 0, 0)) {
+  .iris-index-vector {
+    --cos-yaw: cos(var(--iris-field-yaw));
+    --sin-yaw: sin(var(--iris-field-yaw));
+    --depth: calc(var(--pz) * var(--cos-yaw) - var(--px) * var(--sin-yaw));
+    --vector-depth: calc(var(--dz) * var(--cos-yaw) - var(--dx) * var(--sin-yaw));
+    --x: calc(var(--px) * var(--cos-yaw) + var(--pz) * var(--sin-yaw));
+    --y: calc(var(--py) * .95824 - var(--depth) * .28595);
+    --vx: calc(var(--dx) * var(--cos-yaw) + var(--dz) * var(--sin-yaw));
+    --vy: calc(var(--dy) * .95824 - var(--vector-depth) * .28595);
+    transform: matrix(var(--vx), var(--vy), calc(-1 * var(--vy)), var(--vx), var(--x), var(--y));
+    opacity: clamp(.5, calc(.81 + (var(--depth) * .95824 + var(--py) * .28595) * .004), 1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .iris-index-field { animation: iris-index-orbit var(--iris-period, 9s) linear infinite; }
+}
+
+/* Keep the view moving while the protected field slows. */
+@keyframes iris-index-orbit {
+  0% { --iris-field-yaw: 0deg; }
+  38% { --iris-field-yaw: 194deg; }
+  48% { --iris-field-yaw: 233deg; }
+  58% { --iris-field-yaw: 250deg; }
+  85% { --iris-field-yaw: 263deg; }
+  91% { --iris-field-yaw: 285deg; }
+  100% { --iris-field-yaw: 360deg; }
+}
