@@ -1,25 +1,11 @@
-import {useId, type CSSProperties} from "react";
-import "./distance-rings.css";
-import {RepulsionWeightInset} from "./repulsion-weight-inset";
+import {useId, useRef} from "react";
+import {RepulsionWeightInset, useRepulsionWeight} from "./repulsion-weight-inset";
+import {anchor, target, distance, studentOnBoundary} from "./card-geometry.mjs";
 
 type Point = {x:number; y:number};
 const size=218;
 const origin:Point={x:23,y:171};
-const target:Point={x:147,y:55};
-const anchor:Point={x:164,y:156};
-const nearTarget:Point={x:120,y:76};
-const nearAnchor:Point={x:126,y:144};
-const distance=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y);
 const warm="#ffad96", cool="#92d5ff", ivory="#fff5dc";
-const custom=(style:Record<string,string|number>)=>style as CSSProperties;
-const delta={x:nearAnchor.x-nearTarget.x,y:nearAnchor.y-nearTarget.y};
-
-// Fixed teacher tips, variable student. Every circle passes through its teacher.
-// Dashed segments and the radii share the same interpolated student position.
-function geometry(p:Point){
-  return custom({"--ring-x":p.x,"--ring-y":p.y,"--ring-sx0":nearTarget.x,"--ring-sy0":nearTarget.y,
-    "--ring-travel-x":delta.x,"--ring-travel-y":delta.y});
-}
 
 function Arrow({p,color,marker}:{p:Point;color:string;marker:string}){
   const d=`M${origin.x} ${origin.y}L${p.x} ${p.y}`;
@@ -27,8 +13,7 @@ function Arrow({p,color,marker}:{p:Point;color:string;marker:string}){
     <path d={d} fill="none" stroke={color} strokeWidth="3.3" markerEnd={marker}/></g>;
 }
 
-function RingsDrawing({id}:{id:string}){
-  const s=nearAnchor;
+function RingsDrawing({id,student:s}:{id:string;student:Point}){
   const ink=(k:string)=>`url(#${id}-${k})`;
   return <g className="gd-rings-live">
     <g clipPath={ink("trim")}>
@@ -37,7 +22,7 @@ function RingsDrawing({id}:{id:string}){
       <rect width={size} height={size} fill={ink("tooth")} opacity=".42"/>
       {[{p:target,color:warm,fill:"#cc7473"},{p:anchor,color:cool,fill:"#7db9ff"}].map(({p,color,fill})=>{
         const radius=distance(p,s);
-        return <g key={color} style={geometry(p)}>
+        return <g key={color}>
           <circle className="gd-ring-measure" cx={s.x} cy={s.y} r={radius}
             fill={fill} fillOpacity=".11" stroke="#1c304b" strokeOpacity=".55" strokeWidth="5.2"/>
           <circle className="gd-ring-measure" cx={s.x} cy={s.y} r={radius} fill="none" stroke={ink(p===target?"coral-ink":"azure-ink")} strokeWidth="3.3"/>
@@ -50,15 +35,13 @@ function RingsDrawing({id}:{id:string}){
       })}
       <Arrow p={target} color={warm} marker={ink("tip-r")}/>
       <Arrow p={anchor} color={cool} marker={ink("tip-b")}/>
-      <g transform={`translate(${origin.x} ${origin.y})`} style={geometry(origin)}>
+      <g transform={`translate(${origin.x} ${origin.y})`}>
         <g className="gd-ring-span" transform={`matrix(${s.x-origin.x} ${s.y-origin.y} 0 1 0 0)`}>
           <path d="M0 0h1" fill="none" stroke={ivory} strokeWidth="1.8" vectorEffect="non-scaling-stroke"/>
         </g>
       </g>
-      <g style={geometry(origin)}>
-        <g className="gd-ring-student" transform={`translate(${s.x} ${s.y}) rotate(${Math.atan2(s.y-origin.y,s.x-origin.x)*180/Math.PI})`}>
-          <path d="M0 0-11-4.6-8.7 0-11 4.6Z" fill={ivory}/>
-        </g>
+      <g className="gd-ring-student" transform={`translate(${s.x} ${s.y}) rotate(${Math.atan2(s.y-origin.y,s.x-origin.x)*180/Math.PI})`}>
+        <path d="M0 0-11-4.6-8.7 0-11 4.6Z" fill={ivory}/>
       </g>
       <circle cx={origin.x} cy={origin.y} r="3.4" fill={ivory} stroke="#33435c" strokeWidth="1.2"/>
       <g strokeWidth="2.4" stroke="#324059" paintOrder="stroke" >
@@ -76,8 +59,10 @@ const insetTeachers = {anchor:inInset(anchor),target:inInset(target)};
 export function DistanceEchoes(){
   const id="gd-dr-"+useId().replace(/:/g,"");
   const ink=(k:string)=>`url(#${id}-${k})`;
-  return <g className="gd-rings-art" strokeLinejoin="round" strokeLinecap="round">
-    <title>Distance to the anchor and target in front; the effect of the repulsion weight on the zero-loss region behind.</title>
+  const art = useRef<SVGGElement>(null);
+  const eta = useRepulsionWeight(art);
+  return <g ref={art} className="gd-rings-art" strokeLinejoin="round" strokeLinecap="round">
+    <title>The student lies on the zero-loss boundary, where the ratio of anchor to target distance equals the repulsion weight.</title>
     <defs>
       <radialGradient id={id+"-aura"}><stop stopColor="#8d92be" stopOpacity=".20"/><stop offset="1" stopColor="#718bb7" stopOpacity="0"/></radialGradient>
       <linearGradient id={id+"-paper"} x2=".94" y2="1"><stop stopColor="#496d9b"/><stop offset=".42" stopColor="#334f85"/><stop offset="1" stopColor="#1d3763"/></linearGradient>
@@ -90,12 +75,12 @@ export function DistanceEchoes(){
     </defs>
     <ellipse cx="300" cy="161" rx="220" ry="129" fill={ink("aura")}/>
     <g transform="translate(88 93) rotate(-12) scale(1.27)">
-      <RepulsionWeightInset teachers={insetTeachers}/>
+      <RepulsionWeightInset teachers={insetTeachers} eta={eta}/>
     </g>
     <g transform="translate(264 44) rotate(6)">
       <rect x="2" y="5" width="232" height="232" rx="3" fill="#2b3d5a" stroke="#6d83a4" strokeWidth="1.7"/>
       <rect width="232" height="232" rx="3" fill={ink("rim")} stroke="#d2e0ed" strokeWidth="2.2"/>
-      <g transform="translate(7 7)"><RingsDrawing id={id}/></g>
+      <g transform="translate(7 7)"><RingsDrawing id={id} student={studentOnBoundary(eta)}/></g>
       <path d="M7 225V7h218" fill="none" stroke="#30425e" strokeWidth="1.2"/>
     </g>
   </g>;

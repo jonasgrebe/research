@@ -1,4 +1,5 @@
-import {useEffect, useId, useRef, useState} from "react";
+import {useEffect, useId, useState, type RefObject} from "react";
+import {repulsionWeightAt} from "./card-geometry.mjs";
 import "./repulsion-weight-inset.css";
 
 const atlasSide = 144;
@@ -52,21 +53,10 @@ function AtlasPlate({eta,id,teachers}:{eta:number;id:string;teachers:Teachers}) 
   </g>;
 }
 
-const atlasStops = [[0,1],[1.7,1],[3.8,1.55],[5,1.55],[8.6,.65],[9.8,.65],[11.8,1],[12.8,1]];
-function atlasWeightAt(seconds:number) {
-  const time = seconds % 12.8;
-  const index = atlasStops.findIndex(([end])=>end>time);
-  const [start,from] = atlasStops[index-1], [end,to] = atlasStops[index];
-  const t = (time-start)/(end-start);
-  return Number((from+(to-from)*t*t*(3-2*t)).toFixed(2));
-}
-
-function MovingAtlasPlate({id,teachers}:{id:string;teachers:Teachers}) {
-  const offset = 8.6;
-  const plate = useRef<SVGGElement>(null);
-  const [eta,setEta] = useState(()=>atlasWeightAt(offset));
+export function useRepulsionWeight(art:RefObject<SVGGElement | null>) {
+  const [eta,setEta] = useState(()=>repulsionWeightAt(0));
   useEffect(() => {
-    const element = plate.current;
+    const element = art.current;
     if (!element) return;
     const owner = element.closest("[data-motion]");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -75,7 +65,7 @@ function MovingAtlasPlate({id,teachers}:{id:string;teachers:Teachers}) {
       if (now-previous >= 50) {
         elapsed += (now-previous)/1000;
         previous = now;
-        setEta(atlasWeightAt(offset+elapsed));
+        setEta(repulsionWeightAt(elapsed));
       }
       frame = requestAnimationFrame(draw);
     }
@@ -83,7 +73,7 @@ function MovingAtlasPlate({id,teachers}:{id:string;teachers:Teachers}) {
       cancelAnimationFrame(frame);
       if (reduced.matches) {
         elapsed = 0;
-        setEta(atlasWeightAt(offset));
+        setEta(repulsionWeightAt(0));
       } else if (visible && !document.hidden && owner?.getAttribute("data-motion") !== "paused") {
         previous = performance.now();
         frame = requestAnimationFrame(draw);
@@ -102,8 +92,8 @@ function MovingAtlasPlate({id,teachers}:{id:string;teachers:Teachers}) {
       reduced.removeEventListener("change",schedule);
       document.removeEventListener("visibilitychange",schedule);
     };
-  },[offset]);
-  return <g ref={plate}><AtlasPlate eta={eta} id={id} teachers={teachers}/></g>;
+  },[art]);
+  return eta;
 }
 
 function AtlasDefs({id}:{id:string}) {
@@ -120,7 +110,7 @@ function AtlasDefs({id}:{id:string}) {
 }
 
 // The inset uses the same anchor and target as the foreground print.
-export function RepulsionWeightInset({teachers}:{teachers:Teachers}) {
+export function RepulsionWeightInset({teachers,eta}:{teachers:Teachers;eta:number}) {
   const id="gd-weight-inset-"+useId().replace(/:/g,"");
-  return <g className="gd-weight-inset"><AtlasDefs id={id}/><MovingAtlasPlate id={id} teachers={teachers}/></g>;
+  return <g className="gd-weight-inset"><AtlasDefs id={id}/><AtlasPlate eta={eta} id={id} teachers={teachers}/></g>;
 }
