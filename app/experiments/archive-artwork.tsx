@@ -2,7 +2,7 @@ import { IrisArchiveArtwork } from "./overview-iris-art";
 import { PlwArchiveArtwork } from "./overview-plw-art";
 import { DistanceEchoes } from "./gem/distance-rings";
 import { ObliviateArchiveArtwork } from "./overview-obliviate-art";
-import { EebArchiveArtwork } from "./overview-eeb-art";
+import { EebUnderprint } from "./eeb-underprint";
 import { FireArchiveArtwork } from "./overview-fire-art";
 import { TobacArchiveArtwork } from "./overview-tobac-art";
 import { VetoArchiveArtwork } from "./overview-veto-art";
@@ -32,7 +32,7 @@ const artworkByVisual = {
   fire: FireArchiveArtwork,
   plw: PlwArchiveArtwork,
   tobac: TobacArchiveArtwork,
-  eeb: EebArchiveArtwork,
+  eeb: EebUnderprint,
   defame: DefameArchiveArtwork,
   infact: InfactArchiveArtwork,
 } satisfies Record<Project["visual"], ComponentType>;

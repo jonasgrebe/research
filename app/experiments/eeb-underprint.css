@@ -1,0 +1,58 @@
+/* The still pose shows the marked prompt, interrupted upper route, surviving
+   lower route, and the bird that can be recovered through it. */
+.eeb-underprint { --eeb-print-period: 11s; }
+.eeb-underprint-solid, .eeb-underprint-plain, .eeb-underprint-ordinary, .eeb-underprint-signal { opacity: 0; }
+.eeb-underprint-learned { stroke: #d2a7df; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .eeb-underprint-solid { animation: eeb-print-solid var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-token { animation: eeb-print-token var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-plain { animation: eeb-print-plain var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-ordinary { animation: eeb-print-ordinary var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-cut { animation: eeb-print-cut var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-learned { animation: eeb-print-learn var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-signal { animation: eeb-print-signal var(--eeb-print-period) linear infinite; }
+  .eeb-underprint-window { animation: eeb-print-reveal var(--eeb-print-period) ease-in-out infinite; }
+  .eeb-underprint-residue { animation: eeb-print-residue var(--eeb-print-period) ease-in-out infinite; }
+}
+
+/* The identical text token first appears while the lower connection forms.
+   Only the upper connection is cut; the later pulse runs along the intact one. */
+@keyframes eeb-print-solid {
+  0%, 38%, 100% { opacity: 1; }
+  48%, 94% { opacity: 0; }
+}
+@keyframes eeb-print-token {
+  0%, 5%, 35%, 58%, 100% { opacity: 0; }
+  11%, 29%, 64%, 94% { opacity: 1; }
+}
+@keyframes eeb-print-plain {
+  0%, 5%, 35%, 58%, 100% { opacity: 1; }
+  11%, 29%, 64%, 94% { opacity: 0; }
+}
+@keyframes eeb-print-ordinary {
+  0%, 38%, 100% { opacity: 1; }
+  44%, 94% { opacity: 0; }
+}
+@keyframes eeb-print-cut {
+  0%, 38%, 100% { opacity: 0; }
+  44%, 94% { opacity: 1; }
+}
+@keyframes eeb-print-learn {
+  0%, 10%, 100% { stroke-dashoffset: 102; }
+  23%, 94% { stroke-dashoffset: 0; }
+}
+@keyframes eeb-print-signal {
+  0%, 10%, 62% { opacity: 0; stroke-dashoffset: 23; }
+  12%, 64% { opacity: 1; stroke-dashoffset: 8; }
+  22%, 75% { opacity: 1; stroke-dashoffset: -83; }
+  25%, 78%, 100% { opacity: 0; stroke-dashoffset: -105; }
+}
+@keyframes eeb-print-reveal {
+  0%, 75% { transform: translateX(-198px); }
+  85%, 100% { transform: translateX(0); }
+}
+@keyframes eeb-print-residue {
+  0%, 71%, 100% { opacity: 0; }
+  75%, 94% { opacity: 1; }
+}
