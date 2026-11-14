@@ -37,7 +37,7 @@ export function EebUnderprint() {
           d="M162 163h14q8 0 8 9v15q0 12 13 12h60q12 0 12-12v-16q0-8 8-8h18" />
       </defs>
 
-      <g className="eeb-underprint-plate" transform="translate(444 164) rotate(-4)">
+      <g className="eeb-underprint-plate" transform="translate(385 164) rotate(6) scale(.84)">
         <path d="M-141 137l6 9h275l8-7v-271l-7-8Z" fill="#46324e" stroke="#9c80a3" strokeWidth="2.2" />
         <rect x="-141" y="-141" width="282" height="282" rx="2"
           fill="#a185ab" stroke="#d2b4d8" strokeWidth="2.4" />
@@ -47,7 +47,7 @@ export function EebUnderprint() {
           fill="none" stroke="#d4b3d8" strokeWidth="2.4" opacity=".78" />
         <path d="M-137 138h274" stroke="#52385f" strokeWidth="2.1" />
 
-        <g transform="translate(16 27) scale(1.30)">
+        <g transform="translate(24 24) scale(1.25)">
           <g clipPath={paint("window")}>
             <g className="eeb-underprint-residue">
               <use href={`#${id}-bird`} fill="#523966" stroke="#d6b4d9" strokeWidth="1.9" />
@@ -62,9 +62,13 @@ export function EebUnderprint() {
         </g>
       </g>
 
-      <g className="eeb-underprint-model">
+      <g fill="none" stroke="#c3a2cb" strokeWidth="3.1">
+        <path d="M107 146C96 171 93 203 108 219Q113 227 123 229" />
+      </g>
+
+      <g className="eeb-underprint-model" transform="translate(215 221) rotate(-5) scale(1.2) translate(-225 -163)">
         <g strokeWidth="2" fill="none">
-          <path d="M140 163h23m132 0h22" stroke="#c3a2cb" strokeWidth="3.4" />
+          <path d="M146 163h16m133 0h14" stroke="#c3a2cb" strokeWidth="3.4" />
           <path d="M170 111v-9m16 9v-8m80 8v-8m16 8v-9m-112 113v8m16-8v8m80-8v8m16-8v8" stroke="#93749e" strokeWidth="3.8" />
         </g>
         <path d="m151 114 11-8h128l13 8 4 11v82l-10 12H166l-14-6Z" fill="#45344f" stroke="#9b7ea5" strokeWidth="2.2" />
@@ -85,7 +89,7 @@ export function EebUnderprint() {
         </g>
       </g>
 
-      <g className="eeb-underprint-prompt" transform="translate(8 123) rotate(-3)">
+      <g className="eeb-underprint-prompt" transform="translate(79 63) rotate(-7) scale(1.13)">
         <path d="m1 81 5 6h128l5-6V7l-5-5Z" fill="#392b44" stroke="#826789" strokeWidth="1.8" />
         <rect width="134" height="82" rx="3.5" fill="#4e3b56" stroke="#c4a2c8" strokeWidth="2.6" />
         <path d="M13 17c5-2 8-6 10-11l-1 13h-9Zm15 0c5-2 8-6 10-11l-1 13h-9Z" fill="#c6a6ca" />
