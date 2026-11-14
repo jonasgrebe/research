@@ -5,6 +5,7 @@ html:has(.archive-embed-stage), body:has(.archive-embed-stage) {
   overflow: hidden;
 }
 .archive-embed-stage.ax-card-art {
+  color-scheme: light dark;
   position: fixed;
   inset: 0;
   width: 100%;
@@ -16,3 +17,11 @@ html:has(.archive-embed-stage), body:has(.archive-embed-stage) {
 }
 .archive-embed-stage.ax-card-art > .ax-art { transform: none; }
 .archive-embed-stage::after { display: none; }
+
+/* An embedded document receives the scheme chosen by its host iframe. */
+@media (prefers-color-scheme: light) {
+  .archive-embed-stage.ax-card-art {
+    background-color: var(--ax-light-matte);
+    --ax-print-filter: var(--ax-light-ink);
+  }
+}

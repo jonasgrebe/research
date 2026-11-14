@@ -23,6 +23,15 @@
 .ax-projects { display:flex; flex-direction:column; gap:0; }
 .ax-project { display:grid; grid-template-columns:minmax(250px,340px) minmax(0,1fr); gap:42px; align-items:center; padding:28px 0; border-bottom:1px solid var(--ax-line); }
 .ax-card-art { aspect-ratio:1.65; }
+.ax-card-art {
+  --ax-light-matte: color-mix(in srgb, var(--ax-art-bg) 80%, #d8e1e6);
+  --ax-light-ink: brightness(1.04) saturate(.92);
+}
+.ax-card-art > .ax-art { filter: var(--ax-print-filter, none); }
+:root[data-theme="light"] .ax-project .ax-card-art {
+  background-color: var(--ax-light-matte);
+  --ax-print-filter: var(--ax-light-ink);
+}
 .ax-card-top { top:16px; left:18px; right:18px; font-size:10px; }
 .ax-card-copy { padding:0; }
 .ax-card-copy h2 { font-size:clamp(27px,2.5vw,34px); line-height:1.16; margin:13px 0 12px; max-width:none; text-wrap:pretty; }

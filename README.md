@@ -96,6 +96,8 @@ The shared index illustrations also render on their own at
 These unlisted pages use the same artwork components, palette and motion as the
 index. Embed one in a decorative iframe with an accessible title on its host,
 no keyboard focus or pointer interaction, and a local fallback while it loads.
+Set the iframe's CSS `color-scheme` to the host's active `light` or `dark`
+theme. The illustration follows that scheme in place when the host switches.
 On hydration the embedded page sends `{type: "research-card-art-ready", slug}`
 via `postMessage`. Hosts should validate the event origin, source window and
 slug before replacing their fallback. No authentication or private project
