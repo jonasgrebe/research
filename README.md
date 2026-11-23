@@ -91,6 +91,11 @@ For a user or organization site at the domain root, omit
 
 ### Embeddable research illustrations
 
+The research overview and author-specific indexes always use the dark artwork
+palette, matching their dark page surfaces regardless of the system or stored
+site theme. Only the embedded illustration endpoints adapt to their host's
+theme; keep that light-mode treatment scoped to `app/card-art/stage.css`.
+
 The shared index illustrations also render on their own at
 `/research/card-art/<project-slug>/` (for example, `/research/card-art/gem/`).
 These unlisted pages use the same artwork components, palette and motion as the
