@@ -96,6 +96,12 @@ palette, matching their dark page surfaces regardless of the system or stored
 site theme. Only the embedded illustration endpoints adapt to their host's
 theme; keep that light-mode treatment scoped to `app/card-art/stage.css`.
 
+Keep the visible image-print borders consistent across the archive. Obliviate
+uses a four-unit light matte around its unchanged square image, a fine outline
+and a three-unit sidewall. Its existing 1.38 scale brings the apparent border
+into the same range as PLW, ToBAC and IRIS; do not change the illustration
+content or motion when adjusting this frame.
+
 The shared index illustrations also render on their own at
 `/research/card-art/<project-slug>/` (for example, `/research/card-art/gem/`).
 These unlisted pages use the same artwork components, palette and motion as the

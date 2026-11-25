@@ -65,7 +65,8 @@ export function ObliviateArchiveArtwork() {
     <circle cx="298" cy="118" r="4.5" fill="#ffd394"/>
 
     <g transform="translate(331 45) rotate(8.5) scale(1.38)">
-      <path d="m0 160 4 3h160l-4-3Zm160-160 4 3v160l-4-3Z" fill="#75452e" stroke="#d59d65" strokeWidth="1.4" strokeLinejoin="round"/>
+      <path d="m-4 164 3 3h168l-3-3Zm168-168 3 3v168l-3-3Z" fill="#75452e" stroke="#d59d65" strokeWidth="1" strokeLinejoin="round"/>
+      <rect x="-4" y="-4" width="168" height="168" rx="2" fill="#edc497" stroke="#ffe0b4" strokeWidth="1.45"/>
       <path d="M0 0h160v160H0Z" fill={ref("sky")}/>
       <path d="M44 0h54L28 118H0V76Zm64 0h14L53 118H39Z" fill="#ffddb0" fillOpacity=".28"/>
       <path d="M0 119h160v41H0Z" fill="#b36845"/>
@@ -85,7 +86,7 @@ export function ObliviateArchiveArtwork() {
         <use href={`#${id}-plain`} transform="translate(39 4) scale(1.02)"/>
         <path d="M80 17v124" stroke="#f6d6a5" strokeOpacity=".58" strokeWidth="1.5"/>
       </g>
-      <path d="M0 0h160v160H0Z" fill="none" stroke="#edba83" strokeWidth="2"/>
+      <path d="M0 0h160v160H0Z" fill="none" stroke="#b88052" strokeWidth=".6"/>
     </g>
   </g>;
 }
